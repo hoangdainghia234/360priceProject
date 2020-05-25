@@ -2,10 +2,10 @@
   <div>
     <v-navigation-drawer v-model="drawer" app color="indigo lighten-5">
       <v-list>
-        <div v-for="item of items" :key="item.admin">
+        <div v-for="(item, index) in itemsNav" :key="`item-${index}`">
           <v-list-item link>
             <v-list-item-content>
-              <v-list-item-title>{{ item.admin }}</v-list-item-title>
+              <v-list-item-title>{{ item }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
           <v-divider class="mx-3"></v-divider>
@@ -31,18 +31,10 @@
 <script>
 export default {
   name: "navBar",
-  props: {},
+  props: ["title", "itemsNav"],
 
   data: () => ({
-    drawer: null,
-    title: "Create 360 Degree Evaluation",
-    items: [
-      { admin: "Dashboard" },
-      { admin: "360 degree evaluation" },
-      { admin: "Evaluation Template" },
-      { admin: "Evaluation criteria" },
-      { admin: "Employee relationship" }
-    ]
+    drawer: null
   })
 };
 </script>
