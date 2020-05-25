@@ -115,8 +115,10 @@
                       <td>{{ item.Team }}</td>
                       <td>{{ item.Positon }}</td>
                       <td>
-                        <v-btn><v-icon> mdi-pencil-box-outline</v-icon></v-btn>
-                        <v-btn><v-icon>mdi-delete</v-icon></v-btn>
+                        <v-btn depressed
+                          ><v-icon> mdi-pencil-box-outline</v-icon></v-btn
+                        >
+                        <v-btn depressed><v-icon>mdi-delete</v-icon></v-btn>
                       </td>
                     </tr>
                   </tbody>
