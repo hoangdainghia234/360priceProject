@@ -12,17 +12,17 @@
         </div>
       </v-list>
     </v-navigation-drawer>
-    <v-app-bar app color="indigo" dark>
+    <v-app-bar hide-on-scroll aboslute app color="indigo" dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>{{ title }}</v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn depressed class="mr-5 transparent">
-        <v-icon large>mdi-account</v-icon>
-        <span class="">Admin</span>
+      <v-btn depressed class="btn-nav transparent">
+        <v-icon class="icon">mdi-account</v-icon>
+        <span class="textIcon">Admin</span>
       </v-btn>
-      <v-btn depressed class="mr-5 transparent">
-        <v-icon large>mdi-logout-variant</v-icon>
-        <span class="">Sign Out</span>
+      <v-btn depressed class="btn-nav transparent">
+        <v-icon class="icon">mdi-logout-variant</v-icon>
+        <span class="textIcon">Sign Out</span>
       </v-btn>
     </v-app-bar>
   </div>
@@ -38,4 +38,41 @@ export default {
   })
 };
 </script>
-<style scoped></style>
+<style lang="scss">
+@media screen and (max-width: 600px) {
+  .btn-nav {
+    .icon {
+      margin-right: 1px !important;
+      font-size: 1.5rem !important;
+    }
+
+    .textIcon {
+      font-size: 0.8rem !important;
+    }
+  }
+}
+
+@media screen and (max-width: 960px) {
+  .btn-nav {
+    .icon {
+      margin-right: 3px !important;
+      font-size: 1.6rem !important;
+    }
+
+    .textIcon {
+      font-size: 0.8rem !important;
+    }
+  }
+}
+
+.btn-nav {
+  .icon {
+    margin-right: 5px;
+    font-size: 2rem;
+  }
+
+  .textIcon {
+    font-size: 1rem;
+  }
+}
+</style>

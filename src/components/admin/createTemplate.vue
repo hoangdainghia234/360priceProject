@@ -76,9 +76,7 @@
               </v-card-text>
             </v-card>
 
-            <section>
-              
-            </section>
+            <section></section>
           </v-col>
         </v-row>
       </v-container>
