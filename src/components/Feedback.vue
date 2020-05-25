@@ -9,12 +9,16 @@
         <v-divider></v-divider>
         <v-container>
           <v-row class="d-flex justify-space-around">
-            <v-col cols="4">
-              <v-row v-for="item in item_inf" :key="item.title">
+            <v-col cols="11" lg="4">
+              <v-row
+                v-for="item in item_inf"
+                :key="item.title"
+                class="align-center mb-4"
+              >
                 <v-col cols="3" class="pa-0">
-                  <v-subheader>{{ item.title }}</v-subheader>
+                  <p class="ma-0">{{ item.title }}</p>
                 </v-col>
-                <v-col cols="8" class="pa-0">
+                <v-col cols="9" class="pa-0">
                   <v-text-field
                     outlined
                     hide-details
@@ -25,12 +29,16 @@
                 </v-col>
               </v-row>
             </v-col>
-            <v-col cols="4">
-              <v-row v-for="item in item_inf_rater" :key="item.title">
+            <v-col cols="11" lg="4">
+              <v-row
+                v-for="item in item_inf_rater"
+                :key="item.title"
+                class="align-center mb-4"
+              >
                 <v-col cols="3" class="pa-0">
-                  <v-subheader>{{ item.title }}</v-subheader>
+                  <p class="ma-0">{{ item.title }}</p>
                 </v-col>
-                <v-col cols="8" class="pa-0">
+                <v-col cols="9" class="pa-0">
                   <v-text-field
                     outlined
                     hide-details
@@ -58,21 +66,21 @@
         <v-divider></v-divider>
         <v-container fluid>
           <i class="title">Initiative (Category)</i>
-          <div class="grey lighten-2" v-for="n in 5" :key="n">
+          <div class="grey lighten-2" v-for="item in item_category" :key="item">
             <div>
               <v-row class="text-center align-center">
-                <v-col cols="2">
-                  <p>Lorem isum (Item name)</p>
+                <v-col cols="12" md="6" lg="2">
+                  <p>{{ item.item_name }}</p>
                 </v-col>
-                <v-col cols="2">
-                  <p>Explanation (Item explanation)</p>
+                <v-col cols="12" md="6" lg="2">
+                  <p>{{ item.item_exp }}</p>
                 </v-col>
-                <v-col cols="4" class="">
+                <v-col cols="12" class="" md="6" lg="4">
                   <div class="ml-2 mr-2">
                     <v-list
                       class="d-flex flex-row justify-space-between mb-3"
                       color="transparent"
-                      style="position: relative; z-index: 1; top: 10px"
+                      style="position: relative; z-index: 1; top: 10px; bottom: 0"
                     >
                       <div
                         v-for="item in itemtimeline"
@@ -90,30 +98,28 @@
                         </v-btn>
                       </div>
                     </v-list>
-                    <p class="text-left body-2 ma-0">
-                      Description: Lorem ipsum dolor sit amet, consecterur
-                      adipiscing elit. Nunc maximus, nulla ut commodo sagittis,
-                      sapien dui mattis dui, non pulvinar lorem felis nec erat
-                    </p>
                     <v-progress-linear
                       color="grey"
                       rounded
                       value="100"
-                      style="position: relative; bottom: 71px; z-index: 0"
+                      style="position: relative; bottom: 30px; z-index: 0"
                     ></v-progress-linear>
+                    <p class="text-left body-2 ma-0">
+                      {{ item.item_desc }}
+                    </p>
                   </div>
                 </v-col>
-                <v-col cols="4">
+                <v-col cols="12" md="6" lg="4">
                   <v-textarea
                     solo
                     label="Comment: "
-                    class="pr-4"
+                    class="pr-4 pl-4"
                     hide-details
                   ></v-textarea>
                 </v-col>
               </v-row>
             </div>
-            <v-divider v-if="n + 1 < 6" :key="n"></v-divider>
+            <v-divider></v-divider>
           </div>
 
           <v-card class="mt-4 mb-5" outlined>
@@ -125,21 +131,21 @@
           </v-card>
 
           <i class="title">Team work</i>
-          <div class="grey lighten-2" v-for="n in 5" :key="n">
+          <div class="grey lighten-2" v-for="item in item_category" :key="item">
             <div>
               <v-row class="text-center align-center">
-                <v-col cols="2">
-                  <p>Lorem isum (Item name)</p>
+                <v-col cols="12" md="6" lg="2">
+                  <p>{{ item.item_name }}</p>
                 </v-col>
-                <v-col cols="2">
-                  <p>Explanation (Item explanation)</p>
+                <v-col cols="12" md="6" lg="2">
+                  <p>{{ item.item_exp }}</p>
                 </v-col>
-                <v-col cols="4" class="">
+                <v-col cols="12" class="" md="6" lg="4">
                   <div class="ml-2 mr-2">
                     <v-list
                       class="d-flex flex-row justify-space-between mb-3"
                       color="transparent"
-                      style="position: relative; z-index: 1; top: 10px"
+                      style="position: relative; z-index: 1; top: 10px; bottom: 0"
                     >
                       <div
                         v-for="item in itemtimeline"
@@ -157,30 +163,28 @@
                         </v-btn>
                       </div>
                     </v-list>
-                    <p class="text-left body-2 ma-0">
-                      Description: Lorem ipsum dolor sit amet, consecterur
-                      adipiscing elit. Nunc maximus, nulla ut commodo sagittis,
-                      sapien dui mattis dui, non pulvinar lorem felis nec erat
-                    </p>
                     <v-progress-linear
                       color="grey"
                       rounded
                       value="100"
-                      style="position: relative; bottom: 71px; z-index: 0"
+                      style="position: relative; bottom: 30px; z-index: 0"
                     ></v-progress-linear>
+                    <p class="text-left body-2 ma-0">
+                      {{ item.item_desc }}
+                    </p>
                   </div>
                 </v-col>
-                <v-col cols="4">
+                <v-col cols="12" md="6" lg="4">
                   <v-textarea
                     solo
                     label="Comment: "
-                    class="pr-4"
+                    class="pr-4 pl-4"
                     hide-details
                   ></v-textarea>
                 </v-col>
               </v-row>
             </div>
-            <v-divider v-if="n + 1 < 6" :key="n"></v-divider>
+            <v-divider></v-divider>
           </div>
 
           <v-card class="mt-4" outlined>
@@ -254,6 +258,38 @@ export default {
         {
           id: "5",
           text: "Excellent"
+        }
+      ],
+      item_category: [
+        {
+          item_name: "Lorem isum 1",
+          item_exp: "Explanation 1",
+          item_desc:
+            "Description1: Lorem ipsum dolor sit amet, consecterur adipiscing elit. Nunc maximus, nulla ut commodo sagittis, sapien dui mattis dui, non pulvinar lorem felis nec erat"
+        },
+        {
+          item_name: "Lorem isum 2",
+          item_exp: "Explanation 2",
+          item_desc:
+            "Description2: Lorem ipsum dolor sit amet, consecterur adipiscing elit. Nunc maximus, nulla ut commodo sagittis, sapien dui mattis dui, non pulvinar lorem felis nec erat"
+        },
+        {
+          item_name: "Lorem isum 3",
+          item_exp: "Explanation 3",
+          item_desc:
+            "Description3: Lorem ipsum dolor sit amet, consecterur adipiscing elit. Nunc maximus, nulla ut commodo sagittis, sapien dui mattis dui, non pulvinar lorem felis nec erat"
+        },
+        {
+          item_name: "Lorem isum 4",
+          item_exp: "Explanation 4",
+          item_desc:
+            "Description4: Lorem ipsum dolor sit amet, consecterur adipiscing elit. Nunc maximus, nulla ut commodo sagittis, sapien dui mattis dui, non pulvinar lorem felis nec erat"
+        },
+        {
+          item_name: "Lorem isum 5",
+          item_exp: "Explanation 5",
+          item_desc:
+            "Description5: Lorem ipsum dolor sit amet, consecterur adipiscing elit. Nunc maximus, nulla ut commodo sagittis, sapien dui mattis dui, non pulvinar lorem felis nec erat"
         }
       ]
     };

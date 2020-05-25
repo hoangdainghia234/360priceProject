@@ -13,16 +13,16 @@
             <v-divider></v-divider>
             <v-expansion-panel-content>
               <v-row>
-                <v-col cols="6">
+                <v-col cols="12" lg="6">
                   <v-row
                     v-for="item in items"
                     :key="item.item_title"
                     class="d-flex align-center ma-3"
                   >
-                    <v-col cols="4" class="pa-0">
+                    <v-col cols="4" md="3" lg="4" class="pa-0">
                       <p class="ma-0">{{ item.item_title }}</p>
                     </v-col>
-                    <v-col cols="8" class="pa-0">
+                    <v-col cols="8" md="6" lg="8" class="pa-0">
                       <v-combobox
                         v-model="item.select"
                         :items="item.item_select"
@@ -61,7 +61,7 @@
             <template v-slot:default>
               <thead>
                 <tr>
-                  <th class="text-center" v-for="i in 5" :key="i">
+                  <th class="text-center" v-for="(n, i) in 5" :key="n">
                     {{ thead_table[i] }}
                   </th>
                 </tr>
@@ -75,7 +75,7 @@
                     <v-chip
                       class="ma-2 justify-center"
                       color="grey"
-                      style="width:20%"
+                      style="width:90px"
                       label
                       text-color="white"
                       >{{ item.status }}</v-chip
@@ -91,24 +91,24 @@
         </v-card>
       </v-col>
     </v-row>
-    <v-dialog v-model="dialog" max-width="80%">
+    <v-dialog v-model="dialog" max-width="90%">
       <v-card class="form-detail">
         <v-card-title class="d-flex justify-center grey lighten-2">
           <span>Evaluation Detail</span>
         </v-card-title>
         <v-container>
           <v-row>
-            <v-col cols="3" class="d-flex align-center">
+            <v-col cols="12" sm="6" md="4" lg="3" class="d-flex align-center">
               <span>Rater:</span>
               <v-text-field
                 outlined
                 hide-details
                 dense
                 v-model="hint"
-                class="ml-4"
+                class="ml-4 pa-0"
               ></v-text-field>
             </v-col>
-            <v-col cols="3" class="d-flex align-center">
+            <v-col cols="12" sm="6" md="4" lg="3" class="d-flex align-center">
               <span>Status:</span>
               <v-btn class="ml-4">Done</v-btn>
             </v-col>
@@ -123,8 +123,8 @@
                       <tr>
                         <th
                           class="text-center white--text"
-                          v-for="i in 5"
-                          :key="i"
+                          v-for="(n, i) in 5"
+                          :key="n"
                         >
                           {{ thead_table_dialog[i] }}
                         </th>
@@ -157,9 +157,8 @@ export default {
     hint: "Larry",
     panel: [0],
     readonly: false,
-    thead_table: ["", "#", "Name", "Evaluated at", "Status", "Detail"],
+    thead_table: ["#", "Name", "Evaluated at", "Status", "Detail"],
     thead_table_dialog: [
-      "",
       "Category",
       "Item",
       "Item expalanation",

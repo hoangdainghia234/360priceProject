@@ -5,7 +5,7 @@
         <v-toolbar-title class="headline">DASHBOARD</v-toolbar-title>
       </v-toolbar>
       <v-list>
-        <div v-for="i in 5" :key="i">
+        <div v-for="(n, i) in 5" :key="n">
           <v-list-item link>
             <v-list-item-content>
               <v-list-item-title>{{ listItem[i] }}</v-list-item-title>
@@ -54,7 +54,6 @@ export default {
   data: () => ({
     drawer: null,
     listItem: [
-      "",
       "Dashboard",
       "Member review",
       "Reports",

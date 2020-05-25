@@ -5,13 +5,14 @@
         <v-simple-table
           fixed-header
           height="500px"
+          style="min-width: 1200px; overflow: auto"
           class="text-center"
           group-by="point"
         >
           <template v-slot:default>
             <thead>
               <tr>
-                <th v-for="i in 5" :key="i" class="text-center">
+                <th v-for="(n, i) in 5" :key="n" class="text-center">
                   {{ header[i] }}
                 </th>
               </tr>
@@ -22,8 +23,8 @@
                 <td>{{ item.category }}</td>
                 <td>
                   <v-row
-                    v-for="i in 3"
-                    :key="i"
+                    v-for="(n, i) in 3"
+                    :key="n"
                     class="d-flex align-center"
                     dense
                   >
@@ -88,7 +89,7 @@
                 <template v-slot:default>
                   <thead>
                     <tr>
-                      <th v-for="i in 5" :key="i" class="text-center">
+                      <th v-for="(n, i) in 5" :key="n" class="text-center">
                         {{ header_detail[i] }}
                       </th>
                     </tr>
@@ -103,8 +104,8 @@
                       <td>{{ item_detail.itemExp }}</td>
                       <td>
                         <v-row
-                          v-for="i in 3"
-                          :key="i"
+                          v-for="(n, i) in 3"
+                          :key="n"
                           class="d-flex align-center"
                           dense
                         >
@@ -190,10 +191,9 @@ export default {
   data() {
     return {
       dialog: false,
-      name: ["", "Self", "Team", "Manager"],
-      header: ["", "Main point", "Category", "Ratings", "Comment", "Detail"],
+      name: ["Self", "Team", "Manager"],
+      header: ["Main point", "Category", "Ratings", "Comment", "Detail"],
       header_detail: [
-        "",
         "Category",
         "Item",
         "Item explanation",
@@ -273,6 +273,9 @@ export default {
             show: false
           }
         },
+        markers: {
+          size: 0
+        },
         title: {
           text: "Self vs Team",
           align: "center"
@@ -281,7 +284,7 @@ export default {
           width: 2
         },
         fill: {
-          opacity: 0.1
+          opacity: 0.2
         },
         xaxis: {
           categories: [
@@ -291,7 +294,12 @@ export default {
             "Category 4",
             "Category 5",
             "Category 6"
-          ]
+          ],
+          labels: {
+            style: {
+              colors: ["#000000"]
+            }
+          }
         }
       }
     };
