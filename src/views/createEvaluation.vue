@@ -1,6 +1,5 @@
 <template>
   <div>
-    <nav-bar :title="title" :itemsNav="itemsNav" />
     <v-content>
       <v-container fluid>
         <v-row>
@@ -226,7 +225,7 @@
                   </v-col>
                 </v-row>
 
-                <template-evaluation />
+                <!-- <template-evaluation /> -->
               </v-card-text>
             </v-card>
           </v-col>
@@ -238,31 +237,18 @@
 </template>
 
 <script>
-import navBar from "../layout/navBar";
 // import footerSec from "../layout/footerSec";
-import templateEvaluation from "./templateEvaluation";
+// import templateEvaluation from "./templateEvaluation";
 
 export default {
   name: "createEvaluation",
 
-  components: {
-    navBar,
-    templateEvaluation
-    // footerSec
-  },
+  components: {},
 
   props: {},
 
   data: () => {
     return {
-      title: "Create 360 Degree Evaluation",
-      itemsNav: [
-        "Dashboard",
-        "360 degree evaluation",
-        "Evaluation Template",
-        "Evaluation criteria",
-        "Employee relationship"
-      ],
       departments: [
         "Software Development Departement",
         "Department 1",

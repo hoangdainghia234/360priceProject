@@ -1,25 +1,37 @@
 <template>
   <v-app id="inspire">
-    <create-evaluation />
+    <nav-bar :title="title" :itemsNav="itemsNav" :userRole="userRole" />
+    <router-view />
+    <!-- <create-evaluation /> -->
     <!-- <createTemplate /> -->
   </v-app>
 </template>
 
 <script>
-import createEvaluation from "./components/admin/createEvaluation";
-// import createTemplate from "./components/admin/createTemplate.vue";
+import navBar from "./components/layout/navBar";
+// import createEvaluation from "./views/createEvaluation";
 
 export default {
   name: "App",
 
   components: {
-    // navBar,
-    createEvaluation
+    navBar
+    // createEvaluation
     // createTemplate
   },
 
-  data: () => ({
-    //
-  })
+  data: () => {
+    return {
+      title: "Create 360 Degree Evaluation",
+      itemsNav: {
+        "/": "Dashboard",
+        "/createEvaluation": "360 Degree Evaluation",
+        "/createTemplate": "Evaluation Template",
+        "/createCriteria": "Evaluation Criteria",
+        "/createRelationship": "Employee Relationship"
+      },
+      userRole: "Admin"
+    };
+  }
 };
 </script>

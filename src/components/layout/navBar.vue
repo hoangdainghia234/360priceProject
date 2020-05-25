@@ -2,10 +2,14 @@
   <div>
     <v-navigation-drawer v-model="drawer" app color="indigo lighten-5">
       <v-list>
-        <div v-for="(item, index) in itemsNav" :key="`item-${index}`">
+        <div v-for="(tag, item) in itemsNav" :key="item">
           <v-list-item link>
             <v-list-item-content>
-              <v-list-item-title>{{ item }}</v-list-item-title>
+              <v-list-item-title class="d-flex">
+                <router-link :to="item" class="tag">
+                  {{ tag }}
+                </router-link>
+              </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
           <v-divider class="mx-3"></v-divider>
@@ -18,7 +22,7 @@
       <v-spacer></v-spacer>
       <v-btn depressed class="btn-nav transparent">
         <v-icon class="icon">mdi-account</v-icon>
-        <span class="textIcon">Admin</span>
+        <span class="textIcon">{{ userRole }}</span>
       </v-btn>
       <v-btn depressed class="btn-nav transparent">
         <v-icon class="icon">mdi-logout-variant</v-icon>
@@ -31,7 +35,7 @@
 <script>
 export default {
   name: "navBar",
-  props: ["title", "itemsNav"],
+  props: ["title", "itemsNav", "userRole"],
 
   data: () => ({
     drawer: null
@@ -74,5 +78,11 @@ export default {
   .textIcon {
     font-size: 1rem;
   }
+}
+
+.tag {
+  text-decoration: none;
+  width: 100%;
+  color: #333 !important;
 }
 </style>

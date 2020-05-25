@@ -1,65 +1,44 @@
 <template>
   <div>
-    <nav-bar :title="title" :itemsNav="itemsNav" />
     <v-content>
       <v-container fluid>
-        <v-row align="start" justify="start">
+        <v-row>
           <v-col>
             <v-card>
               <v-card-subtitle class="font-weight-bold">
                 <v-icon class="mr-2">mdi-information</v-icon>
                 <span>Template Information</span>
               </v-card-subtitle>
-              <v-divider class="mx-0"></v-divider>
+              <v-divider></v-divider>
               <v-card-text>
-                <v-row class="evaluation-line d-flex align-center" dense>
-                  <v-col cols="2">
+                <v-row class="evaluation-line" dense>
+                  <v-col cols="5" xs="5" sm="4" md="2">
                     <p class="subtitle-1">Name:</p>
                   </v-col>
-                  <v-col cols="2">
+                  <v-col cols="7" sm="7" md="4" lg="3" xl="2">
                     <v-text-field
-                      v-model="nameTemplate"
-                      label="2019SecondCycle-SDD-Staff-AH Template"
-                      single-line
-                      outlined
+                      label="name"
+                      placeholder="2019 Second Cycle-SSD-Staff-AH Template"
+                      solo
+                      dense
                     ></v-text-field>
                   </v-col>
                 </v-row>
-                <v-row class="evaluation-line d-flex align-center" dense>
-                  <v-col cols="2">
-                    <p class="subtitle-1">Department:</p>
+
+                <v-row class="evaluation-line" dense>
+                  <v-col cols="5" sm="4" md="2">
+                    <p class="subtitle-1">Departement:</p>
                   </v-col>
-                  <v-col cols="2">
+                  <v-col cols="7" sm="7" md="4" lg="3" xl="2">
                     <v-select
                       :items="departments"
-                      placeholder="2019 Second Cycle"
-                      outlined
-                      dense
-                    ></v-select>
-                  </v-col>
-                  <v-col cols="2">
-                    <p class="subtitle-1">Layer:</p>
-                  </v-col>
-                  <v-col cols="2">
-                    <v-select
-                      :items="layers"
-                      placeholder="2019 Second Cycle"
-                      outlined
-                      dense
-                    ></v-select>
-                  </v-col>
-                  <v-col cols="2">
-                    <p class="subtitle-1">Grade:</p>
-                  </v-col>
-                  <v-col cols="2">
-                    <v-select
-                      :items="grades"
-                      placeholder="2019 Second Cycle"
+                      placeholder="Software Development Department"
                       outlined
                       dense
                     ></v-select>
                   </v-col>
                 </v-row>
+
                 <v-row class="evaluation-line d-flex align-center" dense>
                   <v-col cols="2">
                     <p class="subtitle-1">Total weight (%):</p>
@@ -85,27 +64,15 @@
 </template>
 
 <script>
-import navBar from "../layout/navBar";
-
 export default {
   name: "createTemplate",
 
-  components: {
-    navBar
-  },
+  components: {},
 
   props: {},
 
   data: () => {
     return {
-      title: "Create Evaluation Template",
-      itemsNav: [
-        "Dashboard",
-        "360 degree evaluation",
-        "Evaluation Template",
-        "Evaluation criteria",
-        "Employee relationship"
-      ],
       departments: [
         "Software Development Departement",
         "Department 1",
