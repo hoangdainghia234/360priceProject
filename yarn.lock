@@ -4513,8 +4513,13 @@ internal-ip@^4.3.0:
 
 interpret@^1.0.0:
   version "1.2.0"
+<<<<<<< HEAD
   resolved "https://registry.yarnpkg.com/interpret/-/interpret-1.2.0.tgz#d5061a6224be58e8083985f5014d844359576296"
   integrity sha512-mT34yGKMNceBQUoVn7iCDKDntA7SC6gycMAWzGx1z/CMCTV7b2AAtXlo3nRyHZ1FelRkQbQjprHSYGwzLtkVbw==
+=======
+  resolved "https://registry.npm.taobao.org/interpret/download/interpret-1.2.0.tgz#d5061a6224be58e8083985f5014d844359576296"
+  integrity sha1-1QYaYiS+WOgIOYX1AU2EQ1lXYpY=
+>>>>>>> dungbm-test
 
 invariant@^2.2.2, invariant@^2.2.4:
   version "2.2.4"
@@ -6877,7 +6882,11 @@ readdirp@~3.4.0:
 
 rechoir@^0.6.2:
   version "0.6.2"
+<<<<<<< HEAD
   resolved "https://registry.yarnpkg.com/rechoir/-/rechoir-0.6.2.tgz#85204b54dba82d5742e28c96756ef43af50e3384"
+=======
+  resolved "https://registry.npm.taobao.org/rechoir/download/rechoir-0.6.2.tgz#85204b54dba82d5742e28c96756ef43af50e3384"
+>>>>>>> dungbm-test
   integrity sha1-hSBLVNuoLVdC4oyWdW70OvUOM4Q=
   dependencies:
     resolve "^1.1.6"
@@ -7406,8 +7415,13 @@ shell-quote@^1.6.1:
 
 shelljs@^0.8.3:
   version "0.8.4"
+<<<<<<< HEAD
   resolved "https://registry.yarnpkg.com/shelljs/-/shelljs-0.8.4.tgz#de7684feeb767f8716b326078a8a00875890e3c2"
   integrity sha512-7gk3UZ9kOfPLIAbslLzyWeGiEqx9e3rxwZM0KE6EL8GlGwjym9Mrlx5/p33bWTu9YG6vcS4MBxYZDHYr5lr8BQ==
+=======
+  resolved "https://registry.npm.taobao.org/shelljs/download/shelljs-0.8.4.tgz#de7684feeb767f8716b326078a8a00875890e3c2"
+  integrity sha1-3naE/ut2f4cWsyYHiooAh1iQ48I=
+>>>>>>> dungbm-test
   dependencies:
     glob "^7.0.0"
     interpret "^1.0.0"
@@ -8413,8 +8427,13 @@ vm-browserify@^1.0.1:
 
 vue-cli-plugin-vuetify@~2.0.5:
   version "2.0.5"
+<<<<<<< HEAD
   resolved "https://registry.yarnpkg.com/vue-cli-plugin-vuetify/-/vue-cli-plugin-vuetify-2.0.5.tgz#09ba78928653fc7e3801ea37e5120f957413dda4"
   integrity sha512-jtxcidjLT5f1H9QLYKLFjo/ZG42ud4pI9bK3WNO5DXyhiMDMTwSZ7b3NcJVRH7tKYbv5/ty0VPdDGlf4w22AMA==
+=======
+  resolved "https://registry.npm.taobao.org/vue-cli-plugin-vuetify/download/vue-cli-plugin-vuetify-2.0.5.tgz#09ba78928653fc7e3801ea37e5120f957413dda4"
+  integrity sha1-Cbp4koZT/H44Aeo35RIPlXQT3aQ=
+>>>>>>> dungbm-test
   dependencies:
     semver "^7.1.2"
     shelljs "^0.8.3"
@@ -8480,8 +8499,13 @@ vue@^2.6.11:
 
 vuetify-loader@^1.3.0:
   version "1.4.3"
+<<<<<<< HEAD
   resolved "https://registry.yarnpkg.com/vuetify-loader/-/vuetify-loader-1.4.3.tgz#df1323c558be09890877e5fbe817b3a71a6c538d"
   integrity sha512-fS0wRil682Ebsj2as+eruBoMPKaQYDhu/fDAndnTItzSY4RK4LOEIsssVL4vD6QY8dvUgoGL84SUQ6vGr777CA==
+=======
+  resolved "https://registry.npm.taobao.org/vuetify-loader/download/vuetify-loader-1.4.3.tgz#df1323c558be09890877e5fbe817b3a71a6c538d"
+  integrity sha1-3xMjxVi+CYkId+X76BezpxpsU40=
+>>>>>>> dungbm-test
   dependencies:
     loader-utils "^1.2.0"
 

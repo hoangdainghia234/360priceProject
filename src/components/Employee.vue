@@ -89,20 +89,56 @@
         </v-expansion-panel>
       </v-expansion-panels>
     </v-card>
+    <!-- Button -->
     <v-row>
       <v-col>
         <div class="float-right">
           <div class="mr-7">
-            <v-btn large color="primary">
-              <v-icon class="mr-4">mdi-plus-circle</v-icon>
-              <span>Add team</span>
-            </v-btn>
+            <template>
+              <v-btn color="primary" dark v-on="on" @click="dialog = true">
+                <span>
+                  <v-icon class="mr-4">mdi-plus-circle</v-icon>
+                  Add team
+                </span>
+              </v-btn>
+            </template>
+            <v-dialog
+              v-model="dialog"
+              max-width="1000px"
+              hide-overlay
+              transition="dialog-bottom-transition"
+            >
+              <v-card>
+                <v-card-title>
+                  <span class="headline">User Profile</span>
+                </v-card-title>
+                <v-card-text>
+                  <v-container>
+                    <v-row>
+                      <v-col class="d-flex" cols="12" sm="4">
+                        <span>City</span>
+                        <v-select :items="items" outlined></v-select>
+                      </v-col>
+                      <v-col class="d-flex" cols="12" sm="4">
+                        <span>SSU</span>
+                        <v-select :items="items" outlined></v-select>
+                      </v-col>
+                      <v-col class="d-flex" cols="12" sm="4">
+                        <span>Team</span>
+                        <v-select :items="items" outlined></v-select>
+                      </v-col>
+                    </v-row>
+                  </v-container>
+                </v-card-text>
+              </v-card>
+            </v-dialog>
           </div>
         </div>
       </v-col>
     </v-row>
+    <!-- End: Button -->
     <v-card style="margin: 30px">
-      <v-expansion-panels>
+      <v-expansion-panels hover>
         <v-expansion-panel>
           <v-expansion-panel-header>
             <span class="font-weight-bold">
@@ -112,28 +148,28 @@
           </v-expansion-panel-header>
           <v-expansion-panel-content>
             <template>
-              <v-simple-table fixed-header height="300px" font-size="50px">
+              <v-simple-table fixed-header height="350px" font-size="50px">
                 <template v-slot:default class="blue darken-2">
                   <thead>
                     <tr>
-                      <th class="text-left blue darken-2">Employee Name</th>
-                      <th class="text-left blue darken-2">Staff ID</th>
-                      <th class="text-left blue darken-2">SSD</th>
-                      <th class="text-left blue darken-2">City</th>
-                      <th class="text-left blue darken-2">Team</th>
-                      <th class="text-left blue darken-2">Position</th>
-                      <th class="blue darken-2">Action</th>
+                      <th class="text-center blue darken-2">Employee Name</th>
+                      <th class="text-center blue darken-2">Staff ID</th>
+                      <th class="text-center blue darken-2">SSD</th>
+                      <th class="text-center blue darken-2">City</th>
+                      <th class="text-center blue darken-2">Team</th>
+                      <th class="text-center blue darken-2">Position</th>
+                      <th class="text-center blue darken-2">Action</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr v-for="item in desserts" :key="item.name">
-                      <td>{{ item.employeeName }}</td>
-                      <td>{{ item.satffID }}</td>
-                      <td>{{ item.ssu }}</td>
-                      <td>{{ item.City }}</td>
-                      <td>{{ item.Team }}</td>
-                      <td>{{ item.Positon }}</td>
-                      <td>
+                      <td class="text-center">{{ item.employeeName }}</td>
+                      <td class="text-center">{{ item.satffID }}</td>
+                      <td class="text-center">{{ item.ssu }}</td>
+                      <td class="text-center">{{ item.City }}</td>
+                      <td class="text-center">{{ item.Team }}</td>
+                      <td class="text-center">{{ item.Positon }}</td>
+                      <td class="text-center">
                         <v-btn depressed
                           ><v-icon> mdi-pencil-box-outline</v-icon></v-btn
                         >
@@ -141,15 +177,13 @@
                       </td>
                     </tr>
                   </tbody>
-                  <v-row class="justify-end">
-                    <v-btn large color="primary">
-                      <v-icon class="mr-4">mdi-plus-circle</v-icon>
-                      <span>Add team</span>
-                    </v-btn>
-                  </v-row>
                 </template>
               </v-simple-table>
             </template>
+            <v-btn class="float-right" large color="primary">
+              <v-icon class="mr-3">mdi-plus-circle</v-icon>
+              <span>Add member</span>
+            </v-btn>
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
@@ -160,6 +194,7 @@
 export default {
   data() {
     return {
+      dialog: false,
       select: "",
       items: [
         {
