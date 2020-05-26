@@ -1,6 +1,11 @@
 <template>
   <v-app id="inspire">
-    <nav-bar :title="title" :itemsNav="itemsNav" :userRole="userRole" />
+    <nav-bar
+      :title="title"
+      :itemsNav="itemsNav"
+      :userRole="userRole"
+      @clickTag="changeTitle"
+    />
     <router-view />
   </v-app>
 </template>
@@ -17,16 +22,22 @@ export default {
 
   data: () => {
     return {
-      title: "Create 360 Degree Evaluation",
+      title: "Dashboard",
       itemsNav: {
-        "/": "Dashboard",
-        "/CreateEvaluation": "360 Degree Evaluation",
-        "/CreateTemplate": "Evaluation Template",
-        "/CreateCriteria": "Evaluation Criteria",
-        "/CreateRelationship": "Employee Relationship"
+        "/": ["Dashboard", "mdi-home"],
+        "/CreateEvaluation": ["360 Degree Evaluation", "mdi-mouse"],
+        "/CreateTemplate": ["Evaluation Template", "mdi-account"],
+        "/CreateCriteria": ["Evaluation Criteria", "mdi-football-helmet"],
+        "/CreateRelationship": ["Employee Relationship", "mdi-mouse"]
       },
       userRole: "Admin"
     };
+  },
+
+  methods: {
+    changeTitle(tag) {
+      this.title = tag;
+    }
   }
 };
 </script>
