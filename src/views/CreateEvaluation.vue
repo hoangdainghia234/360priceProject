@@ -225,7 +225,7 @@
                   </v-col>
                 </v-row>
 
-                <!-- <template-evaluation /> -->
+                <template-evaluation />
               </v-card-text>
             </v-card>
           </v-col>
@@ -238,12 +238,14 @@
 
 <script>
 // import footerSec from "../layout/footerSec";
-// import templateEvaluation from "./templateEvaluation";
+import TemplateEvaluation from "../components/admin/TemplateEvaluation";
 
 export default {
   name: "createEvaluation",
 
-  components: {},
+  components: {
+    TemplateEvaluation
+  },
 
   props: {},
 

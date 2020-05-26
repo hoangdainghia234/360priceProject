@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import navBar from "./components/layout/navBar";
+import navBar from "./components/layout/NavBar";
 
 export default {
   name: "App",
@@ -20,10 +20,10 @@ export default {
       title: "Create 360 Degree Evaluation",
       itemsNav: {
         "/": "Dashboard",
-        "/createEvaluation": "360 Degree Evaluation",
-        "/createTemplate": "Evaluation Template",
-        "/createCriteria": "Evaluation Criteria",
-        "/createRelationship": "Employee Relationship"
+        "/CreateEvaluation": "360 Degree Evaluation",
+        "/CreateTemplate": "Evaluation Template",
+        "/CreateCriteria": "Evaluation Criteria",
+        "/CreateRelationship": "Employee Relationship"
       },
       userRole: "Admin"
     };

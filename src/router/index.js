@@ -1,32 +1,32 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import createTemplate from "../views/createTemplate.vue";
-import createEvaluation from "../views/createEvaluation.vue";
-import createCriteria from "../views/createCriteria.vue";
-import createRelationship from "../views/createRelationship.vue";
+import CreateTemplate from "../views/CreateTemplate.vue";
+import CreateEvaluation from "../views/CreateEvaluation.vue";
+import CreateCriteria from "../views/CreateCriteria.vue";
+import CreateRelationship from "../views/CreateRelationship.vue";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
-    path: "/createTemplate",
-    name: "createTemplate",
-    component: createTemplate
+    path: "/CreateTemplate",
+    name: "CreateTemplate",
+    component: CreateTemplate
   },
   {
-    path: "/createEvaluation",
-    name: "createEvaluation",
-    component: createEvaluation
+    path: "/CreateEvaluation",
+    name: "CreateEvaluation",
+    component: CreateEvaluation
   },
   {
-    path: "/createCriteria",
-    name: "createCriteria",
-    component: createCriteria
+    path: "/CreateCriteria",
+    name: "CreateCriteria",
+    component: CreateCriteria
   },
   {
-    path: "/createRelationship",
-    name: "createRelationship",
-    component: createRelationship
+    path: "/CreateRelationship",
+    name: "CreateRelationship",
+    component: CreateRelationship
   }
 ];
 
