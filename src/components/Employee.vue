@@ -14,8 +14,8 @@
       <v-expansion-panels hover>
         <v-expansion-panel>
           <v-expansion-panel-header>
-            <span style="font-weight: bold; margin-right: 12px"
-              ><v-icon> mdi-filter</v-icon>Filter</span
+            <span class="font-weight-bold" style="margin-right: 12px"
+              ><v-icon class="mr-2"> mdi-filter</v-icon>Filter</span
             >
           </v-expansion-panel-header>
           <v-expansion-panel-content>
@@ -29,6 +29,7 @@
               >
                 <span>{{ item.title }}</span>
                 <v-select
+                  dense
                   outlined
                   :items="item.item_select"
                   v-model="item.select"
@@ -68,6 +69,7 @@
               >
                 <span>{{ item.title }}</span>
                 <v-select
+                  dense
                   outlined
                   v-model="item.select"
                   :items="item.item_select"
@@ -87,23 +89,40 @@
         </v-expansion-panel>
       </v-expansion-panels>
     </v-card>
+    <v-row>
+      <v-col>
+        <div class="float-right">
+          <div class="mr-7">
+            <v-btn large color="primary">
+              <v-icon class="mr-4">mdi-plus-circle</v-icon>
+              <span>Add team</span>
+            </v-btn>
+          </div>
+        </div>
+      </v-col>
+    </v-row>
     <v-card style="margin: 30px">
       <v-expansion-panels>
         <v-expansion-panel>
-          <v-expansion-panel-header>Panel 3</v-expansion-panel-header>
+          <v-expansion-panel-header>
+            <span class="font-weight-bold">
+              <v-icon class="mr-2">mdi-filter-variant</v-icon>
+              Relationship
+            </span>
+          </v-expansion-panel-header>
           <v-expansion-panel-content>
             <template>
               <v-simple-table fixed-header height="300px" font-size="50px">
-                <template v-slot:default>
+                <template v-slot:default class="blue darken-2">
                   <thead>
                     <tr>
-                      <th class="text-left">Employee Name</th>
-                      <th class="text-left">Staff ID</th>
-                      <th class="text-left">SSD</th>
-                      <th class="text-left">City</th>
-                      <th class="text-left">Team</th>
-                      <th class="text-left">Position</th>
-                      <th>Action</th>
+                      <th class="text-left blue darken-2">Employee Name</th>
+                      <th class="text-left blue darken-2">Staff ID</th>
+                      <th class="text-left blue darken-2">SSD</th>
+                      <th class="text-left blue darken-2">City</th>
+                      <th class="text-left blue darken-2">Team</th>
+                      <th class="text-left blue darken-2">Position</th>
+                      <th class="blue darken-2">Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -115,11 +134,19 @@
                       <td>{{ item.Team }}</td>
                       <td>{{ item.Positon }}</td>
                       <td>
-                        <v-btn><v-icon> mdi-pencil-box-outline</v-icon></v-btn>
-                        <v-btn><v-icon>mdi-delete</v-icon></v-btn>
+                        <v-btn depressed
+                          ><v-icon> mdi-pencil-box-outline</v-icon></v-btn
+                        >
+                        <v-btn depressed><v-icon>mdi-delete</v-icon></v-btn>
                       </td>
                     </tr>
                   </tbody>
+                  <v-row class="justify-end">
+                    <v-btn large color="primary">
+                      <v-icon class="mr-4">mdi-plus-circle</v-icon>
+                      <span>Add team</span>
+                    </v-btn>
+                  </v-row>
                 </template>
               </v-simple-table>
             </template>
