@@ -11,6 +11,11 @@ import Reports from "../components/manager/Reports";
 import Timeline_Manager from "../components/manager/Timeline_Manager";
 import MultiRaterReview from "../components/manager/MultiRaterReview";
 
+import CreateTemplate from "../views/CreateTemplate.vue";
+import CreateEvaluation from "../views/CreateEvaluation.vue";
+import CreateCriteria from "../views/CreateCriteria.vue";
+import CreateRelationship from "../views/CreateRelationship.vue";
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -60,6 +65,26 @@ const routes = [
     path: "/manager/multi-rater-review",
     name: "MultiRaterReview",
     component: MultiRaterReview
+  },
+  {
+    path: "/CreateTemplate",
+    name: "CreateTemplate",
+    component: CreateTemplate
+  },
+  {
+    path: "/CreateEvaluation",
+    name: "CreateEvaluation",
+    component: CreateEvaluation
+  },
+  {
+    path: "/CreateCriteria",
+    name: "CreateCriteria",
+    component: CreateCriteria
+  },
+  {
+    path: "/CreateRelationship",
+    name: "CreateRelationship",
+    component: CreateRelationship
   }
 ];
 

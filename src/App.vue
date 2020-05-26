@@ -1,6 +1,11 @@
 <template>
   <v-app id="inspire">
-    <nav-bar :title="title" :itemsNav="itemsNav" :userRole="userRole" />
+    <nav-bar
+      :title="title"
+      :itemsNav="itemsNav"
+      :userRole="userRole"
+      @clickTag="changeTitle"
+    />
     <router-view />
   </v-app>
 </template>
@@ -27,16 +32,30 @@ export default {
       // userRole: "Employee"
 
       //------Manager------
-      title: "Member review",
+      // title: "Member review",
+      // itemsNav: {
+      //   "/manager": "Dashboard",
+      //   "/manager/member-review": "Member review",
+      //   "/manager/reports": "Reports",
+      //   "/manager/timeline": "Timeline",
+      //   "/manager/multi-rater-review": "Multi-rater review"
+      // },
+      title: "Dashboard",
       itemsNav: {
-        "/manager": "Dashboard",
-        "/manager/member-review": "Member review",
-        "/manager/reports": "Reports",
-        "/manager/timeline": "Timeline",
-        "/manager/multi-rater-review": "Multi-rater review"
+        "/": ["Dashboard", "mdi-home"],
+        "/CreateEvaluation": ["360 Degree Evaluation", "mdi-mouse"],
+        "/CreateTemplate": ["Evaluation Template", "mdi-account"],
+        "/CreateCriteria": ["Evaluation Criteria", "mdi-football-helmet"],
+        "/CreateRelationship": ["Employee Relationship", "mdi-mouse"]
       },
       userRole: "Manager"
     };
+  },
+
+  methods: {
+    changeTitle(tag) {
+      this.title = tag;
+    }
   }
 };
 </script>

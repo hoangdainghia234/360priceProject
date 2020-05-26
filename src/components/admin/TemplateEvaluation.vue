@@ -26,14 +26,7 @@
                 <v-card-text>
                   <div class="cardTemplate">
                     <v-row>
-                      <v-col
-                        cols="12"
-                        sm="12"
-                        md="6"
-                        lg="6"
-                        xl="6"
-                        class=""
-                      >
+                      <v-col cols="12" sm="12" md="6" lg="6" xl="6" class="">
                         <v-row
                           v-for="(grade, index) in gradeLayer"
                           :key="`item-${index}`"
@@ -55,17 +48,9 @@
                           </v-col>
                         </v-row>
                       </v-col>
-                      <v-col
-                        cols="12"
-                        sm="12"
-                        md="6"
-                        lg="6"
-                        xl="6"
-                        class=""
-                      >
+                      <v-col cols="12" sm="12" md="6" lg="6" xl="6" class="">
                         <v-row
-                          v-for="(template,
-                          index) in templateStaff"
+                          v-for="(template, index) in templateStaff"
                           :key="`item-${index}`"
                           class="rowTemplate"
                         >
@@ -88,16 +73,12 @@
                     </v-row>
                   </div>
                 </v-card-text>
-                <v-btn
-                  class="minus-btn"
-                  icon
-                  color="black"
-                  @click="deleteCard"
-                >
+                <v-btn class="minus-btn" icon color="black" @click="deleteCard">
                   <v-icon>mdi-minus-circle</v-icon>
                 </v-btn>
               </v-card>
             </div>
+
             <!-- Specialist, Expert Layer -->
             <div class="staffLayer">
               <v-card>
@@ -107,14 +88,7 @@
                 <v-card-text>
                   <div class="cardTemplate">
                     <v-row>
-                      <v-col
-                        cols="12"
-                        sm="12"
-                        md="6"
-                        lg="6"
-                        xl="6"
-                        class=""
-                      >
+                      <v-col cols="12" sm="12" md="6" lg="6" xl="6" class="">
                         <v-row
                           v-for="(grade, index) in gradeLayer"
                           :key="`item-${index}`"
@@ -136,17 +110,9 @@
                           </v-col>
                         </v-row>
                       </v-col>
-                      <v-col
-                        cols="12"
-                        sm="12"
-                        md="6"
-                        lg="6"
-                        xl="6"
-                        class=""
-                      >
+                      <v-col cols="12" sm="12" md="6" lg="6" xl="6" class="">
                         <v-row
-                          v-for="(template,
-                          index) in templateExpert"
+                          v-for="(template, index) in templateExpert"
                           :key="`item-${index}`"
                           class="rowTemplate"
                         >
@@ -169,12 +135,7 @@
                     </v-row>
                   </div>
                 </v-card-text>
-                <v-btn
-                  class="minus-btn"
-                  icon
-                  color="black"
-                  @click="deleteCard"
-                >
+                <v-btn class="minus-btn" icon color="black" @click="deleteCard">
                   <v-icon>mdi-minus-circle</v-icon>
                 </v-btn>
               </v-card>
@@ -188,14 +149,7 @@
                 <v-card-text>
                   <div class="cardTemplate oneCol">
                     <v-row>
-                      <v-col
-                        cols="12"
-                        sm="12"
-                        md="6"
-                        lg="6"
-                        xl="6"
-                        class=""
-                      >
+                      <v-col cols="12" sm="12" md="6" lg="6" xl="6" class="">
                         <v-row class="rowTemplate">
                           <v-col
                             cols="4"
@@ -216,12 +170,7 @@
                     </v-row>
                   </div>
                 </v-card-text>
-                <v-btn
-                  class="minus-btn"
-                  icon
-                  color="black"
-                  @click="deleteCard"
-                >
+                <v-btn class="minus-btn" icon color="black" @click="deleteCard">
                   <v-icon>mdi-minus-circle</v-icon>
                 </v-btn>
               </v-card>
@@ -236,14 +185,7 @@
                 <v-card-text>
                   <div class="cardTemplate oneCol">
                     <v-row>
-                      <v-col
-                        cols="12"
-                        sm="12"
-                        md="6"
-                        lg="6"
-                        xl="6"
-                        class=""
-                      >
+                      <v-col cols="12" sm="12" md="6" lg="6" xl="6" class="">
                         <v-row class="rowTemplate">
                           <v-col
                             cols="4"
@@ -264,12 +206,7 @@
                     </v-row>
                   </div>
                 </v-card-text>
-                <v-btn
-                  class="minus-btn"
-                  icon
-                  color="black"
-                  @click="deleteCard"
-                >
+                <v-btn class="minus-btn" icon color="black" @click="deleteCard">
                   <v-icon>mdi-minus-circle</v-icon>
                 </v-btn>
               </v-card>
@@ -284,14 +221,7 @@
                 <v-card-text>
                   <div class="cardTemplate oneCol">
                     <v-row>
-                      <v-col
-                        cols="12"
-                        sm="12"
-                        md="6"
-                        lg="6"
-                        xl="6"
-                        class=""
-                      >
+                      <v-col cols="12" sm="12" md="6" lg="6" xl="6" class="">
                         <v-row class="rowTemplate">
                           <v-col
                             cols="4"
@@ -312,12 +242,7 @@
                     </v-row>
                   </div>
                 </v-card-text>
-                <v-btn
-                  class="minus-btn"
-                  icon
-                  color="black"
-                  @click="deleteCard"
-                >
+                <v-btn class="minus-btn" icon color="black" @click="deleteCard">
                   <v-icon>mdi-minus-circle</v-icon>
                 </v-btn>
               </v-card>
@@ -352,8 +277,8 @@
 
 <script>
 export default {
-  name: "templateEvaluation",
-  
+  name: "TemplateEvaluation",
+
   data: () => {
     return {
       showCard: true,
@@ -391,7 +316,7 @@ export default {
         "Manager Template 1",
         "Manager Template 2"
       ]
-    }
+    };
   },
 
   methods: {
@@ -399,10 +324,10 @@ export default {
       return (this.showCard = false);
     }
   }
-}
+};
 </script>
 
-<style lang="sass">
+<style scoped>
 .staffLayer {
   margin-left: 7rem;
   margin-right: 8rem;
@@ -520,4 +445,5 @@ export default {
   .minus-btn {
     margin-left: 0.5rem !important;
   }
+}
 </style>

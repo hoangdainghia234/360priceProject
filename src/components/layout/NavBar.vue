@@ -1,15 +1,19 @@
 <template>
   <div class="navBar">
-    <v-navigation-drawer v-model="drawer" app color="indigo lighten-5">
+    <v-navigation-drawer v-model="drawer" app>
       <v-list>
-        <div v-for="(tag, item) in itemsNav" :key="item">
-          <v-list-item link class="">
-            <router-link :to="item" class="itemLink">
-              {{ tag }}
-            </router-link>
-          </v-list-item>
-          <v-divider class="mx-3"></v-divider>
-        </div>
+        <v-list-item
+          v-for="(tag, item) in itemsNav"
+          :key="item"
+          @click="$emit('clickTag', tag[0])"
+          link
+          class=""
+        >
+          <v-icon class="iconNav">{{ tag[1] }}</v-icon>
+          <router-link :to="item" class="itemLink">
+            {{ tag[0] }}
+          </router-link>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
     <v-app-bar hide-on-scroll aboslute app color="indigo" dark>
@@ -65,9 +69,15 @@ export default {
 
 .itemLink {
   text-decoration: none;
-  color: #333 !important;
+  color: #000 !important;
   width: 100%;
   line-height: 2.5;
   outline: none;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.iconNav {
+  margin-right: 1rem;
 }
 </style>
