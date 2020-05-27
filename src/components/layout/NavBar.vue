@@ -34,7 +34,7 @@
 
 <script>
 export default {
-  name: "navBar",
+  name: "NavBar",
   props: ["title", "itemsNav", "userRole"],
 
   data: () => ({

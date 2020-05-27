@@ -1,16 +1,18 @@
 <template>
   <div class="">
     <v-content>
-      <v-container fluid>
-        <h1>Create Criteria</h1>
-      </v-container>
+      <TopComponent />
     </v-content>
   </div>
 </template>
 
 <script>
+import TopComponent from "../components/TopComponent";
+
 export default {
   name: "createCriteria",
-  components: {}
+  components: {
+    TopComponent
+  }
 };
 </script>
