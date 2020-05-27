@@ -10,7 +10,7 @@ import MemberReview from "../components/manager/MemberReview";
 import Reports from "../components/manager/Reports";
 import Timeline_Manager from "../components/manager/Timeline_Manager";
 import MultiRaterReview from "../components/manager/MultiRaterReview";
-
+//admin
 import CreateTemplate from "../views/CreateTemplate.vue";
 import CreateEvaluation from "../views/CreateEvaluation.vue";
 import CreateCriteria from "../views/CreateCriteria.vue";
@@ -66,8 +66,6 @@ const routes = [
     name: "MultiRaterReview",
     component: MultiRaterReview
   },
-
-  //adimn
   {
     path: "/CreateTemplate",
     name: "CreateTemplate",
