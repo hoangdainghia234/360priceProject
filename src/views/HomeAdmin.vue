@@ -14,7 +14,7 @@
 import NavBar from "../components/layout/NavBar";
 
 export default {
-  name: "HomeManager",
+  name: "HomeAdmin",
 
   components: {
     NavBar
@@ -24,13 +24,13 @@ export default {
     return {
       title: "Dashboard",
       itemsNav: {
-        "/manager": ["Dashboard", "mdi-home"],
-        "/manager/member-review": ["Member review", "mdi-mouse"],
-        "/manager/reports": ["Reports", "mdi-account"],
-        "/manager/timeline": ["Timeline", "mdi-football-helmet"],
-        "/manager/multi-rater-review": ["Multi-rater review", "mdi-mouse"]
+        "/admin": ["Dashboard", "mdi-home"],
+        "/admin/CreateEvaluation": ["360 Degree Evaluation", "mdi-mouse"],
+        "/admin/CreateTemplate": ["Evaluation Template", "mdi-account"],
+        "/admin/CreateCriteria": ["Evaluation Criteria", "mdi-football-helmet"],
+        "/admin/CreateRelationship": ["Employee Relationship", "mdi-mouse"]
       },
-      userRole: "Manager"
+      userRole: "Admin"
     };
   },
 

@@ -1,60 +1,42 @@
 <template>
   <v-app id="inspire">
-    <v-navigation-drawer v-model="drawer" app>
-      <div>
-        <v-toolbar class="d-flex justify-center white--text" color="indigo">
-          <v-toolbar-title class="headline">DASHBOARD</v-toolbar-title>
-        </v-toolbar>
-        <v-list>
-          <div v-for="(n, i) in 4" :key="n">
-            <v-list-item link>
-              <v-list-item-content>
-                <v-list-item-title>{{ listItem[i] }}</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-            <v-divider></v-divider>
-          </div>
-        </v-list>
-      </div>
-    </v-navigation-drawer>
-    <v-app-bar app color="indigo">
-      <v-app-bar-nav-icon
-        large
-        class="white--text"
-        @click.stop="drawer = !drawer"
-      ></v-app-bar-nav-icon>
-      <v-toolbar-title class="white--text headline">
-        Last evaluation result
-      </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn text class="white--text">
-        <v-icon>mdi-account</v-icon>
-        <i>Employee</i>
-      </v-btn>
-      <v-btn text class="white--text">
-        <v-icon>mdi-logout</v-icon>
-        <i>Sign out</i>
-      </v-btn>
-    </v-app-bar>
-
-    <v-content>
-      <EvaluationResult />
-    </v-content>
+    <nav-bar
+      :title="title"
+      :itemsNav="itemsNav"
+      :userRole="userRole"
+      @clickTag="changeTitle"
+    />
+    <router-view />
   </v-app>
 </template>
+
 <script>
-import EvaluationResult from "../components/EvaluationResult.vue";
+import NavBar from "../components/layout/NavBar";
 
 export default {
+  name: "HomeEmployee",
+
   components: {
-    EvaluationResult
+    NavBar
   },
-  props: {
-    source: String
+
+  data: () => {
+    return {
+      title: "Last evaluation result",
+      itemsNav: {
+        "/employee": ["Home", "mdi-home"],
+        "/employee/evaluation": ["Evaluation Result", "mdi-mouse"],
+        "/employee/timeline": ["Timeline", "mdi-account"],
+        "/employee/feedback": ["Feedback", "mdi-football-helmet"]
+      },
+      userRole: "Employee"
+    };
   },
-  data: () => ({
-    drawer: null,
-    listItem: ["Home", "Evaluation Result", "Timeline", "Feedback"]
-  })
+
+  methods: {
+    changeTitle(tag) {
+      this.title = tag;
+    }
+  }
 };
 </script>
