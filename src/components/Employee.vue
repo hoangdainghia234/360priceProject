@@ -59,6 +59,7 @@
                 ></v-select>
               </v-col> -->
             </v-row>
+            :items="table.employee"
             <v-row>
               <v-col
                 cols="12"
@@ -95,7 +96,7 @@
         <div class="float-right">
           <div class="mr-7">
             <template>
-              <v-btn color="primary" dark v-on="on" @click="dialog = true">
+              <v-btn color="primary" dark @click="dialog = true">
                 <span>
                   <v-icon class="mr-4">mdi-plus-circle</v-icon>
                   Add team
@@ -110,26 +111,101 @@
             >
               <v-card>
                 <v-card-title>
-                  <span class="headline">User Profile</span>
+                  <span class="headline">Add team</span>
                 </v-card-title>
-                <v-card-text>
-                  <v-container>
-                    <v-row>
-                      <v-col class="d-flex" cols="12" sm="4">
-                        <span>City</span>
-                        <v-select :items="items" outlined></v-select>
-                      </v-col>
-                      <v-col class="d-flex" cols="12" sm="4">
-                        <span>SSU</span>
-                        <v-select :items="items" outlined></v-select>
-                      </v-col>
-                      <v-col class="d-flex" cols="12" sm="4">
-                        <span>Team</span>
-                        <v-select :items="items" outlined></v-select>
-                      </v-col>
-                    </v-row>
-                  </v-container>
-                </v-card-text>
+                <v-card>
+                  <v-card-title>
+                    <span class="headline">
+                      <v-icon>mdi-star-circle</v-icon>
+                      Information
+                    </span>
+                  </v-card-title>
+                  <v-card-text>
+                    <v-container>
+                      <v-row>
+                        <v-col
+                          cols="4"
+                          sm="4"
+                          v-for="team in teams"
+                          :key="team.title"
+                        >
+                          <span>{{ team.title }}</span>
+                          <v-select
+                            class="text-center"
+                            v-model="team.select"
+                            :items="team.team_select"
+                            outlined
+                            dense
+                          >
+                          </v-select>
+                        </v-col>
+                      </v-row>
+                      <v-simple-table>
+                        <template v-slot:default>
+                          <thead>
+                            <tr>
+                              <th class="text-center">Employee</th>
+                              <th class="text-center">Position</th>
+                              <th class="text-center">Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr
+                              v-for="table in employeeTable"
+                              :key="table.employee"
+                            >
+                              <td class="pa-3">
+                                <v-select
+                                  v-model="table.employee"
+                                  :items="table.employee"
+                                  outlined
+                                  solo
+                                  dense
+                                  hide-details
+                                >
+                                </v-select>
+                              </td>
+                              <td>
+                                <div>
+                                  <v-select
+                                    v-model="table.select"
+                                    :items="table.position"
+                                    outlined
+                                    solo
+                                    dense
+                                    hide-details
+                                  >
+                                  </v-select>
+                                </div>
+                              </td>
+                              <td>
+                                <v-btn depressed>
+                                  <v-icon>mdi-delete</v-icon>
+                                </v-btn>
+                              </td>
+                            </tr>
+                            <v-row>
+                              <v-btn
+                                large
+                                color="primary"
+                                @click="dialog = true"
+                              >
+                                <v-icon class="mr-3">mdi-plus-circle</v-icon>
+                                <span>Add member</span>
+                              </v-btn>
+                            </v-row>
+                          </tbody>
+                        </template>
+                      </v-simple-table>
+                    </v-container>
+                  </v-card-text>
+                  <div class="text-center">
+                    <v-btn class="ma-2" tile color="indigo" dark>Save</v-btn>
+                    <v-btn class="ma-2" tile outlined color="success">
+                      Cancel
+                    </v-btn>
+                  </div>
+                </v-card>
               </v-card>
             </v-dialog>
           </div>
@@ -180,7 +256,12 @@
                 </template>
               </v-simple-table>
             </template>
-            <v-btn class="float-right" large color="primary">
+            <v-btn
+              class="float-right"
+              large
+              color="primary"
+              @click="dialog1 = 'true'"
+            >
               <v-icon class="mr-3">mdi-plus-circle</v-icon>
               <span>Add member</span>
             </v-btn>
@@ -195,6 +276,7 @@ export default {
   data() {
     return {
       dialog: false,
+      dialog1: false,
       select: "",
       items: [
         {
@@ -277,6 +359,50 @@ export default {
           City: "Bangkok",
           Team: "Anonymous",
           Positon: "Developer"
+        }
+      ],
+      teams: [
+        {
+          title: "City",
+          team_select: ["BangKok", "HaNoi", "Manila"],
+          select: "BangKok"
+        },
+        {
+          title: "SSU",
+          team_select: ["SSU100", "SSU200", "SSU300"],
+          select: "SSU100"
+        },
+        {
+          title: "Team",
+          team_select: ["Anonymous", "UseCase", "TheKop"],
+          select: "Anonymous"
+        }
+      ],
+      employeeTable: [
+        {
+          employee: "Mark1",
+          position: ["developer", "Leader", "Direct Manager"],
+          select: "developer"
+        },
+        {
+          employee: "Mark2",
+          position: ["developer", "Leader", "Direct Manager"],
+          select: "developer"
+        },
+        {
+          employee: "Mark3",
+          position: ["developer", "Leader", "Direct Manager"],
+          select: "developer"
+        },
+        {
+          employee: "Mark4",
+          position: ["developer", "Leader", "Direct Manager"],
+          select: "Leader"
+        },
+        {
+          employee: "Mark5",
+          position: ["developer", "Leader", "Direct Manager"],
+          select: "Direct Manager"
         }
       ]
     };
