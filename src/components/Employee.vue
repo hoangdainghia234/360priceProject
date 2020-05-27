@@ -59,7 +59,6 @@
                 ></v-select>
               </v-col> -->
             </v-row>
-            :items="table.employee"
             <v-row>
               <v-col
                 cols="12"
@@ -184,16 +183,6 @@
                                 </v-btn>
                               </td>
                             </tr>
-                            <v-row>
-                              <v-btn
-                                large
-                                color="primary"
-                                @click="dialog = true"
-                              >
-                                <v-icon class="mr-3">mdi-plus-circle</v-icon>
-                                <span>Add member</span>
-                              </v-btn>
-                            </v-row>
                           </tbody>
                         </template>
                       </v-simple-table>
@@ -246,25 +235,91 @@
                       <td class="text-center">{{ item.Team }}</td>
                       <td class="text-center">{{ item.Positon }}</td>
                       <td class="text-center">
-                        <v-btn depressed
+                        <v-btn text
                           ><v-icon> mdi-pencil-box-outline</v-icon></v-btn
                         >
-                        <v-btn depressed><v-icon>mdi-delete</v-icon></v-btn>
+                        <v-btn text><v-icon>mdi-delete</v-icon></v-btn>
                       </td>
                     </tr>
                   </tbody>
                 </template>
               </v-simple-table>
             </template>
-            <v-btn
-              class="float-right"
-              large
-              color="primary"
-              @click="dialog1 = 'true'"
-            >
-              <v-icon class="mr-3">mdi-plus-circle</v-icon>
-              <span>Add member</span>
-            </v-btn>
+            <v-row justify="end">
+              <v-dialog v-model="dialog1" persistent max-width="850px">
+                <template v-slot:activator="{ on }">
+                  <v-btn color="primary" dark v-on="on">Add member</v-btn>
+                </template>
+                <v-card>
+                  <v-card-subtitle class="font-weight-bold">
+                    <v-card-title>
+                      <span class="headline">Add/Update employee</span>
+                    </v-card-title>
+                    <v-card>
+                      <v-card-title>
+                        <span class="headline">Information</span>
+                      </v-card-title>
+                      <v-card-text>
+                        <v-container>
+                          <v-row>
+                            <!-- Tast 1 -->
+                            <v-col
+                              cols="12"
+                              sm="6"
+                              md="4"
+                              v-for="item in items"
+                              :key="item.title"
+                            >
+                              <span>{{ item.title }}</span>
+                              <v-select
+                                dense
+                                outlined
+                                v-model="item.select"
+                                :items="item.item_select"
+                                :rules="[v => !!v || 'cities is required']"
+                                required
+                              ></v-select>
+                            </v-col>
+                          </v-row>
+                          <v-row>
+                            <v-col
+                              cols="12"
+                              sm="6"
+                              md="4"
+                              v-for="item in items1"
+                              :key="item.title"
+                            >
+                              <span>{{ item.title }}</span>
+                              <v-select
+                                dense
+                                outlined
+                                v-model="item.select"
+                                :items="item.item_select"
+                                :rules="[v => !!v || 'cities is required']"
+                                required
+                              ></v-select>
+                            </v-col>
+                          </v-row>
+                        </v-container>
+                      </v-card-text>
+                      <v-spacer></v-spacer>
+                    </v-card>
+                  </v-card-subtitle>
+                  <div class="text-center">
+                    <v-btn class="ma-2" tile color="indigo" dark>Save</v-btn>
+                    <v-btn
+                      class="ma-2"
+                      tile
+                      outlined
+                      color="success"
+                      @click="dialog1 = false"
+                    >
+                      Cancel
+                    </v-btn>
+                  </div>
+                </v-card>
+              </v-dialog>
+            </v-row>
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
@@ -313,6 +368,7 @@ export default {
       ],
       desserts: [
         {
+          title: "City",
           employeeName: "Mark",
           satffID: 123456789,
           ssu: "SSU1OO",
@@ -321,6 +377,7 @@ export default {
           Positon: "Developer"
         },
         {
+          title: "SSU",
           employeeName: "Mark1",
           satffID: 123456789,
           ssu: "SSU1OO",
@@ -329,6 +386,7 @@ export default {
           Positon: "Developer"
         },
         {
+          title: "Team",
           employeeName: "Mark2",
           satffID: 123456789,
           ssu: "SSU1OO",
@@ -337,6 +395,7 @@ export default {
           Positon: "Developer"
         },
         {
+          title: "Employee",
           employeeName: "Mark3",
           satffID: 123456789,
           ssu: "SSU1OO",
@@ -345,6 +404,7 @@ export default {
           Positon: "Developer"
         },
         {
+          title: "Staff ID",
           employeeName: "Mark4",
           satffID: 123456789,
           ssu: "SSU1OO",
