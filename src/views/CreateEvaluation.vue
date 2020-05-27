@@ -424,7 +424,7 @@ export default {
 
   .add-template {
     display: flex;
-    justify-content: end;
+    justify-items: start;
   }
 }
 

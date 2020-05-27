@@ -2,60 +2,185 @@
   <div>
     <v-content>
       <v-container fluid>
-        <v-row>
+        <v-row class="pr-3 pl-3 pr-sm-7 pl-sm-7 pr-md-10 pl-md-10">
           <v-col>
             <v-card>
-              <v-card-subtitle class="font-weight-bold">
+              <v-card-subtitle class="header">
                 <v-icon class="mr-2">mdi-information</v-icon>
                 <span>Template Information</span>
               </v-card-subtitle>
               <v-divider></v-divider>
-              <v-card-text>
+              <v-card-text class="pl-3 pr-3 pl-sm-7 pr-sm-7 pl-md-10 pr-md-10">
                 <v-row class="evaluation-line" dense>
                   <v-col cols="5" xs="5" sm="4" md="2">
-                    <p class="subtitle-1">Name:</p>
+                    <p class="subtitle-1 pt-2">Name:</p>
                   </v-col>
-                  <v-col cols="7" sm="7" md="4" lg="3" xl="2">
+                  <v-col cols="7" sm="7" md="4" xl="2">
                     <v-text-field
                       label="name"
                       placeholder="2019 Second Cycle-SSD-Staff-AH Template"
                       solo
                       dense
+                      hide-details
                     ></v-text-field>
                   </v-col>
                 </v-row>
 
                 <v-row class="evaluation-line" dense>
                   <v-col cols="5" sm="4" md="2">
-                    <p class="subtitle-1">Departement:</p>
+                    <p class="subtitle-1 pt-2">Departement:</p>
                   </v-col>
-                  <v-col cols="7" sm="7" md="4" lg="3" xl="2">
+                  <v-col cols="7" sm="7" md="4" xl="2">
                     <v-select
                       :items="departments"
                       placeholder="Software Development Department"
                       outlined
                       dense
+                      hide-details
+                    ></v-select>
+                  </v-col>
+
+                  <v-col cols="5" sm="4" md="2">
+                    <p class="subtitle-1 pt-2 ml-md-10">Layer:</p>
+                  </v-col>
+                  <v-col cols="7" sm="7" md="4" xl="2">
+                    <v-select
+                      :items="layers"
+                      :placeholder="layers[0]"
+                      outlined
+                      dense
+                      hide-details
+                    ></v-select>
+                  </v-col>
+
+                  <v-col cols="5" sm="4" md="2">
+                    <p class="subtitle-1 pt-2 ml-xl-10">Grade:</p>
+                  </v-col>
+                  <v-col cols="7" sm="7" md="4" xl="2">
+                    <v-select
+                      :items="grades"
+                      :placeholder="grades[0]"
+                      outlined
+                      dense
+                      hide-details
                     ></v-select>
                   </v-col>
                 </v-row>
 
-                <v-row class="evaluation-line d-flex align-center" dense>
-                  <v-col cols="2">
-                    <p class="subtitle-1">Total weight (%):</p>
+                <v-row class="evaluation-line" dense>
+                  <v-col cols="5" sm="4" md="2">
+                    <p class="subtitle-1 pt-2">Total weight (%):</p>
                   </v-col>
-                  <v-col cols="2">
+                  <v-col cols="7" sm="7" md="4" xl="2">
                     <v-select
                       :items="totalWeights"
                       placeholder="Performance Review"
                       outlined
                       dense
+                      hide-details
                     ></v-select>
                   </v-col>
                 </v-row>
               </v-card-text>
             </v-card>
 
-            <section></section>
+            <!-- Criterias -->
+            <section>
+              <div class="header mt-5 pl-3">
+                <v-icon class="mr-2">mdi-bookmark</v-icon>
+                <span>Criterias</span>
+              </div>
+
+              <v-expansion-panels class="pl-7 pr-12">
+                <v-expansion-panel
+                  v-for="mainPoint in mainPoints"
+                  :key="mainPoint.id"
+                  class="mt-5"
+                >
+                  <v-expansion-panel-header>
+                    <span class="header-template">{{ mainPoint.name }}</span>
+                    <template v-slot:actions>
+                      <v-icon color="indigo" large>$expand</v-icon>
+                    </template>
+                  </v-expansion-panel-header>
+                  <v-expansion-panel-content>
+                    <v-data-table
+                      v-model="selectedCategory"
+                      :headers="tableHeaders"
+                      :items="mainPoint.categories"
+                      :single-select="singleSelect"
+                      item-key="name"
+                      show-select
+                      hide-default-footer
+                      class="elevation-1"
+                    >
+                      <!-- <template v-slot:item.actions="{ item }">
+                        <v-icon medium class="" @click="editItem(item)">
+                          mdi-table-edit
+                        </v-icon>
+                      </template> -->
+                    </v-data-table>
+                  </v-expansion-panel-content>
+
+                  <v-btn
+                    class="minus-btn"
+                    icon
+                    color="black"
+                    @click="deletePanel(mainPoint.mainId)"
+                  >
+                    <v-icon>mdi-minus-circle</v-icon>
+                  </v-btn>
+                </v-expansion-panel>
+              </v-expansion-panels>
+            </section>
+
+            <div class="d-flex justify-end mt-5">
+              <v-dialog v-model="dialog" max-width="500px">
+                <template v-slot:activator="{ on }">
+                  <v-btn v-on="on">
+                    <v-icon medium>mdi-plus-circle</v-icon>
+                    <span class="ml-2">Add layer</span>
+                  </v-btn>
+                </template>
+                <v-card>
+                  <v-card-title>
+                    <span class="headline">{{ formTitle }}</span>
+                  </v-card-title>
+
+                  <v-card-text>
+                    <v-container>
+                      <v-row>
+                        <v-col cols="12" sm="6" md="4">
+                          <v-text-field
+                            v-model="editedItem.name"
+                            label="Category name"
+                          ></v-text-field>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="4">
+                          <v-text-field
+                            v-model="editedItem.weight"
+                            label="Weight"
+                          ></v-text-field>
+                        </v-col>
+                      </v-row>
+                    </v-container>
+                  </v-card-text>
+
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" text @click="close"
+                      >Cancel</v-btn
+                    >
+                    <v-btn color="blue darken-1" text @click="save">Save</v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+            </div>
+
+            <div class="d-flex justify-center mt-10">
+              <v-btn class="btn-bottom mr-7" large dark>Create</v-btn>
+              <v-btn class="btn-bottom" large dark>Cancel</v-btn>
+            </div>
           </v-col>
         </v-row>
       </v-container>
@@ -86,8 +211,150 @@ export default {
         "Advance High [AH] 2",
         "Advance High [AH] 3"
       ],
-      mainPoint: []
+      tableHeaders: [
+        {
+          text: "Category",
+          align: "start",
+          sortable: false,
+          value: "name"
+        },
+        { text: "Weight (100%)", value: "weight" }
+      ],
+      mainPoints: [],
+      singleSelect: false,
+      selectedCategory: [],
+      dialog: false,
+      editedIndex: -1,
+      editedItem: {
+        name: "",
+        weight: 0
+      },
+      defaultItem: {
+        name: "",
+        weight: 0
+      }
     };
+  },
+
+  computed: {
+    formTitle() {
+      return this.editedIndex === -1 ? "New Item" : "Edit Item";
+    }
+  },
+
+  created() {
+    this.initialize();
+  },
+
+  watch: {
+    dialog(val) {
+      val || this.close();
+    }
+  },
+
+  methods: {
+    initialize() {
+      this.mainPoints = [
+        {
+          mainId: 1,
+          name: "Main point 1",
+          categories: [
+            {
+              categoryId: 1,
+              name: "Category 1",
+              weight: 15
+            },
+            {
+              categoryId: 2,
+              name: "Category 2",
+              weight: 10
+            },
+            {
+              categoryId: 3,
+              name: "Category 3",
+              weight: 0
+            }
+          ]
+        },
+        {
+          mainId: 2,
+          name: "Main point 2",
+          categories: [
+            {
+              categoryId: 4,
+              name: "Category 4",
+              weight: 13
+            },
+            {
+              categoryId: 5,
+              name: "Category 5",
+              weight: 3
+            },
+            {
+              categoryId: 6,
+              name: "Category 6",
+              weight: 7
+            }
+          ]
+        },
+        {
+          mainId: 3,
+          name: "Main point 3",
+          categories: [
+            {
+              categoryId: 7,
+              name: "Category 7",
+              weight: 9
+            },
+            {
+              categoryId: 8,
+              name: "Category 8",
+              weight: 5
+            },
+            {
+              categoryId: 9,
+              name: "Category 9",
+              weight: 12
+            }
+          ]
+        }
+      ];
+    },
+
+    editItem(item) {
+      this.editedIndex = this.mainPoints.categories.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialog = true;
+    },
+
+    close() {
+      this.dialog = false;
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
+    },
+
+    save() {
+      if (this.editedIndex > -1) {
+        Object.assign(this.desserts[this.editedIndex], this.editedItem);
+      } else {
+        this.desserts.push(this.editedItem);
+      }
+      this.close();
+    },
+
+    deletePanel(id) {
+      this.mainPoints = this.mainPoints.filter(point => point.mainId !== id);
+    }
   }
 };
 </script>
+
+<style scoped>
+.minus-btn {
+  position: absolute;
+  top: 0;
+  right: -3rem;
+}
+</style>
