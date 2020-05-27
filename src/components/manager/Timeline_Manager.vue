@@ -78,7 +78,7 @@
                     </v-col>
                   </v-row>
                   <v-row>
-                    <div class="ml-3">
+                    <div class="pl-10">
                       <v-btn rounded color="primary" dark
                         ><v-icon>mdi-magnify</v-icon>Search</v-btn
                       >
@@ -92,24 +92,59 @@
         <v-card>
           <v-card-title>
             <v-icon>mdi-chart-line-variant</v-icon>
-            Timeline
+            <span class="ml-3">Timeline</span>
           </v-card-title>
           <v-container>
             <v-timeline>
-              <v-timeline-item v-for="n in 5" :key="n" color="red lighten-2">
+              <v-timeline-item
+                v-for="item in items_datetime"
+                :key="item.date"
+                color="red lighten-2"
+              >
                 <template v-slot:opposite>
-                  <span>Tus eu perfecto</span>
+                  <span>{{ item.date }}</span>
                 </template>
                 <v-card class="elevation-2 item--card">
-                  <v-card-text>
-                    Lorem ipsum dolor sit amet, no nam oblique veritus. Commune
-                    scaevola imperdiet nec ut, sed euismod convenire principes
-                    at. Est et nobis iisque percipit, an vim zril disputando
-                    voluptatibus, vix an salutandi sententiae.
+                  <v-card-text @click="dialog = true">
+                    <p v-for="(n, i) in 4" :key="n">
+                      <span>{{ item.content[i].name }} : </span>
+                      <span>{{ item.content[i].rating }}</span>
+                    </p>
                   </v-card-text>
                 </v-card>
               </v-timeline-item>
             </v-timeline>
+            <v-dialog v-model="dialog">
+              <v-card>
+                <v-card-title class="d-flex justify-center grey lighten-2">
+                  <i>Comparison Charts</i>
+                </v-card-title>
+                <v-row class="justify-center mt-3 ml-3 mr-3">
+                  <v-col cols="6">
+                    <v-card class="mb-3 align-center">
+                      <div class="align-center">
+                        <apexchart
+                          type="radar"
+                          :options="chartOptions"
+                          :series="series"
+                        ></apexchart>
+                      </div>
+                    </v-card>
+                  </v-col>
+                  <v-col cols="6">
+                    <v-card>
+                      <div class="align-center">
+                        <apexchart
+                          type="radar"
+                          :options="chartOptions"
+                          :series="series"
+                        ></apexchart>
+                      </div>
+                    </v-card>
+                  </v-col>
+                </v-row>
+              </v-card>
+            </v-dialog>
           </v-container>
         </v-card>
       </v-container>
@@ -122,6 +157,7 @@ export default {
   name: "timeline",
   data() {
     return {
+      dialog: false,
       panel: [0],
       dates: ["2019-09-10", "2019-09-20"],
       menu: false,
@@ -144,30 +180,169 @@ export default {
       items_datetime: [
         {
           date: "Dec-2017",
-          content: ""
+          content: [
+            {
+              name: "Self",
+              rating: "3.0"
+            },
+            {
+              name: "Team Member",
+              rating: "3.0"
+            },
+            {
+              name: "Team Leader",
+              rating: "3.0"
+            },
+            {
+              name: "Manager",
+              rating: "3.0"
+            }
+          ]
         },
         {
           date: "Jun-2018",
-          content: ""
+          content: [
+            {
+              name: "Self",
+              rating: "3.2"
+            },
+            {
+              name: "Team Member",
+              rating: "3.1"
+            },
+            {
+              name: "Team Leader",
+              rating: "3.0"
+            },
+            {
+              name: "Manager",
+              rating: "3.0"
+            }
+          ]
         },
         {
           date: "Dec-2018",
-          content: ""
+          content: [
+            {
+              name: "Self",
+              rating: "4.0"
+            },
+            {
+              name: "Team Member",
+              rating: "3.1"
+            },
+            {
+              name: "Team Leader",
+              rating: "3.0"
+            },
+            {
+              name: "Manager",
+              rating: "3.0"
+            }
+          ]
         },
         {
           date: "Jun-2019",
-          content: ""
+          content: [
+            {
+              name: "Self",
+              rating: "3.9"
+            },
+            {
+              name: "Team Member",
+              rating: "3.0"
+            },
+            {
+              name: "Team Leader",
+              rating: "3.0"
+            },
+            {
+              name: "Manager",
+              rating: "3.0"
+            }
+          ]
         },
         {
           date: "Dec-2019",
-          content: ""
+          content: [
+            {
+              name: "Self",
+              rating: "3.8"
+            },
+            {
+              name: "Team Member",
+              rating: "3.4"
+            },
+            {
+              name: "Team Leader",
+              rating: "3.0"
+            },
+            {
+              name: "Manager",
+              rating: "3.0"
+            }
+          ]
         }
-      ]
+      ],
+      //chart
+      series: [
+        {
+          name: "Self",
+          data: [80, 50, 30, 40, 100, 20]
+        },
+        {
+          name: "Team",
+          data: [20, 30, 40, 80, 20, 80]
+        }
+      ],
+      chartOptions: {
+        chart: {
+          type: "radar",
+          id: "vuechart",
+          align: "center",
+          toolbar: {
+            show: false
+          }
+        },
+        markers: {
+          size: 0
+        },
+        title: {
+          text: "Self vs Team",
+          align: "center"
+        },
+        stroke: {
+          width: 2
+        },
+        fill: {
+          opacity: 0.2
+        },
+        xaxis: {
+          categories: [
+            "Category 1",
+            "Category 2",
+            "Category 3",
+            "Category 4",
+            "Category 5",
+            "Category 6"
+          ],
+          labels: {
+            style: {
+              colors: ["#000000"]
+            }
+          }
+        }
+      }
     };
   },
   computed: {
     dateRangeText() {
       return this.dates.join(" ~ ");
+    }
+  },
+  methods: {
+    func() {
+      console.log("hello");
     }
   }
 };
@@ -175,7 +350,7 @@ export default {
 
 <style scoped>
 .item--card {
-  max-width: 40%;
+  width: 200px;
 }
 .v-timeline-item:nth-child(2n) .v-timeline-item__body .item--card {
   float: right;

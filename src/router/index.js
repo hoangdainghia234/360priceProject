@@ -66,6 +66,8 @@ const routes = [
     name: "MultiRaterReview",
     component: MultiRaterReview
   },
+
+  //adimn
   {
     path: "/CreateTemplate",
     name: "CreateTemplate",

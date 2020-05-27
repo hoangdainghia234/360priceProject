@@ -32,23 +32,25 @@ export default {
       // userRole: "Employee"
 
       //------Manager------
-      // title: "Member review",
-      // itemsNav: {
-      //   "/manager": "Dashboard",
-      //   "/manager/member-review": "Member review",
-      //   "/manager/reports": "Reports",
-      //   "/manager/timeline": "Timeline",
-      //   "/manager/multi-rater-review": "Multi-rater review"
-      // },
       title: "Dashboard",
       itemsNav: {
-        "/": ["Dashboard", "mdi-home"],
-        "/CreateEvaluation": ["360 Degree Evaluation", "mdi-mouse"],
-        "/CreateTemplate": ["Evaluation Template", "mdi-account"],
-        "/CreateCriteria": ["Evaluation Criteria", "mdi-football-helmet"],
-        "/CreateRelationship": ["Employee Relationship", "mdi-mouse"]
+        "/manager": ["Dashboard", "mdi-home"],
+        "/manager/member-review": ["Member review", "mdi-mouse"],
+        "/manager/reports": ["Reports", "mdi-account"],
+        "/manager/timeline": ["Timeline", "mdi-football-helmet"],
+        "/manager/multi-rater-review": ["Multi-rater review", "mdi-mouse"]
       },
       userRole: "Manager"
+
+      // title: "Dashboard",
+      // itemsNav: {
+      //   "/": ["Dashboard", "mdi-home"],
+      //   "/CreateEvaluation": ["360 Degree Evaluation", "mdi-mouse"],
+      //   "/CreateTemplate": ["Evaluation Template", "mdi-account"],
+      //   "/CreateCriteria": ["Evaluation Criteria", "mdi-football-helmet"],
+      //   "/CreateRelationship": ["Employee Relationship", "mdi-mouse"]
+      // },
+      // userRole: "Manager"
     };
   },
 
