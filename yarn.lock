@@ -8505,6 +8505,10 @@ vue-cli-plugin-vuetify@~2.0.5:
 =======
 vue-cli-plugin-vuetify@~2.0.5:
   version "2.0.5"
+<<<<<<< HEAD
+  resolved "https://registry.yarnpkg.com/vue-cli-plugin-vuetify/-/vue-cli-plugin-vuetify-2.0.5.tgz#09ba78928653fc7e3801ea37e5120f957413dda4"
+  integrity sha512-jtxcidjLT5f1H9QLYKLFjo/ZG42ud4pI9bK3WNO5DXyhiMDMTwSZ7b3NcJVRH7tKYbv5/ty0VPdDGlf4w22AMA==
+=======
   resolved "https://registry.npm.taobao.org/vue-cli-plugin-vuetify/download/vue-cli-plugin-vuetify-2.0.5.tgz#09ba78928653fc7e3801ea37e5120f957413dda4"
   integrity sha1-Cbp4koZT/H44Aeo35RIPlXQT3aQ=
 >>>>>>> dungbm-test

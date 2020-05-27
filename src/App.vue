@@ -12,6 +12,7 @@
 
 <script>
 import NavBar from "./components/layout/NavBar";
+/* import Login from "./views/Login";*/
 
 export default {
   name: "App",
