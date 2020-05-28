@@ -2,15 +2,15 @@
   <div>
     <v-content>
       <v-container fluid>
-        <v-row class="pr-3 pl-3 pr-sm-7 pl-sm-7 pr-md-10 pl-md-10">
+        <v-row class="pr-3 pl-3 pr-sm-5 pl-sm-5 pr-md-7 pl-md-7">
           <v-col>
             <v-card>
-              <v-card-subtitle class="header">
-                <v-icon class="mr-2">mdi-information</v-icon>
-                <span>Template Information</span>
+              <v-card-subtitle class="d-flex algin-center">
+                <v-icon class="mr-3">mdi-information</v-icon>
+                <span class="header-card">Template Information</span>
               </v-card-subtitle>
               <v-divider></v-divider>
-              <v-card-text class="pl-3 pr-3 pl-sm-7 pr-sm-7 pl-md-10 pr-md-10">
+              <v-card-text class="evaluation-info">
                 <v-row class="evaluation-line" dense>
                   <v-col cols="5" xs="5" sm="4" md="2">
                     <p class="subtitle-1 pt-2">Name:</p>
@@ -96,9 +96,9 @@
 
             <!-- Criterias -->
             <section>
-              <div class="header mt-5 pl-3">
-                <v-icon class="mr-2">mdi-bookmark</v-icon>
-                <span>Criterias</span>
+              <div class="d-flex algin-center mt-5 ml-3">
+                <v-icon class="mr-3">mdi-bookmark</v-icon>
+                <span class="header-card">Criterias</span>
               </div>
 
               <v-expansion-panels class="pl-7 pr-12">
@@ -549,6 +549,12 @@ export default {
 </script>
 
 <style scoped>
+.header-card {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #222;
+}
+
 .minus-btn {
   position: absolute;
   top: 0;

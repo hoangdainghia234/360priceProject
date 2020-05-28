@@ -1,12 +1,12 @@
 <template>
-  <v-content>
+  <v-content id="createEvaluation">
     <v-container fluid>
-      <v-row>
+      <v-row class="pr-3 pl-3 pr-sm-5 pl-sm-5 pr-md-7 pl-md-7">
         <v-col>
           <v-card>
-            <v-card-subtitle class="font-weight-bold">
-              <v-icon class="mr-2">mdi-information</v-icon>
-              <span>Evaluation Information</span>
+            <v-card-subtitle class="d-flex algin-center">
+              <v-icon class="mr-3">mdi-information</v-icon>
+              <span class="header-card">Evaluation Information</span>
             </v-card-subtitle>
 
             <v-divider class="mx-0"></v-divider>
@@ -14,54 +14,16 @@
             <v-card-text class="evaluation-info">
               <v-row class="evaluation-line" dense>
                 <v-col cols="5" sm="4" md="2">
-                  <p class="subtitle-1">Type of review:</p>
-                </v-col>
-                <v-col cols="7" sm="8" md="4" lg="3" xl="2">
-                  <v-select
-                    :items="typeOfReview"
-                    placeholder="Performance Review"
-                    outlined
-                    dense
-                    hide-details
-                  ></v-select>
-                </v-col>
-              </v-row>
-
-              <v-row class="evaluation-line" dense>
-                <v-col cols="5" xs="5" sm="4" md="2">
-                  <p class="subtitle-1">Name:</p>
-                </v-col>
-                <v-col cols="7" sm="8" md="4" lg="3" xl="2">
-                  <v-text-field
-                    label="name"
-                    placeholder="Nguyen Van A Review"
-                    solo
-                    dense
-                    hide-details
-                  ></v-text-field>
-                </v-col>
-              </v-row>
-
-              <v-row class="evaluation-line" dense>
-                <v-col cols="5" sm="4" md="2">
                   <p class="subtitle-1">Template:</p>
                 </v-col>
                 <v-col cols="7" sm="8" md="4" lg="3" xl="2">
                   <v-select
                     :items="template"
-                    :placeholder="template[0]"
+                    :value="template[0]"
                     outlined
                     dense
                     hide-details
                   ></v-select>
-                </v-col>
-                <v-col>
-                  <div class="add-template mt-1 ml-5">
-                    <v-btn depressed>
-                      <v-icon medium>mdi-plus-circle</v-icon>
-                      <span class="ml-2">Add new template</span>
-                    </v-btn>
-                  </div>
                 </v-col>
               </v-row>
 
@@ -107,143 +69,102 @@
                 </v-col>
               </v-row>
 
-              <v-row dense>
-                <v-col>
-                  <v-row>
-                    <v-col cols="5" sm="4" md="2">
-                      <p class="subtitle-1">Recurrence:</p>
-                    </v-col>
-                    <v-col cols="7" sm="8" md="4" lg="3" xl="2">
-                      <v-checkbox
-                        v-model="checkRecurrence"
-                        :label="
-                          `
-                          ${checkRecurrence ? 'No recurrence' : 'Recurrence'}
-                          `
-                        "
-                        class="mt-n1"
+              <v-row class="evaluation-line" dense>
+                <v-col cols="5" sm="4" md="2">
+                  <p class="subtitle-1">Start:</p>
+                </v-col>
+                <v-col cols="7" sm="8" md="4" lg="3" xl="2">
+                  <v-menu
+                    ref="menuRecur"
+                    v-model="menuRecur"
+                    :close-on-content-click="false"
+                    :return-value.sync="dateRecur"
+                    transition="scale-transition"
+                    offset-x
+                    min-width="290px"
+                  >
+                    <template v-slot:activator="{ on }">
+                      <v-text-field
+                        v-model="dateRecur"
+                        append-icon="mdi-calendar"
+                        readonly
+                        solo
+                        dense
+                        v-on="on"
                         hide-details
-                      ></v-checkbox>
-                    </v-col>
-                  </v-row>
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker v-model="dateRecur" no-title scrollable>
+                      <v-spacer></v-spacer>
+                      <v-btn text @click="menuRecur = false">
+                        Cancel
+                      </v-btn>
+                      <v-btn text @click="$refs.menuRecur.save(dateRecur)"
+                        >OK
+                      </v-btn>
+                    </v-date-picker>
+                  </v-menu>
+                </v-col>
 
-                  <v-row class="mt-n3" dense>
-                    <v-col cols="5" sm="4" md="2"></v-col>
-                    <v-col cols="7" sm="8" md="4" lg="3" xl="2" class="d-flex">
-                      <p class="subtitle-1 mr-4">Start:</p>
-                      <v-menu
-                        ref="menuRecur"
-                        v-model="menuRecur"
-                        :close-on-content-click="false"
-                        :return-value.sync="dateRecur"
-                        transition="scale-transition"
-                        offset-x
-                        min-width="290px"
-                      >
-                        <template v-slot:activator="{ on }">
-                          <v-text-field
-                            v-model="dateRecur"
-                            append-icon="mdi-calendar"
-                            readonly
-                            solo
-                            dense
-                            v-on="on"
-                            class="mt-n1"
-                            hide-details
-                          ></v-text-field>
-                        </template>
-                        <v-date-picker v-model="dateRecur" no-title scrollable>
-                          <v-spacer></v-spacer>
-                          <v-btn text @click="menuRecur = false">
-                            Cancel
-                          </v-btn>
-                          <v-btn text @click="$refs.menuRecur.save(dateRecur)"
-                            >OK
-                          </v-btn>
-                        </v-date-picker>
-                      </v-menu>
-                    </v-col>
-
-                    <v-col class="ml-7 mt-n3">
-                      <v-radio-group v-model="radios">
-                        <v-radio label="No end date" value="no-end"></v-radio>
-                        <v-radio value="end-after">
-                          <template v-slot:label>
-                            <div class="radio-recur-text align-center">
-                              <span>End after</span>
+                <v-col class="ml-7 mt-n3">
+                  <v-radio-group v-model="radios">
+                    <v-radio label="No end date" value="no-end"></v-radio>
+                    <v-radio value="end-by">
+                      <template v-slot:label>
+                        <div class="radio-recur-text align-center">
+                          <span>End by:</span>
+                          <v-menu
+                            ref="menuRecurEnd"
+                            v-model="menuRecurEnd"
+                            :close-on-content-click="false"
+                            :return-value.sync="dateRecurEnd"
+                            transition="scale-transition"
+                            offset-y
+                            min-width="290px"
+                          >
+                            <template v-slot:activator="{ on }">
                               <v-text-field
-                                label="Solo"
-                                placeholder="0"
+                                v-model="dateRecurEnd"
+                                append-icon="mdi-calendar"
+                                readonly
                                 solo
                                 dense
-                                flat
-                                outlined
-                                class="number-end-after ml-3 mr-3 mt-5"
+                                v-on="on"
+                                class="ml-3 ml-sm-6 mt-5"
                               ></v-text-field>
-                              <span>occurences</span>
-                            </div>
-                          </template>
-                        </v-radio>
-                        <v-radio value="end-by">
-                          <template v-slot:label>
-                            <div class="radio-recur-text align-center">
-                              <span>End by:</span>
-                              <v-menu
-                                ref="menuRecurEnd"
-                                v-model="menuRecurEnd"
-                                :close-on-content-click="false"
-                                :return-value.sync="dateRecurEnd"
-                                transition="scale-transition"
-                                offset-y
-                                min-width="290px"
-                              >
-                                <template v-slot:activator="{ on }">
-                                  <v-text-field
-                                    v-model="dateRecurEnd"
-                                    append-icon="mdi-calendar"
-                                    readonly
-                                    solo
-                                    dense
-                                    v-on="on"
-                                    class="ml-3 ml-sm-6 mt-5"
-                                  ></v-text-field>
-                                </template>
-                                <v-date-picker
-                                  v-model="dateRecurEnd"
-                                  no-title
-                                  scrollable
-                                >
-                                  <v-spacer></v-spacer>
-                                  <v-btn
-                                    text
-                                    color="primary"
-                                    @click="menuRecurEnd = false"
-                                    >Cancel
-                                  </v-btn>
-                                  <v-btn
-                                    text
-                                    @click="
-                                      $refs.menuRecurEnd.save(dateRecurEnd)
-                                    "
-                                    >OK
-                                  </v-btn>
-                                </v-date-picker>
-                              </v-menu>
-                            </div>
-                          </template>
-                        </v-radio>
-                      </v-radio-group>
-                    </v-col>
-                  </v-row>
+                            </template>
+                            <v-date-picker
+                              v-model="dateRecurEnd"
+                              no-title
+                              scrollable
+                            >
+                              <v-spacer></v-spacer>
+                              <v-btn
+                                text
+                                color="primary"
+                                @click="menuRecurEnd = false"
+                                >Cancel
+                              </v-btn>
+                              <v-btn
+                                text
+                                @click="$refs.menuRecurEnd.save(dateRecurEnd)"
+                                >OK
+                              </v-btn>
+                            </v-date-picker>
+                          </v-menu>
+                        </div>
+                      </template>
+                    </v-radio>
+                  </v-radio-group>
                 </v-col>
               </v-row>
             </v-card-text>
           </v-card>
 
           <v-card class="mt-10 pb-5">
-            <v-card-subtitle class="font-weight-bold">
-              <v-icon class="mr-2">mdi-account-settings</v-icon>
-              <span>Appraisee & Raters</span>
+            <v-card-subtitle class="d-flex algin-center">
+              <v-icon class="mr-3">mdi-account-settings</v-icon>
+              <span class="header-card">Appraisee & Raters</span>
             </v-card-subtitle>
 
             <v-divider class="mx-0"></v-divider>
@@ -283,7 +204,7 @@
                     hide-details
                   ></v-select>
                 </v-col>
-                <v-col class="mt-3 ml-4">
+                <v-col class="subtitle-1 mt-3 ml-4">
                   <span>Position:</span>
                   <span class="ml-3">Leader</span>
                 </v-col>
@@ -302,7 +223,7 @@
                     hide-details
                   ></v-select>
                 </v-col>
-                <v-col class="mt-3 ml-4">
+                <v-col class="subtitle-1 mt-3 ml-4">
                   <span>Position:</span>
                   <span class="ml-3">Manager</span>
                 </v-col>
@@ -313,7 +234,7 @@
                   <div class="mt-5">
                     <v-btn depressed>
                       <v-icon medium>mdi-plus-circle</v-icon>
-                      <span class="ml-2">Add layer</span>
+                      <span class="ml-2">Add rater</span>
                     </v-btn>
                   </div>
                 </v-col>
@@ -332,15 +253,10 @@
 </template>
 
 <script>
-// import footerSec from "../layout/footerSec";
-// import TemplateEvaluation from "../components/admin/TemplateEvaluation";
-
 export default {
   name: "createEvaluation",
 
-  components: {
-    // TemplateEvaluation
-  },
+  components: {},
 
   props: {},
 
@@ -393,6 +309,16 @@ export default {
 .evaluation-info {
   padding-right: 5rem !important;
   padding-left: 5rem !important;
+}
+
+.header-card {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #222;
+}
+
+.subtitle-1 {
+  color: #333 !important;
 }
 
 .evaluation-line {
