@@ -24,11 +24,14 @@ export default {
     return {
       title: "Dashboard",
       itemsNav: {
-        "/manager": ["Dashboard", "mdi-home"],
-        "/manager/member-review": ["Member review", "mdi-mouse"],
-        "/manager/reports": ["Reports", "mdi-account"],
-        "/manager/timeline": ["Timeline", "mdi-football-helmet"],
-        "/manager/multi-rater-review": ["Multi-rater review", "mdi-mouse"]
+        "/manager": ["Dashboard", "mdi-view-dashboard"],
+        "/manager/member-review": ["Member review", "mdi-account-box"],
+        "/manager/reports": ["Reports", "mdi-book-multiple"],
+        "/manager/timeline": ["Timeline", "mdi-chart-timeline"],
+        "/manager/multi-rater-review": [
+          "Multi-rater review",
+          "mdi-account-star"
+        ]
       },
       userRole: "Manager"
     };
