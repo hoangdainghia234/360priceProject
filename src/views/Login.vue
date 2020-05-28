@@ -51,8 +51,10 @@
                               color="success"
                               dark
                               style="float: right"
-                              >Sign in</v-btn
+                              @click="login()"
                             >
+                              Sign in
+                            </v-btn>
                           </v-col>
                         </v-row>
                       </v-card-actions>
@@ -78,7 +80,9 @@
     </v-app>
   </div>
 </template>
-<script lang="ts">
+<script>
+import router from "../router/index";
+
 export default {
   data: () => ({
     valid: true,
@@ -96,6 +100,18 @@ export default {
   methods: {
     reset() {
       this.$refs.form.reset();
+    },
+    login() {
+      if (this.Username == "admin") {
+        console.log("hello");
+        router.push({ name: "admin" });
+      }
+      if (this.Username == "employee") {
+        router.push({ name: "employee" });
+      }
+      if (this.Username == "manager") {
+        router.push({ name: "manager" });
+      }
     }
   }
 };

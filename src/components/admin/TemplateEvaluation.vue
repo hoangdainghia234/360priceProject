@@ -78,6 +78,7 @@
                 </v-btn>
               </v-card>
             </div>
+
             <!-- Specialist, Expert Layer -->
             <div class="staffLayer">
               <v-card>
@@ -276,7 +277,7 @@
 
 <script>
 export default {
-  name: "templateEvaluation",
+  name: "TemplateEvaluation",
 
   data: () => {
     return {
@@ -326,7 +327,7 @@ export default {
 };
 </script>
 
-<style lang="sass">
+<style scoped>
 .staffLayer {
   margin-left: 7rem;
   margin-right: 8rem;
@@ -444,4 +445,5 @@ export default {
   .minus-btn {
     margin-left: 0.5rem !important;
   }
+}
 </style>

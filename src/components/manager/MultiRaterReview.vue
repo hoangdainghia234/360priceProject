@@ -2,19 +2,15 @@
   <div class="">
     <v-content>
       <v-container fluid>
-        <Employee />
+        <h1>MultiRaterReview</h1>
       </v-container>
     </v-content>
   </div>
 </template>
 
 <script>
-import Employee from "../components/Employee";
-
 export default {
-  name: "createRelationship",
-  components: {
-    Employee
-  }
+  name: "multiraterreview",
+  components: {}
 };
 </script>

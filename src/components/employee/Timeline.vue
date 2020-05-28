@@ -2,19 +2,15 @@
   <div class="">
     <v-content>
       <v-container fluid>
-        <Employee />
+        <h1>Timeline</h1>
       </v-container>
     </v-content>
   </div>
 </template>
 
 <script>
-import Employee from "../components/Employee";
-
 export default {
-  name: "createRelationship",
-  components: {
-    Employee
-  }
+  name: "timeline",
+  components: {}
 };
 </script>

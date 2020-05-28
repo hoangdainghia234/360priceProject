@@ -178,7 +178,7 @@
                                 </div>
                               </td>
                               <td>
-                                <v-btn depressed>
+                                <v-btn text>
                                   <v-icon>mdi-delete</v-icon>
                                 </v-btn>
                               </td>
