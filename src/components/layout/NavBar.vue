@@ -73,7 +73,7 @@ export default {
   width: 100%;
   line-height: 2.5;
   outline: none;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   font-weight: 500;
 }
 
