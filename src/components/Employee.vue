@@ -37,27 +37,6 @@
                   required
                 ></v-select>
               </v-col>
-              <!-- <v-col cols="3" sm="6" md="3">
-                <span>SSU</span>
-                <v-select
-                  outlined
-                  v-model="select"
-                  :items="items"
-                  :rules="[v => !!v || 'Item is required']"
-                  required
-                ></v-select>
-              </v-col>
-              <v-col cols="3" sm="6" md="3">
-                <span>Team</span>
-                <v-select
-                  outlined
-                  v-model="select"
-                  personal
-                  :items="teams"
-                  :rules="[v => !!v || 'Item is required']"
-                  required
-                ></v-select>
-              </v-col> -->
             </v-row>
             <v-row>
               <v-col
@@ -190,7 +169,13 @@
                   </v-card-text>
                   <div class="text-center">
                     <v-btn class="ma-2" tile color="indigo" dark>Save</v-btn>
-                    <v-btn class="ma-2" tile outlined color="success">
+                    <v-btn
+                      class="ma-2"
+                      tile
+                      dark
+                      color="indigo"
+                      @click="dialog = false"
+                    >
                       Cancel
                     </v-btn>
                   </div>
@@ -251,10 +236,12 @@
                   <v-btn color="primary" dark v-on="on">Add member</v-btn>
                 </template>
                 <v-card>
-                  <v-card-subtitle class="font-weight-bold">
+                  <div class="success text-center">
                     <v-card-title>
                       <span class="headline">Add/Update employee</span>
                     </v-card-title>
+                  </div>
+                  <v-card-subtitle class="font-weight-bold">
                     <v-card>
                       <v-card-title>
                         <span class="headline">Information</span>
@@ -310,8 +297,8 @@
                     <v-btn
                       class="ma-2"
                       tile
-                      outlined
-                      color="success"
+                      dark
+                      color="indigo"
                       @click="dialog1 = false"
                     >
                       Cancel
