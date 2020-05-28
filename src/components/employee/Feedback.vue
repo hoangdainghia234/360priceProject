@@ -88,18 +88,23 @@
                         style="position: relative; z-index: 1; top: 10px; bottom: 0"
                       >
                         <div
-                          v-for="item in itemtimeline"
-                          :key="item"
+                          v-for="(n, i) in item.item_choose.length"
+                          :key="n"
+                          :class="item.item_choose[i].class"
                           class="d-flex justify-center"
                         >
                           <p
                             style="position: absolute; bottom: 39px"
                             class="body-2"
                           >
-                            {{ item.text }}
+                            {{ item.item_choose[i].name }}
                           </p>
-                          <v-btn fab small>
-                            {{ item.id }}
+                          <v-btn
+                            fab
+                            small
+                            @click="click_choose(item.id - 1, i)"
+                          >
+                            {{ item.item_choose[i].id }}
                           </v-btn>
                         </div>
                       </v-list>
@@ -157,18 +162,18 @@
                         style="position: relative; z-index: 1; top: 10px; bottom: 0"
                       >
                         <div
-                          v-for="item in itemtimeline"
-                          :key="item"
+                          v-for="(n, i) in item.item_choose.length"
+                          :key="n"
                           class="d-flex justify-center"
                         >
                           <p
                             style="position: absolute; bottom: 39px"
                             class="body-2"
                           >
-                            {{ item.text }}
+                            {{ item.item_choose[i].name }}
                           </p>
                           <v-btn fab small>
-                            {{ item.id }}
+                            {{ item.item_choose[i].id }}
                           </v-btn>
                         </div>
                       </v-list>
@@ -248,61 +253,266 @@ export default {
           model: "Sample rater's postion"
         }
       ],
-      itemtimeline: [
-        {
-          id: "1",
-          text: "Bad"
-        },
-        {
-          id: "2",
-          text: "Under Qualified"
-        },
-        {
-          id: "3",
-          text: "Qualified"
-        },
-        {
-          id: "4",
-          text: "Good"
-        },
-        {
-          id: "5",
-          text: "Excellent"
-        }
-      ],
+      // itemtimeline: [
+      //   {
+      //     id: "1",
+      //     text: "Bad"
+      //   },
+      //   {
+      //     id: "2",
+      //     text: "Under Qualified"
+      //   },
+      //   {
+      //     id: "3",
+      //     text: "Qualified"
+      //   },
+      //   {
+      //     id: "4",
+      //     text: "Good"
+      //   },
+      //   {
+      //     id: "5",
+      //     text: "Excellent"
+      //   }
+      // ],
       item_category: [
         {
+          id: 1,
           item_name: "Lorem isum 1",
           item_exp: "Explanation 1",
-          item_desc:
-            "Description1: Lorem ipsum dolor sit amet, consecterur adipiscing elit. Nunc maximus, nulla ut commodo sagittis, sapien dui mattis dui, non pulvinar lorem felis nec erat"
+          item_comments: "",
+          item_choose: [
+            {
+              id: 1,
+              name: "Bad",
+              desc:
+                "Description1: Lorem ipsum dolor sit amet, consecterur adipiscing elit. Nunc maximus, nulla ut commodo sagittis, sapien dui mattis dui, non pulvinar lorem felis nec erat",
+              class: "active"
+            },
+            {
+              id: 2,
+              name: "Under Qualified",
+              desc:
+                "Description2: Lorem ipsum dolor sit amet, consecterur adipiscing elit. Nunc maximus, nulla ut commodo sagittis, sapien dui mattis dui, non pulvinar lorem felis nec erat",
+              class: ""
+            },
+            {
+              id: 3,
+              name: "Qualified",
+              desc:
+                "Description3: Lorem ipsum dolor sit amet, consecterur adipiscing elit. Nunc maximus, nulla ut commodo sagittis, sapien dui mattis dui, non pulvinar lorem felis nec erat",
+              class: ""
+            },
+            {
+              id: 4,
+              name: "Good",
+              desc:
+                "Description4: Lorem ipsum dolor sit amet, consecterur adipiscing elit. Nunc maximus, nulla ut commodo sagittis, sapien dui mattis dui, non pulvinar lorem felis nec erat",
+              class: ""
+            },
+            {
+              id: 5,
+              name: "Excellent",
+              desc:
+                "Description5: Lorem ipsum dolor sit amet, consecterur adipiscing elit. Nunc maximus, nulla ut commodo sagittis, sapien dui mattis dui, non pulvinar lorem felis nec erat",
+              class: ""
+            }
+          ]
         },
         {
+          id: 2,
           item_name: "Lorem isum 2",
           item_exp: "Explanation 2",
-          item_desc:
-            "Description2: Lorem ipsum dolor sit amet, consecterur adipiscing elit. Nunc maximus, nulla ut commodo sagittis, sapien dui mattis dui, non pulvinar lorem felis nec erat"
+          item_comments: "",
+          item_choose: [
+            {
+              id: 1,
+              name: "Bad",
+              desc:
+                "Description6: Lorem ipsum dolor sit amet, consecterur adipiscing elit. Nunc maximus, nulla ut commodo sagittis, sapien dui mattis dui, non pulvinar lorem felis nec erat",
+              class: "active"
+            },
+            {
+              id: 2,
+              name: "Under Qualified",
+              desc:
+                "Description7: Lorem ipsum dolor sit amet, consecterur adipiscing elit. Nunc maximus, nulla ut commodo sagittis, sapien dui mattis dui, non pulvinar lorem felis nec erat",
+              class: ""
+            },
+            {
+              id: 3,
+              name: "Qualified",
+              desc:
+                "Description8: Lorem ipsum dolor sit amet, consecterur adipiscing elit. Nunc maximus, nulla ut commodo sagittis, sapien dui mattis dui, non pulvinar lorem felis nec erat",
+              class: ""
+            },
+            {
+              id: 4,
+              name: "Good",
+              desc:
+                "Description9: Lorem ipsum dolor sit amet, consecterur adipiscing elit. Nunc maximus, nulla ut commodo sagittis, sapien dui mattis dui, non pulvinar lorem felis nec erat",
+              class: ""
+            },
+            {
+              id: 5,
+              name: "Excellent",
+              desc:
+                "Description10: Lorem ipsum dolor sit amet, consecterur adipiscing elit. Nunc maximus, nulla ut commodo sagittis, sapien dui mattis dui, non pulvinar lorem felis nec erat",
+              class: ""
+            }
+          ]
         },
         {
+          id: 3,
           item_name: "Lorem isum 3",
           item_exp: "Explanation 3",
-          item_desc:
-            "Description3: Lorem ipsum dolor sit amet, consecterur adipiscing elit. Nunc maximus, nulla ut commodo sagittis, sapien dui mattis dui, non pulvinar lorem felis nec erat"
+          item_comments: "",
+          item_choose: [
+            {
+              id: 1,
+              name: "Bad",
+              desc:
+                "Description11: Lorem ipsum dolor sit amet, consecterur adipiscing elit. Nunc maximus, nulla ut commodo sagittis, sapien dui mattis dui, non pulvinar lorem felis nec erat",
+              class: "active"
+            },
+            {
+              id: 2,
+              name: "Under Qualified",
+              desc:
+                "Description12: Lorem ipsum dolor sit amet, consecterur adipiscing elit. Nunc maximus, nulla ut commodo sagittis, sapien dui mattis dui, non pulvinar lorem felis nec erat",
+              class: ""
+            },
+            {
+              id: 3,
+              name: "Qualified",
+              desc:
+                "Description13: Lorem ipsum dolor sit amet, consecterur adipiscing elit. Nunc maximus, nulla ut commodo sagittis, sapien dui mattis dui, non pulvinar lorem felis nec erat",
+              class: ""
+            },
+            {
+              id: 4,
+              name: "Good",
+              desc:
+                "Description14: Lorem ipsum dolor sit amet, consecterur adipiscing elit. Nunc maximus, nulla ut commodo sagittis, sapien dui mattis dui, non pulvinar lorem felis nec erat",
+              class: ""
+            },
+            {
+              id: 5,
+              name: "Excellent",
+              desc:
+                "Description15: Lorem ipsum dolor sit amet, consecterur adipiscing elit. Nunc maximus, nulla ut commodo sagittis, sapien dui mattis dui, non pulvinar lorem felis nec erat",
+              class: ""
+            }
+          ]
         },
         {
+          id: 4,
           item_name: "Lorem isum 4",
           item_exp: "Explanation 4",
-          item_desc:
-            "Description4: Lorem ipsum dolor sit amet, consecterur adipiscing elit. Nunc maximus, nulla ut commodo sagittis, sapien dui mattis dui, non pulvinar lorem felis nec erat"
+          item_comments: "",
+          item_choose: [
+            {
+              id: 1,
+              name: "Bad",
+              desc:
+                "Description16: Lorem ipsum dolor sit amet, consecterur adipiscing elit. Nunc maximus, nulla ut commodo sagittis, sapien dui mattis dui, non pulvinar lorem felis nec erat",
+              class: "active"
+            },
+            {
+              id: 2,
+              name: "Under Qualified",
+              desc:
+                "Description17: Lorem ipsum dolor sit amet, consecterur adipiscing elit. Nunc maximus, nulla ut commodo sagittis, sapien dui mattis dui, non pulvinar lorem felis nec erat",
+              class: ""
+            },
+            {
+              id: 3,
+              name: "Qualified",
+              desc:
+                "Description18: Lorem ipsum dolor sit amet, consecterur adipiscing elit. Nunc maximus, nulla ut commodo sagittis, sapien dui mattis dui, non pulvinar lorem felis nec erat",
+              class: ""
+            },
+            {
+              id: 4,
+              name: "Good",
+              desc:
+                "Description19: Lorem ipsum dolor sit amet, consecterur adipiscing elit. Nunc maximus, nulla ut commodo sagittis, sapien dui mattis dui, non pulvinar lorem felis nec erat",
+              class: ""
+            },
+            {
+              id: 5,
+              name: "Excellent",
+              desc:
+                "Description20: Lorem ipsum dolor sit amet, consecterur adipiscing elit. Nunc maximus, nulla ut commodo sagittis, sapien dui mattis dui, non pulvinar lorem felis nec erat",
+              class: ""
+            }
+          ]
         },
         {
+          id: 5,
           item_name: "Lorem isum 5",
           item_exp: "Explanation 5",
-          item_desc:
-            "Description5: Lorem ipsum dolor sit amet, consecterur adipiscing elit. Nunc maximus, nulla ut commodo sagittis, sapien dui mattis dui, non pulvinar lorem felis nec erat"
+          item_comments: "",
+          item_choose: [
+            {
+              id: 1,
+              name: "Bad",
+              desc:
+                "Description1: Lorem ipsum dolor sit amet, consecterur adipiscing elit. Nunc maximus, nulla ut commodo sagittis, sapien dui mattis dui, non pulvinar lorem felis nec erat"
+            },
+            {
+              id: 2,
+              name: "Under Qualified",
+              desc:
+                "Description2: Lorem ipsum dolor sit amet, consecterur adipiscing elit. Nunc maximus, nulla ut commodo sagittis, sapien dui mattis dui, non pulvinar lorem felis nec erat"
+            },
+            {
+              id: 3,
+              name: "Qualified",
+              desc:
+                "Description3: Lorem ipsum dolor sit amet, consecterur adipiscing elit. Nunc maximus, nulla ut commodo sagittis, sapien dui mattis dui, non pulvinar lorem felis nec erat"
+            },
+            {
+              id: 4,
+              name: "Good",
+              desc:
+                "Description4: Lorem ipsum dolor sit amet, consecterur adipiscing elit. Nunc maximus, nulla ut commodo sagittis, sapien dui mattis dui, non pulvinar lorem felis nec erat"
+            },
+            {
+              id: 5,
+              name: "Excellent",
+              desc:
+                "Description5: Lorem ipsum dolor sit amet, consecterur adipiscing elit. Nunc maximus, nulla ut commodo sagittis, sapien dui mattis dui, non pulvinar lorem felis nec erat"
+            }
+          ]
         }
       ]
     };
+  },
+  created() {
+    this.axios
+      .get("http://34.72.144.52/api/evaluations/perform/1")
+      .then(response => {
+        console.log(response.data);
+      });
+  },
+  methods: {
+    click_choose(id, i) {
+      var item = this.item_category[id].item_choose[i];
+      console.log(item, i);
+
+      // if (this.item_category[id].id === i)
+      //   console.log(this.item_category[id].id);
+      // item.find(item => item.id === this.item_category[id]).class = "";
+      // item.filters(item => item.id === i).class = "active";
+      // this.item_category[id] = id;
+      console.log(item.find());
+    }
   }
 };
 </script>
+<style scoped>
+.active > button {
+  background: grey !important;
+}
+</style>
