@@ -2,7 +2,7 @@
   <div>
     <v-container>
       <div class="slider">
-        <div style="padding: 12px; border-bottom: 3px solid">
+        <div class="pa-5" style="border-bottom: 3px solid">
           <v-row>
             <v-col cols="2">
               <span style="font-weight: bold">Name:</span>

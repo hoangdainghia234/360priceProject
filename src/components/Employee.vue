@@ -88,7 +88,7 @@
               transition="dialog-bottom-transition"
             >
               <v-card>
-                <v-card-title>
+                <v-card-title class="f-lex justify-center">
                   <span class="headline">Add team</span>
                 </v-card-title>
                 <v-card>
@@ -236,9 +236,11 @@
                   <v-btn color="primary" dark v-on="on">Add member</v-btn>
                 </template>
                 <v-card>
-                  <div class="success text-center">
+                  <div class="indigo d-flex justify-center">
                     <v-card-title>
-                      <span class="headline">Add/Update employee</span>
+                      <span class="headline" style="color: white">
+                        Add/Update employee
+                      </span>
                     </v-card-title>
                   </div>
                   <v-card-subtitle class="font-weight-bold">
@@ -293,7 +295,9 @@
                     </v-card>
                   </v-card-subtitle>
                   <div class="text-center">
-                    <v-btn class="ma-2" tile color="indigo" dark>Save</v-btn>
+                    <v-btn class="ma-2" tile color="indigo" dark>
+                      Save
+                    </v-btn>
                     <v-btn
                       class="ma-2"
                       tile

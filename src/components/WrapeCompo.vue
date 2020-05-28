@@ -37,7 +37,7 @@
           </tbody>
         </template>
       </v-simple-table>
-      <AddButton style="float: left; margin-top: 30px" />
+      <AddButton class="float-left mt-8" />
     </v-list>
   </v-card>
 </template>

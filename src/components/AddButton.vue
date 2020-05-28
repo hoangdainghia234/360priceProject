@@ -85,14 +85,10 @@
           </v-card-text>
           <v-card-actions>
             <v-row justify="center">
-              <v-btn
-                color="blue darken-1"
-                class="ma-2"
-                dark
-                @click="dialog = false"
+              <v-btn color="indigo" class="ma-2" dark @click="dialog = false"
                 >Save</v-btn
               >
-              <v-btn color="success" class="ma-2" dark @click="dialog = false"
+              <v-btn color="indigo" class="ma-2" dark @click="dialog = false"
                 >Close</v-btn
               >
             </v-row>
