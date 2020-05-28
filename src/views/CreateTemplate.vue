@@ -40,8 +40,13 @@
                     ></v-select>
                   </v-col>
 
-                  <v-col cols="5" sm="4" md="2">
-                    <p class="subtitle-1 pt-2 ml-md-10">Layer:</p>
+                  <v-col
+                    class="d-flex justify-md-center justify-start"
+                    cols="5"
+                    sm="4"
+                    md="2"
+                  >
+                    <p class="subtitle-1 pt-2 ml-xl-10">Layer:</p>
                   </v-col>
                   <v-col cols="7" sm="7" md="4" xl="2">
                     <v-select
@@ -53,7 +58,12 @@
                     ></v-select>
                   </v-col>
 
-                  <v-col cols="5" sm="4" md="2">
+                  <v-col
+                    class="d-flex justify-xl-center justify-start"
+                    cols="5"
+                    sm="4"
+                    md="2"
+                  >
                     <p class="subtitle-1 pt-2 ml-xl-10">Grade:</p>
                   </v-col>
                   <v-col cols="7" sm="7" md="4" xl="2">
@@ -74,7 +84,7 @@
                   <v-col cols="7" sm="7" md="4" xl="2">
                     <v-select
                       :items="totalWeights"
-                      placeholder="Performance Review"
+                      :placeholder="totalWeights[0]"
                       outlined
                       dense
                       hide-details
@@ -134,15 +144,15 @@
               </v-expansion-panels>
             </section>
 
-            <div class="d-flex justify-end mt-5">
-              <v-dialog v-model="dialog" max-width="500px">
+            <div class="d-flex justify-end mt-5 mr-12">
+              <v-dialog v-model="dialog" max-width="700px">
                 <template v-slot:activator="{ on }">
                   <v-btn v-on="on">
                     <v-icon medium>mdi-plus-circle</v-icon>
-                    <span class="ml-2">Add layer</span>
+                    <span class="ml-2">Add Criteria</span>
                   </v-btn>
                 </template>
-                <v-card>
+                <!-- <v-card>
                   <v-card-title>
                     <span class="headline">{{ formTitle }}</span>
                   </v-card-title>
@@ -173,6 +183,53 @@
                     >
                     <v-btn color="blue darken-1" text @click="save">Save</v-btn>
                   </v-card-actions>
+                </v-card> -->
+                <v-card>
+                  <v-card-title
+                    class="d-flex justify-center indigo white--text"
+                  >
+                    <span class="headline">Add Criteria</span>
+                  </v-card-title>
+                  <v-card-text>
+                    <v-row>
+                      <v-col
+                        class="d-flex justify-center align-center"
+                        cols="12"
+                        sm="6"
+                        md="4"
+                      >
+                        <span class="subtitle-1 black--text">
+                          Select the criteria:
+                        </span>
+                      </v-col>
+                      <v-col
+                        class="d-flex justify-center align-center"
+                        cols="12"
+                        sm="6"
+                        md="4"
+                      >
+                        <v-select
+                          v-model="criteriaId"
+                          :items="mainPoints"
+                          item-text="name"
+                          item-value="mainId"
+                          placeholder="Select"
+                          outlined
+                          dense
+                          hide-details
+                          return-object
+                        ></v-select>
+                      </v-col>
+                      <v-col
+                        class="d-flex justify-center align-center"
+                        cols="12"
+                        sm="12"
+                        md="4"
+                      >
+                        <v-btn @click="close">Add</v-btn>
+                      </v-col>
+                    </v-row>
+                  </v-card-text>
                 </v-card>
               </v-dialog>
             </div>
@@ -262,17 +319,68 @@ export default {
             {
               categoryId: 1,
               name: "Category 1",
-              weight: 15
+              weight: 15,
+              items: [
+                {
+                  name: "Item 1",
+                  explanation: "Item explanation 1",
+                  weight: 5
+                },
+                {
+                  name: "Item 2",
+                  explanation: "Item explanation 2",
+                  weight: 5
+                },
+                {
+                  name: "Item 3",
+                  explanation: "Item explanation 3",
+                  weight: 5
+                }
+              ]
             },
             {
               categoryId: 2,
               name: "Category 2",
-              weight: 10
+              weight: 10,
+              items: [
+                {
+                  name: "Item 1",
+                  explanation: "Item explanation 1",
+                  weight: 5
+                },
+                {
+                  name: "Item 2",
+                  explanation: "Item explanation 2",
+                  weight: 5
+                },
+                {
+                  name: "Item 3",
+                  explanation: "Item explanation 3",
+                  weight: 5
+                }
+              ]
             },
             {
               categoryId: 3,
               name: "Category 3",
-              weight: 0
+              weight: 0,
+              items: [
+                {
+                  name: "Item 1",
+                  explanation: "Item explanation 1",
+                  weight: 5
+                },
+                {
+                  name: "Item 2",
+                  explanation: "Item explanation 2",
+                  weight: 5
+                },
+                {
+                  name: "Item 3",
+                  explanation: "Item explanation 3",
+                  weight: 5
+                }
+              ]
             }
           ]
         },
@@ -283,17 +391,68 @@ export default {
             {
               categoryId: 4,
               name: "Category 4",
-              weight: 13
+              weight: 13,
+              items: [
+                {
+                  name: "Item 1",
+                  explanation: "Item explanation 1",
+                  weight: 5
+                },
+                {
+                  name: "Item 2",
+                  explanation: "Item explanation 2",
+                  weight: 5
+                },
+                {
+                  name: "Item 3",
+                  explanation: "Item explanation 3",
+                  weight: 5
+                }
+              ]
             },
             {
               categoryId: 5,
               name: "Category 5",
-              weight: 3
+              weight: 3,
+              items: [
+                {
+                  name: "Item 1",
+                  explanation: "Item explanation 1",
+                  weight: 5
+                },
+                {
+                  name: "Item 2",
+                  explanation: "Item explanation 2",
+                  weight: 5
+                },
+                {
+                  name: "Item 3",
+                  explanation: "Item explanation 3",
+                  weight: 5
+                }
+              ]
             },
             {
               categoryId: 6,
               name: "Category 6",
-              weight: 7
+              weight: 7,
+              items: [
+                {
+                  name: "Item 1",
+                  explanation: "Item explanation 1",
+                  weight: 5
+                },
+                {
+                  name: "Item 2",
+                  explanation: "Item explanation 2",
+                  weight: 5
+                },
+                {
+                  name: "Item 3",
+                  explanation: "Item explanation 3",
+                  weight: 5
+                }
+              ]
             }
           ]
         },
@@ -304,7 +463,24 @@ export default {
             {
               categoryId: 7,
               name: "Category 7",
-              weight: 9
+              weight: 9,
+              items: [
+                {
+                  name: "Item 1",
+                  explanation: "Item explanation 1",
+                  weight: 5
+                },
+                {
+                  name: "Item 2",
+                  explanation: "Item explanation 2",
+                  weight: 5
+                },
+                {
+                  name: "Item 3",
+                  explanation: "Item explanation 3",
+                  weight: 5
+                }
+              ]
             },
             {
               categoryId: 8,
@@ -314,7 +490,24 @@ export default {
             {
               categoryId: 9,
               name: "Category 9",
-              weight: 12
+              weight: 12,
+              items: [
+                {
+                  name: "Item 1",
+                  explanation: "Item explanation 1",
+                  weight: 5
+                },
+                {
+                  name: "Item 2",
+                  explanation: "Item explanation 2",
+                  weight: 5
+                },
+                {
+                  name: "Item 3",
+                  explanation: "Item explanation 3",
+                  weight: 5
+                }
+              ]
             }
           ]
         }
@@ -346,6 +539,10 @@ export default {
 
     deletePanel(id) {
       this.mainPoints = this.mainPoints.filter(point => point.mainId !== id);
+    },
+
+    addCriteria() {
+      close();
     }
   }
 };
