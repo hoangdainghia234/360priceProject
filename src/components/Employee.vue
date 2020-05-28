@@ -37,27 +37,6 @@
                   required
                 ></v-select>
               </v-col>
-              <!-- <v-col cols="3" sm="6" md="3">
-                <span>SSU</span>
-                <v-select
-                  outlined
-                  v-model="select"
-                  :items="items"
-                  :rules="[v => !!v || 'Item is required']"
-                  required
-                ></v-select>
-              </v-col>
-              <v-col cols="3" sm="6" md="3">
-                <span>Team</span>
-                <v-select
-                  outlined
-                  v-model="select"
-                  personal
-                  :items="teams"
-                  :rules="[v => !!v || 'Item is required']"
-                  required
-                ></v-select>
-              </v-col> -->
             </v-row>
             <v-row>
               <v-col
@@ -95,7 +74,7 @@
         <div class="float-right">
           <div class="mr-7">
             <template>
-              <v-btn color="primary" dark v-on="on" @click="dialog = true">
+              <v-btn color="primary" dark @click="dialog = true">
                 <span>
                   <v-icon class="mr-4">mdi-plus-circle</v-icon>
                   Add team
@@ -109,27 +88,98 @@
               transition="dialog-bottom-transition"
             >
               <v-card>
-                <v-card-title>
-                  <span class="headline">User Profile</span>
+                <v-card-title class="f-lex justify-center">
+                  <span class="headline">Add team</span>
                 </v-card-title>
-                <v-card-text>
-                  <v-container>
-                    <v-row>
-                      <v-col class="d-flex" cols="12" sm="4">
-                        <span>City</span>
-                        <v-select :items="items" outlined></v-select>
-                      </v-col>
-                      <v-col class="d-flex" cols="12" sm="4">
-                        <span>SSU</span>
-                        <v-select :items="items" outlined></v-select>
-                      </v-col>
-                      <v-col class="d-flex" cols="12" sm="4">
-                        <span>Team</span>
-                        <v-select :items="items" outlined></v-select>
-                      </v-col>
-                    </v-row>
-                  </v-container>
-                </v-card-text>
+                <v-card>
+                  <v-card-title>
+                    <span class="headline">
+                      <v-icon>mdi-star-circle</v-icon>
+                      Information
+                    </span>
+                  </v-card-title>
+                  <v-card-text>
+                    <v-container>
+                      <v-row>
+                        <v-col
+                          cols="4"
+                          sm="4"
+                          v-for="team in teams"
+                          :key="team.title"
+                        >
+                          <span>{{ team.title }}</span>
+                          <v-select
+                            class="text-center"
+                            v-model="team.select"
+                            :items="team.team_select"
+                            outlined
+                            dense
+                          >
+                          </v-select>
+                        </v-col>
+                      </v-row>
+                      <v-simple-table>
+                        <template v-slot:default>
+                          <thead>
+                            <tr>
+                              <th class="text-center">Employee</th>
+                              <th class="text-center">Position</th>
+                              <th class="text-center">Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr
+                              v-for="table in employeeTable"
+                              :key="table.employee"
+                            >
+                              <td class="pa-3">
+                                <v-select
+                                  v-model="table.employee"
+                                  :items="table.employee"
+                                  outlined
+                                  solo
+                                  dense
+                                  hide-details
+                                >
+                                </v-select>
+                              </td>
+                              <td>
+                                <div>
+                                  <v-select
+                                    v-model="table.select"
+                                    :items="table.position"
+                                    outlined
+                                    solo
+                                    dense
+                                    hide-details
+                                  >
+                                  </v-select>
+                                </div>
+                              </td>
+                              <td>
+                                <v-btn text>
+                                  <v-icon>mdi-delete</v-icon>
+                                </v-btn>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </template>
+                      </v-simple-table>
+                    </v-container>
+                  </v-card-text>
+                  <div class="text-center">
+                    <v-btn class="ma-2" tile color="indigo" dark>Save</v-btn>
+                    <v-btn
+                      class="ma-2"
+                      tile
+                      dark
+                      color="indigo"
+                      @click="dialog = false"
+                    >
+                      Cancel
+                    </v-btn>
+                  </div>
+                </v-card>
               </v-card>
             </v-dialog>
           </div>
@@ -170,20 +220,97 @@
                       <td class="text-center">{{ item.Team }}</td>
                       <td class="text-center">{{ item.Positon }}</td>
                       <td class="text-center">
-                        <v-btn depressed
+                        <v-btn text
                           ><v-icon> mdi-pencil-box-outline</v-icon></v-btn
                         >
-                        <v-btn depressed><v-icon>mdi-delete</v-icon></v-btn>
+                        <v-btn text><v-icon>mdi-delete</v-icon></v-btn>
                       </td>
                     </tr>
                   </tbody>
                 </template>
               </v-simple-table>
             </template>
-            <v-btn class="float-right" large color="primary">
-              <v-icon class="mr-3">mdi-plus-circle</v-icon>
-              <span>Add member</span>
-            </v-btn>
+            <v-row justify="end">
+              <v-dialog v-model="dialog1" persistent max-width="850px">
+                <template v-slot:activator="{ on }">
+                  <v-btn color="primary" dark v-on="on">Add member</v-btn>
+                </template>
+                <v-card>
+                  <div class="indigo d-flex justify-center">
+                    <v-card-title>
+                      <span class="headline" style="color: white">
+                        Add/Update employee
+                      </span>
+                    </v-card-title>
+                  </div>
+                  <v-card-subtitle class="font-weight-bold">
+                    <v-card>
+                      <v-card-title>
+                        <span class="headline">Information</span>
+                      </v-card-title>
+                      <v-card-text>
+                        <v-container>
+                          <v-row>
+                            <!-- Tast 1 -->
+                            <v-col
+                              cols="12"
+                              sm="6"
+                              md="4"
+                              v-for="item in items"
+                              :key="item.title"
+                            >
+                              <span>{{ item.title }}</span>
+                              <v-select
+                                dense
+                                outlined
+                                v-model="item.select"
+                                :items="item.item_select"
+                                :rules="[v => !!v || 'cities is required']"
+                                required
+                              ></v-select>
+                            </v-col>
+                          </v-row>
+                          <v-row>
+                            <v-col
+                              cols="12"
+                              sm="6"
+                              md="4"
+                              v-for="item in items1"
+                              :key="item.title"
+                            >
+                              <span>{{ item.title }}</span>
+                              <v-select
+                                dense
+                                outlined
+                                v-model="item.select"
+                                :items="item.item_select"
+                                :rules="[v => !!v || 'cities is required']"
+                                required
+                              ></v-select>
+                            </v-col>
+                          </v-row>
+                        </v-container>
+                      </v-card-text>
+                      <v-spacer></v-spacer>
+                    </v-card>
+                  </v-card-subtitle>
+                  <div class="text-center">
+                    <v-btn class="ma-2" tile color="indigo" dark>
+                      Save
+                    </v-btn>
+                    <v-btn
+                      class="ma-2"
+                      tile
+                      dark
+                      color="indigo"
+                      @click="dialog1 = false"
+                    >
+                      Cancel
+                    </v-btn>
+                  </div>
+                </v-card>
+              </v-dialog>
+            </v-row>
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
@@ -195,6 +322,7 @@ export default {
   data() {
     return {
       dialog: false,
+      dialog1: false,
       select: "",
       items: [
         {
@@ -231,6 +359,7 @@ export default {
       ],
       desserts: [
         {
+          title: "City",
           employeeName: "Mark",
           satffID: 123456789,
           ssu: "SSU1OO",
@@ -239,6 +368,7 @@ export default {
           Positon: "Developer"
         },
         {
+          title: "SSU",
           employeeName: "Mark1",
           satffID: 123456789,
           ssu: "SSU1OO",
@@ -247,6 +377,7 @@ export default {
           Positon: "Developer"
         },
         {
+          title: "Team",
           employeeName: "Mark2",
           satffID: 123456789,
           ssu: "SSU1OO",
@@ -255,6 +386,7 @@ export default {
           Positon: "Developer"
         },
         {
+          title: "Employee",
           employeeName: "Mark3",
           satffID: 123456789,
           ssu: "SSU1OO",
@@ -263,6 +395,7 @@ export default {
           Positon: "Developer"
         },
         {
+          title: "Staff ID",
           employeeName: "Mark4",
           satffID: 123456789,
           ssu: "SSU1OO",
@@ -277,6 +410,50 @@ export default {
           City: "Bangkok",
           Team: "Anonymous",
           Positon: "Developer"
+        }
+      ],
+      teams: [
+        {
+          title: "City",
+          team_select: ["BangKok", "HaNoi", "Manila"],
+          select: "BangKok"
+        },
+        {
+          title: "SSU",
+          team_select: ["SSU100", "SSU200", "SSU300"],
+          select: "SSU100"
+        },
+        {
+          title: "Team",
+          team_select: ["Anonymous", "UseCase", "TheKop"],
+          select: "Anonymous"
+        }
+      ],
+      employeeTable: [
+        {
+          employee: "Mark1",
+          position: ["developer", "Leader", "Direct Manager"],
+          select: "developer"
+        },
+        {
+          employee: "Mark2",
+          position: ["developer", "Leader", "Direct Manager"],
+          select: "developer"
+        },
+        {
+          employee: "Mark3",
+          position: ["developer", "Leader", "Direct Manager"],
+          select: "developer"
+        },
+        {
+          employee: "Mark4",
+          position: ["developer", "Leader", "Direct Manager"],
+          select: "Leader"
+        },
+        {
+          employee: "Mark5",
+          position: ["developer", "Leader", "Direct Manager"],
+          select: "Direct Manager"
         }
       ]
     };

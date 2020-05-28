@@ -3,73 +3,41 @@
     <v-list>
       <v-simple-table>
         <template v-slot:default>
-          <tbody style="text-align: center">
+          <tbody>
             <tr v-for="header in headers" :key="header.id">
-              <td>{{ header.name }}</td>
-              <td>{{ header.project }}</td>
+              <td class="text-right">{{ header.name }}</td>
+              <td class="text-right">{{ header.project }}</td>
               <td>
-                <div class="my-2">
-                  <v-btn
-                    color="primary"
-                    fab
-                    small
-                    dark
-                    style="margin-right: 10px"
-                  >
-                    <span style="font-size: 18px">{{ header.numberOne }}</span>
+                <div class="text-center pa-5">
+                  <v-btn color="primary" fab small dark class="mr-8">
+                    <span class="subtitle-2">{{ header.numberOne }}</span>
                   </v-btn>
-                  <v-btn
-                    color="primary"
-                    fab
-                    small
-                    dark
-                    style="margin-right: 10px"
-                  >
-                    <span style="font-size: 18px">{{ header.numberTwo }}</span>
+                  <v-btn color="primary" fab small dark class="mr-8">
+                    <span class="subtitle-2">{{ header.numberTwo }}</span>
                   </v-btn>
-                  <v-btn
-                    color="primary"
-                    fab
-                    small
-                    dark
-                    style="margin-right: 10px"
-                  >
-                    <span style="font-size: 18px">{{
-                      header.numberThree
-                    }}</span>
+                  <v-btn color="primary" fab small dark class="mr-8">
+                    <span class="subtitle-2">{{ header.numberThree }}</span>
                   </v-btn>
-                  <v-btn
-                    color="primary"
-                    fab
-                    small
-                    dark
-                    style="margin-right: 10px"
-                  >
-                    <span style="font-size: 18px">{{ header.numberFour }}</span>
+                  <v-btn color="primary" fab small dark class="mr-8">
+                    <span class="subtitle-2">{{ header.numberFour }}</span>
                   </v-btn>
-                  <v-btn
-                    color="primary"
-                    fab
-                    small
-                    dark
-                    style="margin-right: 10px"
-                  >
-                    <span style="font-size: 18px">{{ header.numberFire }}</span>
+                  <v-btn color="primary" fab small dark class="mr-8">
+                    <span class="subtitle-2">{{ header.numberFire }}</span>
                   </v-btn>
                   <v-btn color="primary" fab small dark>
-                    <span style="font-size: 18px">{{ header.check }}</span>
+                    <span class="subtitle-2">{{ header.check }}</span>
                   </v-btn>
                 </div>
               </td>
               <td>
-                <v-btn><v-icon> mdi-pencil-box-outline</v-icon></v-btn>
-                <v-btn><v-icon>mdi-delete</v-icon></v-btn>
+                <v-btn text><v-icon> mdi-pencil-box-outline</v-icon></v-btn>
+                <v-btn text><v-icon>mdi-delete</v-icon></v-btn>
               </td>
             </tr>
           </tbody>
         </template>
       </v-simple-table>
-      <AddButton style="float: left; margin-top: 30px" />
+      <AddButton class="float-left mt-8" />
     </v-list>
   </v-card>
 </template>

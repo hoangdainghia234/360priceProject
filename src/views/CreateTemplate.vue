@@ -75,6 +75,17 @@
                       hide-details
                     ></v-select>
                   </v-col>
+                  <v-col cols="5" sm="4" md="1">
+                    <p class="subtitle-1">Layer:</p>
+                  </v-col>
+                  <v-col cols="7" sm="7" md="1" lg="3" xl="2">
+                    <v-select
+                      :items="departments"
+                      placeholder="Staff"
+                      outlined
+                      dense
+                    ></v-select>
+                  </v-col>
                 </v-row>
 
                 <v-row class="evaluation-line" dense>

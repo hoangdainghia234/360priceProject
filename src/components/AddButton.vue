@@ -3,10 +3,13 @@
     <v-row justify="center">
       <v-dialog v-model="dialog" persistent max-width="1000px">
         <template v-slot:activator="{ on }">
-          <v-btn color="success" dark v-on="on">Add Item</v-btn>
+          <v-btn color="success" dark v-on="on">
+            <v-icon class="pr-2">mdi-plus-circle</v-icon>
+            Add Item
+          </v-btn>
         </template>
         <v-card>
-          <v-card-title>
+          <v-card-title class="indigo">
             <span class="headline" style="margin: auto">Item Infomation</span>
           </v-card-title>
           <v-card-text>
@@ -56,7 +59,7 @@
                           <td>
                             <v-col cols="10">
                               <v-text-field
-                                dense
+                                hide-details
                                 v-bind:placeholder="item.name"
                                 outlined
                               ></v-text-field>
@@ -64,6 +67,7 @@
                           </td>
                           <td>
                             <v-textarea
+                              hide-details
                               dense
                               rows
                               solo
@@ -81,14 +85,10 @@
           </v-card-text>
           <v-card-actions>
             <v-row justify="center">
-              <v-btn
-                color="blue darken-1"
-                class="ma-2"
-                dark
-                @click="dialog = false"
+              <v-btn color="indigo" class="ma-2" dark @click="dialog = false"
                 >Save</v-btn
               >
-              <v-btn color="success" class="ma-2" dark @click="dialog = false"
+              <v-btn color="indigo" class="ma-2" dark @click="dialog = false"
                 >Close</v-btn
               >
             </v-row>
