@@ -16,12 +16,13 @@
                 <v-col cols="5" sm="4" md="2">
                   <p class="subtitle-1">Type of review:</p>
                 </v-col>
-                <v-col cols="7" sm="7" md="4" lg="3" xl="2">
+                <v-col cols="7" sm="8" md="4" lg="3" xl="2">
                   <v-select
                     :items="typeOfReview"
                     placeholder="Performance Review"
                     outlined
                     dense
+                    hide-details
                   ></v-select>
                 </v-col>
               </v-row>
@@ -30,13 +31,37 @@
                 <v-col cols="5" xs="5" sm="4" md="2">
                   <p class="subtitle-1">Name:</p>
                 </v-col>
-                <v-col cols="7" sm="7" md="4" lg="3" xl="2">
+                <v-col cols="7" sm="8" md="4" lg="3" xl="2">
                   <v-text-field
                     label="name"
-                    placeholder="2019 Second Cycle"
+                    placeholder="Nguyen Van A Review"
                     solo
                     dense
+                    hide-details
                   ></v-text-field>
+                </v-col>
+              </v-row>
+
+              <v-row class="evaluation-line" dense>
+                <v-col cols="5" sm="4" md="2">
+                  <p class="subtitle-1">Template:</p>
+                </v-col>
+                <v-col cols="7" sm="8" md="4" lg="3" xl="2">
+                  <v-select
+                    :items="template"
+                    :placeholder="template[0]"
+                    outlined
+                    dense
+                    hide-details
+                  ></v-select>
+                </v-col>
+                <v-col>
+                  <div class="add-template mt-1 ml-5">
+                    <v-btn depressed>
+                      <v-icon medium>mdi-plus-circle</v-icon>
+                      <span class="ml-2">Add new template</span>
+                    </v-btn>
+                  </div>
                 </v-col>
               </v-row>
 
@@ -45,7 +70,7 @@
                   <p class="subtitle-1">Period of review:</p>
                 </v-col>
 
-                <v-col cols="7" sm="7" md="4" lg="3" xl="2">
+                <v-col cols="7" sm="8" md="4" lg="3" xl="2">
                   <v-menu
                     ref="menuRangeText"
                     v-model="menuRangeText"
@@ -63,6 +88,7 @@
                         solo
                         dense
                         v-on="on"
+                        hide-details
                       ></v-text-field>
                     </template>
                     <v-date-picker v-model="dates" range no-title scrollable>
@@ -87,7 +113,7 @@
                     <v-col cols="5" sm="4" md="2">
                       <p class="subtitle-1">Recurrence:</p>
                     </v-col>
-                    <v-col cols="7" sm="7" md="4" lg="3" xl="2">
+                    <v-col cols="7" sm="8" md="4" lg="3" xl="2">
                       <v-checkbox
                         v-model="checkRecurrence"
                         :label="
@@ -96,13 +122,14 @@
                           `
                         "
                         class="mt-n1"
+                        hide-details
                       ></v-checkbox>
                     </v-col>
                   </v-row>
 
                   <v-row class="mt-n3" dense>
                     <v-col cols="5" sm="4" md="2"></v-col>
-                    <v-col cols="7" sm="7" md="4" lg="3" xl="2" class="d-flex">
+                    <v-col cols="7" sm="8" md="4" lg="3" xl="2" class="d-flex">
                       <p class="subtitle-1 mr-4">Start:</p>
                       <v-menu
                         ref="menuRecur"
@@ -122,6 +149,7 @@
                             dense
                             v-on="on"
                             class="mt-n1"
+                            hide-details
                           ></v-text-field>
                         </template>
                         <v-date-picker v-model="dateRecur" no-title scrollable>
@@ -209,10 +237,94 @@
                   </v-row>
                 </v-col>
               </v-row>
-
-              <template-evaluation />
             </v-card-text>
           </v-card>
+
+          <v-card class="mt-10 pb-5">
+            <v-card-subtitle class="font-weight-bold">
+              <v-icon class="mr-2">mdi-account-settings</v-icon>
+              <span>Appraisee & Raters</span>
+            </v-card-subtitle>
+
+            <v-divider class="mx-0"></v-divider>
+
+            <v-card-text class="evaluation-info">
+              <v-row class="evaluation-line" dense>
+                <v-col cols="5" sm="4" md="2">
+                  <p class="subtitle-1">Appraisee name:</p>
+                </v-col>
+                <v-col cols="7" sm="8" md="4" lg="3" xl="2">
+                  <v-select
+                    :items="typeOfReview"
+                    placeholder="Performance Review"
+                    outlined
+                    dense
+                    hide-details
+                  ></v-select>
+                </v-col>
+              </v-row>
+
+              <v-row class="evaluation-line" dense>
+                <v-col cols="5" sm="4" md="2">
+                  <p class="subtitle-1">Raters:</p>
+                </v-col>
+              </v-row>
+
+              <v-row class="evaluation-line mt-n5" dense>
+                <v-col cols="5" sm="4" md="2" class="d-flex justify-center">
+                  <p class="subtitle-1 mt-2">Name:</p>
+                </v-col>
+                <v-col cols="7" sm="8" md="4" lg="3" xl="2">
+                  <v-select
+                    :items="employeeName"
+                    :placeholder="employeeName[1]"
+                    outlined
+                    dense
+                    hide-details
+                  ></v-select>
+                </v-col>
+                <v-col class="mt-3 ml-4">
+                  <span>Position:</span>
+                  <span class="ml-3">Leader</span>
+                </v-col>
+              </v-row>
+
+              <v-row class="evaluation-line mt-n2" dense>
+                <v-col cols="5" sm="4" md="2" class="d-flex justify-center">
+                  <p class="subtitle-1 mt-2">Name:</p>
+                </v-col>
+                <v-col cols="7" sm="8" md="4" lg="3" xl="2">
+                  <v-select
+                    :items="employeeName"
+                    :placeholder="employeeName[1]"
+                    outlined
+                    dense
+                    hide-details
+                  ></v-select>
+                </v-col>
+                <v-col class="mt-3 ml-4">
+                  <span>Position:</span>
+                  <span class="ml-3">Manager</span>
+                </v-col>
+              </v-row>
+              <v-row class="evaluation-line mt-n5" dense>
+                <v-col cols="5" sm="4" md="2"></v-col>
+                <v-col>
+                  <div class="mt-5">
+                    <v-btn depressed>
+                      <v-icon medium>mdi-plus-circle</v-icon>
+                      <span class="ml-2">Add layer</span>
+                    </v-btn>
+                  </div>
+                </v-col>
+              </v-row>
+            </v-card-text>
+          </v-card>
+
+          <div class="d-flex justify-center mt-10">
+            <v-btn class="btn-bottom mr-7" large>Publish</v-btn>
+            <v-btn class="btn-bottom" large>Reset</v-btn>
+          </div>
         </v-col>
       </v-row>
     </v-container>
@@ -221,13 +333,13 @@
 
 <script>
 // import footerSec from "../layout/footerSec";
-import TemplateEvaluation from "../components/admin/TemplateEvaluation";
+// import TemplateEvaluation from "../components/admin/TemplateEvaluation";
 
 export default {
   name: "createEvaluation",
 
   components: {
-    TemplateEvaluation
+    // TemplateEvaluation
   },
 
   props: {},
@@ -242,7 +354,23 @@ export default {
         "Department 3"
       ],
       mainPoint: [],
-      typeOfReview: ["Performance Review", "Review 1", "Review 2", "Review 3"],
+      typeOfReview: [
+        "Performance Review",
+        "Personal Review",
+        "Review 2",
+        "Review 3"
+      ],
+      template: [
+        "Java Developer - SE",
+        "Software Developer - SD",
+        "Data Scientist - DS"
+      ],
+      employeeName: [
+        "Nguyen Van A",
+        "Nguyen Van B",
+        "Nguyen Van C",
+        "Nguyen Van D"
+      ],
       dates: ["2019-09-10", "2019-09-20"],
       dateRecur: new Date().toISOString().substr(0, 10),
       dateRecurEnd: new Date().toISOString().substr(0, 10),
@@ -262,10 +390,15 @@ export default {
 </script>
 
 <style scoped>
+.evaluation-info {
+  padding-right: 5rem !important;
+  padding-left: 5rem !important;
+}
+
 .evaluation-line {
-  height: 4rem;
   display: flex;
   text-align: start;
+  margin-bottom: 0.3rem;
 }
 
 .radio-recur-text {
@@ -275,5 +408,30 @@ export default {
 
 .number-end-after {
   width: 6rem;
+}
+
+.btn-bottom {
+  background-color: #444 !important;
+  color: #fff !important;
+  width: 6rem;
+}
+
+@media screen and (max-width: 960px) {
+  .evaluation-info {
+    padding-right: 3rem !important;
+    padding-left: 3rem !important;
+  }
+
+  .add-template {
+    display: flex;
+    justify-items: start;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .evaluation-info {
+    padding-right: 2rem !important;
+    padding-left: 2rem !important;
+  }
 }
 </style>

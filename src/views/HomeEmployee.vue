@@ -22,12 +22,12 @@ export default {
 
   data: () => {
     return {
-      title: "Last evaluation result",
+      title: "Home",
       itemsNav: {
         "/employee": ["Home", "mdi-home"],
-        "/employee/evaluation": ["Evaluation Result", "mdi-mouse"],
-        "/employee/timeline": ["Timeline", "mdi-account"],
-        "/employee/feedback": ["Feedback", "mdi-football-helmet"]
+        "/employee/evaluation": ["Evaluation Result", "mdi-account-check"],
+        "/employee/timeline": ["Timeline", "mdi-chart-timeline"],
+        "/employee/feedback": ["Feedback", "mdi-message-plus"]
       },
       userRole: "Employee"
     };
