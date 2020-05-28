@@ -13,7 +13,7 @@
 
             <v-card-text class="evaluation-info">
               <v-row class="evaluation-line" dense>
-                <v-col cols="5" sm="4" md="2">
+                <v-col cols="5" sm="4" md="3" lg="2">
                   <p class="subtitle-1">Template:</p>
                 </v-col>
                 <v-col cols="7" sm="8" md="4" lg="3" xl="2">
@@ -28,7 +28,7 @@
               </v-row>
 
               <v-row class="evaluation-line" dense>
-                <v-col cols="5" sm="4" md="2">
+                <v-col cols="5" sm="4" md="3" lg="2">
                   <p class="subtitle-1">Period of review:</p>
                 </v-col>
 
@@ -70,7 +70,7 @@
               </v-row>
 
               <v-row class="evaluation-line" dense>
-                <v-col cols="5" sm="4" md="2">
+                <v-col cols="5" sm="4" md="3" lg="2">
                   <p class="subtitle-1">Start:</p>
                 </v-col>
                 <v-col cols="7" sm="8" md="4" lg="3" xl="2">
@@ -171,13 +171,13 @@
 
             <v-card-text class="evaluation-info">
               <v-row class="evaluation-line" dense>
-                <v-col cols="5" sm="4" md="2">
+                <v-col cols="5" sm="4" md="3" lg="2">
                   <p class="subtitle-1">Appraisee name:</p>
                 </v-col>
                 <v-col cols="7" sm="8" md="4" lg="3" xl="2">
                   <v-select
-                    :items="typeOfReview"
-                    placeholder="Performance Review"
+                    :items="employeeName"
+                    :placeholder="employeeName[0]"
                     outlined
                     dense
                     hide-details
@@ -186,13 +186,19 @@
               </v-row>
 
               <v-row class="evaluation-line" dense>
-                <v-col cols="5" sm="4" md="2">
+                <v-col cols="5" sm="4" md="3" lg="2">
                   <p class="subtitle-1">Raters:</p>
                 </v-col>
               </v-row>
 
               <v-row class="evaluation-line mt-n5" dense>
-                <v-col cols="5" sm="4" md="2" class="d-flex justify-center">
+                <v-col
+                  cols="5"
+                  sm="4"
+                  md="3"
+                  lg="2"
+                  class="d-flex justify-center"
+                >
                   <p class="subtitle-1 mt-2">Name:</p>
                 </v-col>
                 <v-col cols="7" sm="8" md="4" lg="3" xl="2">
@@ -211,13 +217,19 @@
               </v-row>
 
               <v-row class="evaluation-line mt-n2" dense>
-                <v-col cols="5" sm="4" md="2" class="d-flex justify-center">
+                <v-col
+                  cols="5"
+                  sm="4"
+                  md="3"
+                  lg="2"
+                  class="d-flex justify-center"
+                >
                   <p class="subtitle-1 mt-2">Name:</p>
                 </v-col>
                 <v-col cols="7" sm="8" md="4" lg="3" xl="2">
                   <v-select
                     :items="employeeName"
-                    :placeholder="employeeName[1]"
+                    :placeholder="employeeName[2]"
                     outlined
                     dense
                     hide-details
@@ -229,7 +241,7 @@
                 </v-col>
               </v-row>
               <v-row class="evaluation-line mt-n5" dense>
-                <v-col cols="5" sm="4" md="2"></v-col>
+                <v-col cols="5" sm="4" md="3" lg="2"></v-col>
                 <v-col>
                   <div class="mt-5">
                     <v-btn depressed>
@@ -263,19 +275,7 @@ export default {
   data: () => {
     return {
       title: "Create 360 Degree Evaluation",
-      departments: [
-        "Software Development Departement",
-        "Department 1",
-        "Department 2",
-        "Department 3"
-      ],
       mainPoint: [],
-      typeOfReview: [
-        "Performance Review",
-        "Personal Review",
-        "Review 2",
-        "Review 3"
-      ],
       template: [
         "Java Developer - SE",
         "Software Developer - SD",

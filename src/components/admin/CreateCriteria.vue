@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import TopComponent from "../components/TopComponent";
+import TopComponent from "../TopComponent";
 
 export default {
   name: "createCriteria",

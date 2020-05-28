@@ -12,10 +12,10 @@
               <v-divider></v-divider>
               <v-card-text class="evaluation-info">
                 <v-row class="evaluation-line" dense>
-                  <v-col cols="5" xs="5" sm="4" md="2">
-                    <p class="subtitle-1 pt-2">Name:</p>
+                  <v-col cols="5" sm="4" md="3" lg="2">
+                    <p class="subtitle-1">Name:</p>
                   </v-col>
-                  <v-col cols="7" sm="7" md="4" xl="2">
+                  <v-col cols="7" sm="8" md="4" lg="3" xl="2">
                     <v-text-field
                       label="name"
                       placeholder="2019 Second Cycle-SSD-Staff-AH Template"
@@ -27,10 +27,10 @@
                 </v-row>
 
                 <v-row class="evaluation-line" dense>
-                  <v-col cols="5" sm="4" md="2">
-                    <p class="subtitle-1 pt-2">Departement:</p>
+                  <v-col cols="5" sm="4" md="3" lg="2">
+                    <p class="subtitle-1">Department:</p>
                   </v-col>
-                  <v-col cols="7" sm="7" md="4" xl="2">
+                  <v-col cols="7" sm="8" md="4" lg="3" xl="2">
                     <v-select
                       :items="departments"
                       placeholder="Software Development Department"
@@ -39,66 +39,20 @@
                       hide-details
                     ></v-select>
                   </v-col>
-
-                  <v-col
-                    class="d-flex justify-md-center justify-start"
-                    cols="5"
-                    sm="4"
-                    md="2"
-                  >
-                    <p class="subtitle-1 pt-2 ml-xl-10">Layer:</p>
-                  </v-col>
-                  <v-col cols="7" sm="7" md="4" xl="2">
-                    <v-select
-                      :items="layers"
-                      :placeholder="layers[0]"
-                      outlined
-                      dense
-                      hide-details
-                    ></v-select>
-                  </v-col>
-
-                  <v-col
-                    class="d-flex justify-xl-center justify-start"
-                    cols="5"
-                    sm="4"
-                    md="2"
-                  >
-                    <p class="subtitle-1 pt-2 ml-xl-10">Grade:</p>
-                  </v-col>
-                  <v-col cols="7" sm="7" md="4" xl="2">
-                    <v-select
-                      :items="grades"
-                      :placeholder="grades[0]"
-                      outlined
-                      dense
-                      hide-details
-                    ></v-select>
-                  </v-col>
-                  <v-col cols="5" sm="4" md="1">
-                    <p class="subtitle-1">Layer:</p>
-                  </v-col>
-                  <v-col cols="7" sm="7" md="1" lg="3" xl="2">
-                    <v-select
-                      :items="departments"
-                      placeholder="Staff"
-                      outlined
-                      dense
-                    ></v-select>
-                  </v-col>
                 </v-row>
 
                 <v-row class="evaluation-line" dense>
-                  <v-col cols="5" sm="4" md="2">
-                    <p class="subtitle-1 pt-2">Total weight (%):</p>
+                  <v-col cols="5" sm="4" md="3" lg="2">
+                    <p class="subtitle-1">Total weight (%):</p>
                   </v-col>
-                  <v-col cols="7" sm="7" md="4" xl="2">
+                  <v-col cols="7" sm="8" md="4" lg="3" xl="2">
                     <v-select
                       :items="totalWeights"
-                      :placeholder="totalWeights[0]"
+                      :value="totalWeights[0]"
                       outlined
                       dense
                       hide-details
+                      disabled
                     ></v-select>
                   </v-col>
                 </v-row>
@@ -247,7 +201,7 @@
 
             <div class="d-flex justify-center mt-10">
               <v-btn class="btn-bottom mr-7" large dark>Create</v-btn>
-              <v-btn class="btn-bottom" large dark>Cancel</v-btn>
+              <v-btn class="btn-bottom" large dark>Reset</v-btn>
             </div>
           </v-col>
         </v-row>
@@ -560,15 +514,44 @@ export default {
 </script>
 
 <style scoped>
+.evaluation-info {
+  padding-right: 5rem !important;
+  padding-left: 5rem !important;
+}
+
 .header-card {
   font-weight: 600;
   font-size: 1.1rem;
   color: #222;
 }
 
+.subtitle-1 {
+  color: #333 !important;
+}
+
+.evaluation-line {
+  display: flex;
+  text-align: start;
+  margin-bottom: 0.3rem;
+}
+
 .minus-btn {
   position: absolute;
   top: 0;
   right: -3rem;
+}
+
+@media screen and (max-width: 960px) {
+  .evaluation-info {
+    padding-right: 3rem !important;
+    padding-left: 3rem !important;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .evaluation-info {
+    padding-right: 2rem !important;
+    padding-left: 2rem !important;
+  }
 }
 </style>
