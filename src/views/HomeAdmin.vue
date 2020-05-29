@@ -24,11 +24,14 @@ export default {
     return {
       title: "Dashboard",
       itemsNav: {
-        "/admin": ["Dashboard", "mdi-home"],
-        "/admin/CreateEvaluation": ["360 Degree Evaluation", "mdi-mouse"],
-        "/admin/CreateTemplate": ["Evaluation Template", "mdi-account"],
-        "/admin/CreateCriteria": ["Evaluation Criteria", "mdi-football-helmet"],
-        "/admin/CreateRelationship": ["Employee Relationship", "mdi-mouse"]
+        "/admin": ["Dashboard", "mdi-view-dashboard"],
+        "/admin/CreateEvaluation": ["360 Degree Evaluation", "mdi-book"],
+        "/admin/CreateTemplate": ["Evaluation Template", "mdi-bookmark"],
+        "/admin/CreateCriteria": ["Evaluation Criteria", "mdi-flag"],
+        "/admin/CreateRelationship": [
+          "Employee Relationship",
+          "mdi-account-network"
+        ]
       },
       userRole: "Admin"
     };

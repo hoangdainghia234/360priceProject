@@ -2,10 +2,11 @@
   <v-row class="float-right" style="margin-right: 30px">
     <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on }">
-        <v-btn color="primary" dark v-on="on" style="margin-top: 8px;"
-          ><v-icon>mdi-tooltip-outline-plus</v-icon> Add Category</v-btn
-        >
-        <v-btn class="ma-2" outlined color="indigo"
+        <v-btn large color="indigo" dark v-on="on" style="margin-top: 8px;">
+          <v-icon class="pr-2">mdi-plus-circle</v-icon>
+          Add Category
+        </v-btn>
+        <v-btn large class="ma-2" dark color="indigo"
           ><v-icon> mdi-crop-portrait</v-icon> Clone</v-btn
         >
       </template>

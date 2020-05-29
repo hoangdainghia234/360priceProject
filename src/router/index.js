@@ -14,11 +14,11 @@ import Reports from "../components/manager/Reports";
 import Timeline_Manager from "../components/manager/Timeline_Manager";
 import MultiRaterReview from "../components/manager/MultiRaterReview";
 // //admin
-import CreateTemplate from "../views/CreateTemplate.vue";
 import HomeAdmin from "../views/HomeAdmin.vue";
-import CreateEvaluation from "../views/CreateEvaluation.vue";
-import CreateCriteria from "../views/CreateCriteria.vue";
-import CreateRelationship from "../views/CreateRelationship.vue";
+import CreateTemplate from "../components/admin/CreateTemplate.vue";
+import CreateEvaluation from "../components/admin/CreateEvaluation.vue";
+import CreateCriteria from "../components/admin/CreateCriteria.vue";
+import CreateRelationship from "../components/admin/CreateRelationship.vue";
 //login
 import Login from "../views/Login";
 

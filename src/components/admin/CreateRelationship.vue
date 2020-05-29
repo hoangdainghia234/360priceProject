@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import Employee from "../components/Employee";
+import Employee from "../Employee";
 
 export default {
   name: "createRelationship",
