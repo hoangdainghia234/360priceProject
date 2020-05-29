@@ -89,24 +89,13 @@
             </v-expansion-panel>
           </v-expansion-panels>
         </v-card>
-        <v-card>
-          <v-row>
-            <v-col cols="12"><AddCategory /></v-col>
-          </v-row>
-        </v-card>
-        <v-card class="mt-10">
-          <v-row>
-            <v-col cols="12" class="pb-5">
-              <div class="text-center">
-                <v-btn large class="ma-2" tile color="indigo" dark>Save</v-btn>
-                <v-btn large class="ma-2" tile color="indigo" dark
-                  >Cancel</v-btn
-                >
-                <v-btn class="ma-2" tile large color="teal" icon></v-btn>
-              </div>
-            </v-col>
-          </v-row>
-        </v-card>
+        <v-row>
+          <v-col cols="12"><AddCategory /></v-col>
+        </v-row>
+        <div class="text-center mt-10">
+          <v-btn class="btn-bottom mr-7" large>Save</v-btn>
+          <v-btn class="btn-bottom" large>Reset</v-btn>
+        </div>
       </v-container>
     </v-content>
   </div>
@@ -130,3 +119,11 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.btn-bottom {
+  background-color: #444 !important;
+  color: #fff !important;
+  width: 6rem;
+}
+</style>

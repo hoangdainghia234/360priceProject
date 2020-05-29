@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="">
     <v-content>
       <v-container fluid>
         <v-row class="pr-3 pl-3 pr-sm-5 pl-sm-5 pr-md-7 pl-md-7">
@@ -17,6 +17,7 @@
                   </v-col>
                   <v-col cols="7" sm="8" md="4" lg="3" xl="2">
                     <v-text-field
+                      v-model="nameTemplate"
                       label="name"
                       placeholder="2019 Second Cycle-SSD-Staff-AH Template"
                       solo
@@ -68,7 +69,7 @@
 
               <v-expansion-panels class="pl-7 pr-12">
                 <v-expansion-panel
-                  v-for="mainPoint in mainPoints"
+                  v-for="mainPoint in selectMainPoints"
                   :key="mainPoint.id"
                   class="mt-5"
                 >
@@ -177,7 +178,6 @@
                           v-model="criteriaId"
                           :items="mainPoints"
                           item-text="name"
-                          item-value="mainId"
                           placeholder="Select"
                           outlined
                           dense
@@ -191,7 +191,7 @@
                         sm="12"
                         md="4"
                       >
-                        <v-btn @click="close">Add</v-btn>
+                        <v-btn @click="addCriteria">Add</v-btn>
                       </v-col>
                     </v-row>
                   </v-card-text>
@@ -199,8 +199,10 @@
               </v-dialog>
             </div>
 
-            <div class="d-flex justify-center mt-10">
-              <v-btn class="btn-bottom mr-7" large dark>Create</v-btn>
+            <div class="text-center mt-10">
+              <v-btn class="btn-bottom mr-7" large dark @click="print"
+                >Create</v-btn
+              >
               <v-btn class="btn-bottom" large dark>Reset</v-btn>
             </div>
           </v-col>
@@ -220,19 +222,24 @@ export default {
 
   data: () => {
     return {
+      nameTemplate: "",
       departments: [
         "Software Development Departement",
         "Department 1",
         "Department 2",
         "Department 3"
       ],
+
       totalWeights: [100, 90, 80],
+
       layers: ["Staff", "Admin", "HR", "Developer"],
+
       grades: [
         "Advance High [AH]",
         "Advance High [AH] 2",
         "Advance High [AH] 3"
       ],
+
       tableHeaders: [
         {
           text: "Category",
@@ -242,18 +249,36 @@ export default {
         },
         { text: "Weight (100%)", value: "weight" }
       ],
+
       mainPoints: [],
+
+      selectMainPoints: [],
+
       singleSelect: false,
+
       selectedCategory: [],
+
       dialog: false,
+
       editedIndex: -1,
+
+      criteriaId: "",
+
       editedItem: {
         name: "",
         weight: 0
       },
+
       defaultItem: {
         name: "",
         weight: 0
+      },
+
+      evaluationTemplate: {
+        name: "",
+        department: "",
+        totalWeight: "",
+        criterias: []
       }
     };
   },
@@ -507,7 +532,14 @@ export default {
     },
 
     addCriteria() {
-      close();
+      console.log(this.criteriaId);
+      this.selectMainPoints = [...this.selectMainPoints, this.criteriaId];
+      this.close();
+      this.criteriaId = "";
+    },
+
+    print() {
+      console.log(this.nameTemplate);
     }
   }
 };
@@ -539,6 +571,12 @@ export default {
   position: absolute;
   top: 0;
   right: -3rem;
+}
+
+.btn-bottom {
+  background-color: #444 !important;
+  color: #fff !important;
+  width: 6rem;
 }
 
 @media screen and (max-width: 960px) {
