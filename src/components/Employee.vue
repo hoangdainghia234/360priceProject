@@ -21,29 +21,10 @@
           <v-expansion-panel-content>
             <v-row>
               <v-col
-                cols="3"
-                sm="6"
-                md="3"
-                v-for="item in items"
-                :key="item.title"
-              >
-                <span>{{ item.title }}</span>
-                <v-select
-                  dense
-                  outlined
-                  :items="item.item_select"
-                  v-model="item.select"
-                  :rules="[v => !!v || 'cities is required']"
-                  required
-                ></v-select>
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col
                 cols="12"
                 sm="6"
                 md="3"
-                v-for="item in items1"
+                v-for="item in items"
                 :key="item.title"
               >
                 <span>{{ item.title }}</span>
@@ -58,9 +39,9 @@
               </v-col>
               <v-col cols="12" class="mt-0">
                 <div class="my-2">
-                  <v-btn color="primary" rounded dark
-                    ><v-icon>mdi-magnify</v-icon>Search</v-btn
-                  >
+                  <v-btn color="primary" rounded dark @click="searchEmployee()">
+                    <v-icon>mdi-magnify</v-icon>Search
+                  </v-btn>
                 </div>
               </v-col>
             </v-row>
@@ -212,7 +193,7 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="item in desserts" :key="item.name">
+                    <tr v-for="item in desserts" :key="item.employeeName">
                       <td class="text-center">{{ item.employeeName }}</td>
                       <td class="text-center">{{ item.satffID }}</td>
                       <td class="text-center">{{ item.ssu }}</td>
@@ -220,10 +201,16 @@
                       <td class="text-center">{{ item.Team }}</td>
                       <td class="text-center">{{ item.Positon }}</td>
                       <td class="text-center">
-                        <v-btn text
-                          ><v-icon> mdi-pencil-box-outline</v-icon></v-btn
+                        <v-btn text>
+                          <v-icon @click="editItem(item)">
+                            mdi-pencil-box-outline
+                          </v-icon></v-btn
                         >
-                        <v-btn text><v-icon>mdi-delete</v-icon></v-btn>
+                        <v-btn text>
+                          <v-icon @click="deleteItem(item)">
+                            mdi-delete
+                          </v-icon>
+                        </v-btn>
                       </td>
                     </tr>
                   </tbody>
@@ -239,7 +226,7 @@
                   <div class="indigo d-flex justify-center">
                     <v-card-title>
                       <span class="headline" style="color: white">
-                        Add/Update employee
+                        {{ formTitle }}
                       </span>
                     </v-card-title>
                   </div>
@@ -251,39 +238,19 @@
                       <v-card-text>
                         <v-container>
                           <v-row>
-                            <!-- Tast 1 -->
                             <v-col
                               cols="12"
                               sm="6"
                               md="4"
-                              v-for="item in items"
-                              :key="item.title"
+                              v-for="employee in items"
+                              :key="employee.title"
                             >
-                              <span>{{ item.title }}</span>
+                              <span>{{ employee.title }}</span>
                               <v-select
                                 dense
                                 outlined
-                                v-model="item.select"
-                                :items="item.item_select"
-                                :rules="[v => !!v || 'cities is required']"
-                                required
-                              ></v-select>
-                            </v-col>
-                          </v-row>
-                          <v-row>
-                            <v-col
-                              cols="12"
-                              sm="6"
-                              md="4"
-                              v-for="item in items1"
-                              :key="item.title"
-                            >
-                              <span>{{ item.title }}</span>
-                              <v-select
-                                dense
-                                outlined
-                                v-model="item.select"
-                                :items="item.item_select"
+                                v-model="employee.select"
+                                :items="employee.item_select"
                                 :rules="[v => !!v || 'cities is required']"
                                 required
                               ></v-select>
@@ -295,7 +262,7 @@
                     </v-card>
                   </v-card-subtitle>
                   <div class="text-center">
-                    <v-btn class="ma-2" tile color="indigo" dark>
+                    <v-btn class="ma-2" tile color="indigo" dark @click="save">
                       Save
                     </v-btn>
                     <v-btn
@@ -324,6 +291,7 @@ export default {
       dialog: false,
       dialog1: false,
       select: "",
+      editedIndex: -1,
       items: [
         {
           title: "City",
@@ -339,9 +307,7 @@ export default {
           title: "Team",
           item_select: ["VueJs", "ReactJs", "Php"],
           select: "VueJs"
-        }
-      ],
-      items1: [
+        },
         {
           title: "Employee",
           item_select: [
@@ -457,6 +423,30 @@ export default {
         }
       ]
     };
+  },
+  methods: {
+    editItem(item) {
+      this.editedIndex = this.items.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialog1 = true;
+    },
+    deleteItem(item) {
+      const index = this.desserts.indexOf(item);
+      confirm("Are you sure you want to delete this item?") &&
+        this.desserts.splice(index, 1);
+    },
+    save() {
+      if (this.editedIndex > -1) {
+        Object.assign(this.desserts[this.editedIndex], this.editedItem);
+      } else {
+        this.desserts.push(this.editedItem);
+      }
+    }
+  },
+  computed: {
+    formTitle() {
+      return this.editedIndex === -1 ? "Add/Update employee" : "Edit employee";
+    }
   }
 };
 </script>

@@ -30,8 +30,16 @@
                 </div>
               </td>
               <td>
-                <v-btn text><v-icon> mdi-pencil-box-outline</v-icon></v-btn>
-                <v-btn text><v-icon>mdi-delete</v-icon></v-btn>
+                <v-btn text>
+                  <v-icon @click="editItem(item)">
+                    mdi-pencil-box-outline
+                  </v-icon>
+                </v-btn>
+                <v-btn text>
+                  <v-icon @click="deleteItem(item)">
+                    mdi-delete
+                  </v-icon>
+                </v-btn>
               </td>
             </tr>
           </tbody>
@@ -87,6 +95,18 @@ export default {
   },
   components: {
     AddButton
+  },
+  methods: {
+    deleteItem(item) {
+      const index = this.headers.indexOf(item);
+      confirm("Are you sure you want to delete this item?") &&
+        this.headers.splice(index, 1);
+    },
+    editItem(item) {
+      this.editedIndex = this.items.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialog = true;
+    }
   }
 };
 </script>
