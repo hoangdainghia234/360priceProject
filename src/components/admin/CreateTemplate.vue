@@ -19,7 +19,7 @@
                     <v-text-field
                       v-model="nameTemplate"
                       label="name"
-                      placeholder="2019 Second Cycle-SSD-Staff-AH Template"
+                      placeholder="Enter template..."
                       solo
                       dense
                       hide-details
@@ -33,8 +33,9 @@
                   </v-col>
                   <v-col cols="7" sm="8" md="4" lg="3" xl="2">
                     <v-select
+                      v-model="selectedDepartment"
                       :items="departments"
-                      placeholder="Software Development Department"
+                      placeholder="Choose one"
                       outlined
                       dense
                       hide-details
@@ -69,12 +70,12 @@
 
               <v-expansion-panels class="pl-7 pr-12">
                 <v-expansion-panel
-                  v-for="mainPoint in selectMainPoints"
-                  :key="mainPoint.id"
+                  v-for="criteria in selectedCriterias"
+                  :key="criteria.id"
                   class="mt-5"
                 >
                   <v-expansion-panel-header>
-                    <span class="header-template">{{ mainPoint.name }}</span>
+                    <span class="header-template">{{ criteria.name }}</span>
                     <template v-slot:actions>
                       <v-icon color="indigo" large>$expand</v-icon>
                     </template>
@@ -83,7 +84,7 @@
                     <v-data-table
                       v-model="selectedCategory"
                       :headers="tableHeaders"
-                      :items="mainPoint.categories"
+                      :items="criteria.categories"
                       :single-select="singleSelect"
                       item-key="name"
                       show-select
@@ -102,7 +103,7 @@
                     class="minus-btn"
                     icon
                     color="black"
-                    @click="deletePanel(mainPoint.mainId)"
+                    @click="deletePanel(criteria.id)"
                   >
                     <v-icon>mdi-minus-circle</v-icon>
                   </v-btn>
@@ -175,7 +176,7 @@
                         md="4"
                       >
                         <v-select
-                          v-model="criteriaId"
+                          v-model="addedCriteria"
                           :items="mainPoints"
                           item-text="name"
                           placeholder="Select"
@@ -200,10 +201,10 @@
             </div>
 
             <div class="text-center mt-10">
-              <v-btn class="btn-bottom mr-7" large dark @click="print"
+              <v-btn class="btn-bottom mr-7" large dark @click="create"
                 >Create</v-btn
               >
-              <v-btn class="btn-bottom" large dark>Reset</v-btn>
+              <v-btn class="btn-bottom" large dark @click="reset">Reset</v-btn>
             </div>
           </v-col>
         </v-row>
@@ -222,7 +223,6 @@ export default {
 
   data: () => {
     return {
-      nameTemplate: "",
       departments: [
         "Software Development Departement",
         "Department 1",
@@ -249,21 +249,15 @@ export default {
         },
         { text: "Weight (100%)", value: "weight" }
       ],
-
+      nameTemplate: "",
       mainPoints: [],
-
-      selectMainPoints: [],
-
+      selectedDepartment: "",
       singleSelect: false,
-
       selectedCategory: [],
-
+      selectedCriterias: [],
       dialog: false,
-
       editedIndex: -1,
-
-      criteriaId: "",
-
+      addedCriteria: "",
       editedItem: {
         name: "",
         weight: 0
@@ -303,25 +297,28 @@ export default {
     initialize() {
       this.mainPoints = [
         {
-          mainId: 1,
+          id: 1,
           name: "Main point 1",
           categories: [
             {
-              categoryId: 1,
+              id: 1,
               name: "Category 1",
               weight: 15,
               items: [
                 {
+                  id: 1,
                   name: "Item 1",
                   explanation: "Item explanation 1",
                   weight: 5
                 },
                 {
+                  id: 2,
                   name: "Item 2",
                   explanation: "Item explanation 2",
                   weight: 5
                 },
                 {
+                  id: 3,
                   name: "Item 3",
                   explanation: "Item explanation 3",
                   weight: 5
@@ -329,21 +326,24 @@ export default {
               ]
             },
             {
-              categoryId: 2,
+              id: 2,
               name: "Category 2",
               weight: 10,
               items: [
                 {
+                  id: 4,
                   name: "Item 1",
                   explanation: "Item explanation 1",
                   weight: 5
                 },
                 {
+                  id: 5,
                   name: "Item 2",
                   explanation: "Item explanation 2",
                   weight: 5
                 },
                 {
+                  id: 6,
                   name: "Item 3",
                   explanation: "Item explanation 3",
                   weight: 5
@@ -351,21 +351,24 @@ export default {
               ]
             },
             {
-              categoryId: 3,
+              id: 3,
               name: "Category 3",
               weight: 0,
               items: [
                 {
+                  id: 7,
                   name: "Item 1",
                   explanation: "Item explanation 1",
                   weight: 5
                 },
                 {
+                  id: 8,
                   name: "Item 2",
                   explanation: "Item explanation 2",
                   weight: 5
                 },
                 {
+                  id: 9,
                   name: "Item 3",
                   explanation: "Item explanation 3",
                   weight: 5
@@ -375,25 +378,28 @@ export default {
           ]
         },
         {
-          mainId: 2,
+          id: 2,
           name: "Main point 2",
           categories: [
             {
-              categoryId: 4,
+              id: 4,
               name: "Category 4",
               weight: 13,
               items: [
                 {
+                  id: 10,
                   name: "Item 1",
                   explanation: "Item explanation 1",
                   weight: 5
                 },
                 {
+                  id: 11,
                   name: "Item 2",
                   explanation: "Item explanation 2",
                   weight: 5
                 },
                 {
+                  id: 12,
                   name: "Item 3",
                   explanation: "Item explanation 3",
                   weight: 5
@@ -401,21 +407,24 @@ export default {
               ]
             },
             {
-              categoryId: 5,
+              id: 5,
               name: "Category 5",
               weight: 3,
               items: [
                 {
+                  id: 13,
                   name: "Item 1",
                   explanation: "Item explanation 1",
                   weight: 5
                 },
                 {
+                  id: 14,
                   name: "Item 2",
                   explanation: "Item explanation 2",
                   weight: 5
                 },
                 {
+                  id: 15,
                   name: "Item 3",
                   explanation: "Item explanation 3",
                   weight: 5
@@ -423,21 +432,24 @@ export default {
               ]
             },
             {
-              categoryId: 6,
+              id: 6,
               name: "Category 6",
               weight: 7,
               items: [
                 {
+                  id: 16,
                   name: "Item 1",
                   explanation: "Item explanation 1",
                   weight: 5
                 },
                 {
+                  id: 17,
                   name: "Item 2",
                   explanation: "Item explanation 2",
                   weight: 5
                 },
                 {
+                  id: 18,
                   name: "Item 3",
                   explanation: "Item explanation 3",
                   weight: 5
@@ -447,25 +459,28 @@ export default {
           ]
         },
         {
-          mainId: 3,
+          id: 3,
           name: "Main point 3",
           categories: [
             {
-              categoryId: 7,
+              id: 7,
               name: "Category 7",
               weight: 9,
               items: [
                 {
+                  id: 1,
                   name: "Item 1",
                   explanation: "Item explanation 1",
                   weight: 5
                 },
                 {
+                  id: 2,
                   name: "Item 2",
                   explanation: "Item explanation 2",
                   weight: 5
                 },
                 {
+                  id: 3,
                   name: "Item 3",
                   explanation: "Item explanation 3",
                   weight: 5
@@ -473,26 +488,29 @@ export default {
               ]
             },
             {
-              categoryId: 8,
+              id: 8,
               name: "Category 8",
               weight: 5
             },
             {
-              categoryId: 9,
+              id: 9,
               name: "Category 9",
               weight: 12,
               items: [
                 {
+                  id: 1,
                   name: "Item 1",
                   explanation: "Item explanation 1",
                   weight: 5
                 },
                 {
+                  id: 2,
                   name: "Item 2",
                   explanation: "Item explanation 2",
                   weight: 5
                 },
                 {
+                  id: 3,
                   name: "Item 3",
                   explanation: "Item explanation 3",
                   weight: 5
@@ -528,18 +546,27 @@ export default {
     },
 
     deletePanel(id) {
-      this.mainPoints = this.mainPoints.filter(point => point.mainId !== id);
+      this.selectedCriterias = this.selectedCriterias.filter(
+        criteria => criteria.id !== id
+      );
     },
 
     addCriteria() {
-      console.log(this.criteriaId);
-      this.selectMainPoints = [...this.selectMainPoints, this.criteriaId];
+      if (this.selectedCriterias.includes(this.addedCriteria)) return;
+      this.selectedCriterias = [...this.selectedCriterias, this.addedCriteria];
       this.close();
-      this.criteriaId = "";
+      this.addedCriteria = "";
+      console.log(this.selectedCriterias);
     },
 
-    print() {
+    create() {
       console.log(this.nameTemplate);
+    },
+
+    reset() {
+      this.nameTemplate = "";
+      this.selectedDepartment = "";
+      this.selectedCriterias = [];
     }
   }
 };

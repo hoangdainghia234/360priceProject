@@ -19,9 +19,9 @@
                   </v-col>
                   <v-col cols="7" sm="8" md="4" lg="3" xl="2">
                     <v-select
-                      v-model="selectTemplate"
+                      v-model="selectedTemplate"
                       :items="template"
-                      :placeholder="template[0]"
+                      placeholder="Choose template..."
                       outlined
                       dense
                       hide-details
@@ -36,8 +36,8 @@
 
                   <v-col cols="7" sm="8" md="4" lg="3" xl="2">
                     <v-menu
-                      ref="menuRangeText"
-                      v-model="menuRangeText"
+                      ref="periodOfReview"
+                      v-model="periodOfReview"
                       :close-on-content-click="false"
                       :return-value.sync="dates"
                       transition="scale-transition"
@@ -60,13 +60,13 @@
                         <v-btn
                           text
                           color="primary"
-                          @click="menuRangeText = false"
+                          @click="periodOfReview = false"
                           >Cancel
                         </v-btn>
                         <v-btn
                           text
                           color="primary"
-                          @click="$refs.menuRangeText.save(dates)"
+                          @click="$refs.periodOfReview.save(dates)"
                           >OK
                         </v-btn>
                       </v-date-picker>
@@ -112,9 +112,9 @@
                   </v-col>
 
                   <v-col class="ml-7 mt-n3">
-                    <v-radio-group v-model="radios">
-                      <v-radio label="No end date" value="no-end"></v-radio>
-                      <v-radio value="end-by">
+                    <v-radio-group v-model="radiosDate">
+                      <v-radio label="No end date" value=""></v-radio>
+                      <v-radio :value="dateRecurEnd">
                         <template v-slot:label>
                           <div class="radio-recur-text align-center">
                             <span>End by:</span>
@@ -181,8 +181,10 @@
                   </v-col>
                   <v-col cols="7" sm="8" md="4" lg="3" xl="2">
                     <v-select
+                      v-model="appraisee"
                       :items="members"
                       item-text="name"
+                      placeholder="Choose one..."
                       outlined
                       dense
                       hide-details
@@ -197,39 +199,7 @@
                   </v-col>
                 </v-row>
 
-                <!-- <v-row
-                  v-for="rater in raters"
-                  class="evaluation-line mt-n5"
-                  dense
-                  :key="rater.id"
-                >
-                  <v-col
-                    cols="5"
-                    sm="4"
-                    md="3"
-                    lg="2"
-                    class="d-flex justify-center"
-                  >
-                    <p class="subtitle-1 mt-2">Name:</p>
-                  </v-col>
-                  <v-col cols="7" sm="8" md="4" lg="3" xl="2">
-                    <v-select
-                      v-model="selectRater"
-                      :items="members"
-                      item-text="name"
-                      outlined
-                      dense
-                      hide-details
-                      return-object
-                      @change="changeRater"
-                    ></v-select>
-                  </v-col>
-                  <v-col class="subtitle-1 mt-3 ml-4">
-                    <span>Position:</span>
-                    <span class="ml-3">{{ selectRater.position }}</span>
-                  </v-col>
-                </v-row> -->
-                <v-row>
+                <v-row class="evaluation-line mt-n5" dense>
                   <v-col
                     cols="5"
                     sm="4"
@@ -250,7 +220,6 @@
                       placeholder="Pick some"
                       label="name"
                       track-by="name"
-                      :preselect-first="true"
                     >
                       <template
                         slot="selection"
@@ -264,18 +233,16 @@
                         </span>
                       </template>
                     </multiselect>
-                    <!-- <pre class="language-json">
-                      <code>{{ raters  }}</code>
-                    </pre> -->
                     <v-list>
                       <v-list-item
-                        class="d-flex"
+                        class="rater-items"
                         v-for="rater in raters"
                         :key="rater.id"
+                        dense
                       >
-                        <!-- <v-list-item-icon>
-                          <v-icon v-if="item.icon" color="pink">mdi-star</v-icon>
-                        </v-list-item-icon> -->
+                        <!-- <v-list-item-avatar>
+                          <v-img :src="rater.avatar"></v-img>
+                        </v-list-item-avatar> -->
 
                         <v-list-item-content>
                           <v-list-item-title
@@ -286,29 +253,25 @@
                           ></v-list-item-content>
                         </v-list-item-content>
 
-                        <!-- <v-list-item-avatar>
-                          <v-img :src="rater.avatar"></v-img>
-                        </v-list-item-avatar> -->
+                        <v-list-item-icon class="mt-5 ml-2">
+                          <v-icon
+                            v-if="rater.position === 'Leader'"
+                            color="indigo"
+                          >
+                            mdi-star
+                          </v-icon>
+                        </v-list-item-icon>
                       </v-list-item>
                     </v-list>
                   </v-col>
                 </v-row>
-                <!-- <v-row class="evaluation-line mt-n5" dense>
-                  <v-col cols="5" sm="4" md="3" lg="2"></v-col>
-                  <v-col>
-                    <div class="mt-5">
-                      <v-btn depressed @click="addRater">
-                        <v-icon medium>mdi-plus-circle</v-icon>
-                        <span class="ml-2">Add rater</span>
-                      </v-btn>
-                    </div>
-                  </v-col>
-                </v-row> -->
               </v-card-text>
             </v-card>
 
             <div class="text-center mt-10">
-              <v-btn class="btn-bottom mr-7" large>Publish</v-btn>
+              <v-btn class="btn-bottom mr-7" large @click="publish"
+                >Publish
+              </v-btn>
               <v-btn class="btn-bottom" large @click="reset">Reset</v-btn>
             </div>
           </v-col>
@@ -332,11 +295,7 @@ export default {
 
   data: () => {
     return {
-      selectRater: "",
-      selectTemplate: "",
-      radios: "",
       title: "Create 360 Degree Evaluation",
-      mainPoint: [],
       template: [
         "Java Developer - SE",
         "Software Developer - SD",
@@ -350,33 +309,37 @@ export default {
         },
         {
           id: 2,
-          name: "Nguyen Van B",
+          name: "Huynh Van B",
           position: "Leader"
         },
         {
           id: 3,
-          name: "Nguyen Van C",
+          name: "Bui Minh C",
           position: "Manager"
         },
         {
           id: 4,
-          name: "Nguyen Van D",
+          name: "Le Thi D",
           position: "Tester"
         },
         {
           id: 5,
-          name: "Nguyen Van F",
+          name: "Tran Nguyen F",
           position: "Designer"
         }
       ],
-      raters: [],
-      dates: ["2019-09-10", "2019-09-20"],
+      selectedTemplate: "",
+      radiosDate: "",
+      appraisee: "",
+      raters: "",
+      dates: ["2020-07-01", "2020-07-10"],
       dateRecur: new Date().toISOString().substr(0, 10),
       dateRecurEnd: new Date().toISOString().substr(0, 10),
-      menuRangeText: false,
+      periodOfReview: false,
       menuRecur: false,
       menuRecurEnd: false,
-      checkRecurrence: true
+      checkRecurrence: true,
+      evaluations: []
     };
   },
 
@@ -387,14 +350,22 @@ export default {
   },
 
   methods: {
-    addRater() {
-      this.raters = [...this.raters, {}];
+    publish() {
+      this.evaluations.push({
+        template: this.selectedTemplate,
+        dateStart: this.dates[0],
+        dateEnd: this.dates[1],
+        dateRecurStart: this.dateRecur,
+        dateRecurEnd: this.radiosDate,
+        appraisee: this.appraisee,
+        raters: this.raters
+      });
+      console.log(this.evaluations);
     },
 
     reset() {
-      this.raters = "";
+      (this.raters = ""), (this.selectedTemplate = ""), (this.appraisee = "");
     }
-    // changeRater() {}
   }
 };
 </script>
@@ -402,6 +373,12 @@ export default {
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 
 <style scoped>
+.rater-items {
+  border-radius: 20px;
+  border: 1px solid gray;
+  margin-top: 1rem;
+}
+
 .evaluation-info {
   padding-right: 5rem !important;
   padding-left: 5rem !important;
