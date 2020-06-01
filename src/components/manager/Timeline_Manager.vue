@@ -15,11 +15,13 @@
                 <v-divider></v-divider>
                 <v-expansion-panel-content>
                   <v-row>
-                    <v-col cols="10">
+                    <v-col cols="12" lg="10">
                       <v-row>
                         <v-col
-                          cols="4"
-                          class="pl-10 pr-10"
+                          cols="12"
+                          sm="6"
+                          md="4"
+                          class="pl-lg-10 pr-lg-10"
                           v-for="item in items"
                           :key="item.item_title"
                         >
@@ -32,9 +34,13 @@
                             dense
                           ></v-combobox>
                         </v-col>
-                      </v-row>
-                      <v-row>
-                        <v-col cols="4" class="pl-10 pr-10">
+                        <v-col
+                          cols="12"
+                          sm="6"
+                          md="4"
+                          class="pl-lg-10 pr-lg-10"
+                        >
+                          <p class="mb-2">From - To</p>
                           <v-menu
                             ref="menu"
                             v-model="menu"
@@ -75,6 +81,8 @@
                           </v-menu>
                         </v-col>
                       </v-row>
+                      <!-- <v-row> -->
+                      <!-- </v-row> -->
                     </v-col>
                   </v-row>
                   <v-row>
@@ -120,7 +128,7 @@
                   <i>Comparison Charts</i>
                 </v-card-title>
                 <v-row class="justify-center mt-3 ml-3 mr-3">
-                  <v-col cols="6">
+                  <v-col cols="12" md="6" lg="6">
                     <v-card class="mb-3 align-center">
                       <div class="align-center">
                         <apexchart
@@ -131,7 +139,7 @@
                       </div>
                     </v-card>
                   </v-col>
-                  <v-col cols="6">
+                  <v-col cols="12" md="6" lg="6">
                     <v-card>
                       <div class="align-center">
                         <apexchart
@@ -174,7 +182,8 @@ export default {
         },
         {
           item_title: "Appraisee",
-          item_select: ["Sample name", "Sample name1", "Sample name2"]
+          item_select: ["Sample name", "Sample name1", "Sample name2"],
+          select: ["Sample name"]
         }
       ],
       items_datetime: [
