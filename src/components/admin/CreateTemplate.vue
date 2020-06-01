@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="">
     <v-content>
       <v-container fluid>
         <v-row class="pr-3 pl-3 pr-sm-5 pl-sm-5 pr-md-7 pl-md-7">
@@ -17,8 +17,9 @@
                   </v-col>
                   <v-col cols="7" sm="8" md="4" lg="3" xl="2">
                     <v-text-field
+                      v-model="nameTemplate"
                       label="name"
-                      placeholder="2019 Second Cycle-SSD-Staff-AH Template"
+                      placeholder="Enter template..."
                       solo
                       dense
                       hide-details
@@ -32,8 +33,9 @@
                   </v-col>
                   <v-col cols="7" sm="8" md="4" lg="3" xl="2">
                     <v-select
+                      v-model="selectedDepartment"
                       :items="departments"
-                      placeholder="Software Development Department"
+                      placeholder="Choose one"
                       outlined
                       dense
                       hide-details
@@ -68,40 +70,45 @@
 
               <v-expansion-panels class="pl-7 pr-12">
                 <v-expansion-panel
-                  v-for="mainPoint in mainPoints"
-                  :key="mainPoint.id"
+                  v-for="criteria in selectedCriterias"
+                  :key="criteria.id"
                   class="mt-5"
                 >
                   <v-expansion-panel-header>
-                    <span class="header-template">{{ mainPoint.name }}</span>
+                    <span class="header-template">{{ criteria.name }}</span>
                     <template v-slot:actions>
                       <v-icon color="indigo" large>$expand</v-icon>
                     </template>
                   </v-expansion-panel-header>
-                  <v-expansion-panel-content>
-                    <v-data-table
-                      v-model="selectedCategory"
-                      :headers="tableHeaders"
-                      :items="mainPoint.categories"
-                      :single-select="singleSelect"
-                      item-key="name"
-                      show-select
-                      hide-default-footer
-                      class="elevation-1"
-                    >
-                      <!-- <template v-slot:item.actions="{ item }">
-                        <v-icon medium class="" @click="editItem(item)">
-                          mdi-table-edit
-                        </v-icon>
-                      </template> -->
-                    </v-data-table>
+                  <v-expansion-panel-content class="main-point pb-5 pt-3">
+                    <div class="d-flex justify-center">
+                      <v-data-table
+                        v-model="selectedCategory"
+                        :headers="tableHeaders"
+                        :items="criteria.categories"
+                        :single-select="singleSelect"
+                        item-key="name"
+                        show-select
+                        hide-default-footer
+                        class="elevation"
+                      >
+                        <template v-slot="{ item }">
+                          <v-icon small class="mr-2" @click="editItem(item)">
+                            mdi-pencil
+                          </v-icon>
+                          <v-icon small @click="deleteItem(item)">
+                            mdi-delete
+                          </v-icon>
+                        </template>
+                      </v-data-table>
+                    </div>
                   </v-expansion-panel-content>
 
                   <v-btn
                     class="minus-btn"
                     icon
                     color="black"
-                    @click="deletePanel(mainPoint.mainId)"
+                    @click="deletePanel(criteria.id)"
                   >
                     <v-icon>mdi-minus-circle</v-icon>
                   </v-btn>
@@ -117,38 +124,6 @@
                     <span class="ml-2">Add Criteria</span>
                   </v-btn>
                 </template>
-                <!-- <v-card>
-                  <v-card-title>
-                    <span class="headline">{{ formTitle }}</span>
-                  </v-card-title>
-
-                  <v-card-text>
-                    <v-container>
-                      <v-row>
-                        <v-col cols="12" sm="6" md="4">
-                          <v-text-field
-                            v-model="editedItem.name"
-                            label="Category name"
-                          ></v-text-field>
-                        </v-col>
-                        <v-col cols="12" sm="6" md="4">
-                          <v-text-field
-                            v-model="editedItem.weight"
-                            label="Weight"
-                          ></v-text-field>
-                        </v-col>
-                      </v-row>
-                    </v-container>
-                  </v-card-text>
-
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" text @click="close"
-                      >Cancel</v-btn
-                    >
-                    <v-btn color="blue darken-1" text @click="save">Save</v-btn>
-                  </v-card-actions>
-                </v-card> -->
                 <v-card>
                   <v-card-title
                     class="d-flex justify-center indigo white--text"
@@ -174,10 +149,9 @@
                         md="4"
                       >
                         <v-select
-                          v-model="criteriaId"
+                          v-model="addedCriteria"
                           :items="mainPoints"
                           item-text="name"
-                          item-value="mainId"
                           placeholder="Select"
                           outlined
                           dense
@@ -191,7 +165,7 @@
                         sm="12"
                         md="4"
                       >
-                        <v-btn @click="close">Add</v-btn>
+                        <v-btn @click="addCriteria">Add</v-btn>
                       </v-col>
                     </v-row>
                   </v-card-text>
@@ -199,9 +173,11 @@
               </v-dialog>
             </div>
 
-            <div class="d-flex justify-center mt-10">
-              <v-btn class="btn-bottom mr-7" large dark>Create</v-btn>
-              <v-btn class="btn-bottom" large dark>Reset</v-btn>
+            <div class="text-center mt-10">
+              <v-btn class="btn-bottom mr-7" large dark @click="create"
+                >Create</v-btn
+              >
+              <v-btn class="btn-bottom" large dark @click="reset">Reset</v-btn>
             </div>
           </v-col>
         </v-row>
@@ -226,13 +202,17 @@ export default {
         "Department 2",
         "Department 3"
       ],
+
       totalWeights: [100, 90, 80],
+
       layers: ["Staff", "Admin", "HR", "Developer"],
+
       grades: [
         "Advance High [AH]",
         "Advance High [AH] 2",
         "Advance High [AH] 3"
       ],
+
       tableHeaders: [
         {
           text: "Category",
@@ -240,20 +220,33 @@ export default {
           sortable: false,
           value: "name"
         },
-        { text: "Weight (100%)", value: "weight" }
+        { text: "Weight (100%)", value: "weight" },
+        { text: "Actions", value: "actions", sortable: false }
       ],
+      nameTemplate: "",
       mainPoints: [],
+      selectedDepartment: "",
       singleSelect: false,
       selectedCategory: [],
+      selectedCriterias: [],
       dialog: false,
       editedIndex: -1,
+      addedCriteria: "",
       editedItem: {
         name: "",
         weight: 0
       },
+
       defaultItem: {
         name: "",
         weight: 0
+      },
+
+      evaluationTemplate: {
+        name: "",
+        department: "",
+        totalWeight: "",
+        criterias: []
       }
     };
   },
@@ -278,25 +271,28 @@ export default {
     initialize() {
       this.mainPoints = [
         {
-          mainId: 1,
+          id: 1,
           name: "Main point 1",
           categories: [
             {
-              categoryId: 1,
+              id: 1,
               name: "Category 1",
               weight: 15,
               items: [
                 {
+                  id: 1,
                   name: "Item 1",
                   explanation: "Item explanation 1",
                   weight: 5
                 },
                 {
+                  id: 2,
                   name: "Item 2",
                   explanation: "Item explanation 2",
                   weight: 5
                 },
                 {
+                  id: 3,
                   name: "Item 3",
                   explanation: "Item explanation 3",
                   weight: 5
@@ -304,21 +300,24 @@ export default {
               ]
             },
             {
-              categoryId: 2,
+              id: 2,
               name: "Category 2",
               weight: 10,
               items: [
                 {
+                  id: 4,
                   name: "Item 1",
                   explanation: "Item explanation 1",
                   weight: 5
                 },
                 {
+                  id: 5,
                   name: "Item 2",
                   explanation: "Item explanation 2",
                   weight: 5
                 },
                 {
+                  id: 6,
                   name: "Item 3",
                   explanation: "Item explanation 3",
                   weight: 5
@@ -326,21 +325,24 @@ export default {
               ]
             },
             {
-              categoryId: 3,
+              id: 3,
               name: "Category 3",
               weight: 0,
               items: [
                 {
+                  id: 7,
                   name: "Item 1",
                   explanation: "Item explanation 1",
                   weight: 5
                 },
                 {
+                  id: 8,
                   name: "Item 2",
                   explanation: "Item explanation 2",
                   weight: 5
                 },
                 {
+                  id: 9,
                   name: "Item 3",
                   explanation: "Item explanation 3",
                   weight: 5
@@ -350,25 +352,28 @@ export default {
           ]
         },
         {
-          mainId: 2,
+          id: 2,
           name: "Main point 2",
           categories: [
             {
-              categoryId: 4,
+              id: 4,
               name: "Category 4",
               weight: 13,
               items: [
                 {
+                  id: 10,
                   name: "Item 1",
                   explanation: "Item explanation 1",
                   weight: 5
                 },
                 {
+                  id: 11,
                   name: "Item 2",
                   explanation: "Item explanation 2",
                   weight: 5
                 },
                 {
+                  id: 12,
                   name: "Item 3",
                   explanation: "Item explanation 3",
                   weight: 5
@@ -376,21 +381,24 @@ export default {
               ]
             },
             {
-              categoryId: 5,
+              id: 5,
               name: "Category 5",
               weight: 3,
               items: [
                 {
+                  id: 13,
                   name: "Item 1",
                   explanation: "Item explanation 1",
                   weight: 5
                 },
                 {
+                  id: 14,
                   name: "Item 2",
                   explanation: "Item explanation 2",
                   weight: 5
                 },
                 {
+                  id: 15,
                   name: "Item 3",
                   explanation: "Item explanation 3",
                   weight: 5
@@ -398,21 +406,24 @@ export default {
               ]
             },
             {
-              categoryId: 6,
+              id: 6,
               name: "Category 6",
               weight: 7,
               items: [
                 {
+                  id: 16,
                   name: "Item 1",
                   explanation: "Item explanation 1",
                   weight: 5
                 },
                 {
+                  id: 17,
                   name: "Item 2",
                   explanation: "Item explanation 2",
                   weight: 5
                 },
                 {
+                  id: 18,
                   name: "Item 3",
                   explanation: "Item explanation 3",
                   weight: 5
@@ -422,25 +433,28 @@ export default {
           ]
         },
         {
-          mainId: 3,
+          id: 3,
           name: "Main point 3",
           categories: [
             {
-              categoryId: 7,
+              id: 7,
               name: "Category 7",
               weight: 9,
               items: [
                 {
+                  id: 1,
                   name: "Item 1",
                   explanation: "Item explanation 1",
                   weight: 5
                 },
                 {
+                  id: 2,
                   name: "Item 2",
                   explanation: "Item explanation 2",
                   weight: 5
                 },
                 {
+                  id: 3,
                   name: "Item 3",
                   explanation: "Item explanation 3",
                   weight: 5
@@ -448,26 +462,29 @@ export default {
               ]
             },
             {
-              categoryId: 8,
+              id: 8,
               name: "Category 8",
               weight: 5
             },
             {
-              categoryId: 9,
+              id: 9,
               name: "Category 9",
               weight: 12,
               items: [
                 {
+                  id: 1,
                   name: "Item 1",
                   explanation: "Item explanation 1",
                   weight: 5
                 },
                 {
+                  id: 2,
                   name: "Item 2",
                   explanation: "Item explanation 2",
                   weight: 5
                 },
                 {
+                  id: 3,
                   name: "Item 3",
                   explanation: "Item explanation 3",
                   weight: 5
@@ -503,11 +520,27 @@ export default {
     },
 
     deletePanel(id) {
-      this.mainPoints = this.mainPoints.filter(point => point.mainId !== id);
+      this.selectedCriterias = this.selectedCriterias.filter(
+        criteria => criteria.id !== id
+      );
     },
 
     addCriteria() {
-      close();
+      if (this.selectedCriterias.includes(this.addedCriteria)) return;
+      this.selectedCriterias = [...this.selectedCriterias, this.addedCriteria];
+      this.close();
+      this.addedCriteria = "";
+      console.log(this.selectedCriterias);
+    },
+
+    create() {
+      console.log(this.nameTemplate);
+    },
+
+    reset() {
+      this.nameTemplate = "";
+      this.selectedDepartment = "";
+      this.selectedCriterias = [];
     }
   }
 };
@@ -539,6 +572,18 @@ export default {
   position: absolute;
   top: 0;
   right: -3rem;
+}
+
+.elevation {
+  width: 100%;
+  max-width: 960px;
+  border: 1px gray solid;
+}
+
+.btn-bottom {
+  background-color: #444 !important;
+  color: #fff !important;
+  width: 6rem;
 }
 
 @media screen and (max-width: 960px) {
