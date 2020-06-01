@@ -31,8 +31,10 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="item in info.totalRatingCategories" :key="item">
-                  <td>{{ item.self }}</td>
+                <tr v-for="info in evaluationResult" :key="info">
+                  <td v-for="infoItem in item" :key="infoItem">
+                    {{ infoItem.member.name_mainpoint }}
+                  </td>
                   <td>{{ item.category }}</td>
                   <td>
                     <v-row
@@ -218,7 +220,7 @@ export default {
     return {
       dialog: false,
       name: ["Self", "Team", "Manager"],
-      info: null,
+      evaluationResult: "",
       // result: [
       //   {
       //     point: "Main point 1",
@@ -313,10 +315,13 @@ export default {
       }
     };
   },
-  mounted() {
+  created() {
     this.axios
       .get("http://34.72.144.52/api/employee/view-evaluation-result/user-3")
-      .then(response => (this.info = response));
+      .then(response => {
+        this.evaluationResul = response.data.totalRatingCategories;
+        console.log(this.evaluationResul);
+      });
   }
 };
 </script>

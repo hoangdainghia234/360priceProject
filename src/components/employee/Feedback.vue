@@ -11,7 +11,7 @@
           <v-container>
             <v-row class="d-flex justify-space-around">
               <v-col cols="11" lg="4">
-                <v-row>
+                <v-row class="align-center mb-2">
                   <v-col cols="3" class="pa-0">
                     <p class="ma-0">Full name:</p>
                   </v-col>
@@ -27,7 +27,7 @@
                   </v-col>
                 </v-row>
 
-                <v-row>
+                <v-row class="align-center mb-2">
                   <v-col cols="3" class="pa-0">
                     <p class="ma-0">Position:</p>
                   </v-col>
@@ -43,7 +43,7 @@
                   </v-col>
                 </v-row>
 
-                <v-row>
+                <v-row class="align-center mb-2">
                   <v-col cols="3" class="pa-0">
                     <p class="ma-0">Department:</p>
                   </v-col>
@@ -59,7 +59,7 @@
                   </v-col>
                 </v-row>
 
-                <v-row>
+                <v-row class="align-center mb-2">
                   <v-col cols="3" class="pa-0">
                     <p class="ma-0">SSU:</p>
                   </v-col>
@@ -76,7 +76,7 @@
                 </v-row>
               </v-col>
               <v-col cols="11" lg="4">
-                <v-row>
+                <v-row class="align-center mb-2">
                   <v-col cols="3" class="pa-0">
                     <p class="ma-0">Rater's name:</p>
                   </v-col>
@@ -92,7 +92,7 @@
                   </v-col>
                 </v-row>
 
-                <v-row>
+                <v-row class="align-center mb-2">
                   <v-col cols="3" class="pa-0">
                     <p class="ma-0">Position:</p>
                   </v-col>

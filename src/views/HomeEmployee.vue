@@ -27,7 +27,7 @@ export default {
         "/employee": ["Home", "mdi-home"],
         "/employee/evaluation": ["Evaluation Result", "mdi-account-check"],
         "/employee/timeline": ["Timeline", "mdi-chart-timeline"],
-        "/employee/feedback": ["Feedback", "mdi-message-plus"]
+        "/employee/feedback": ["360 Degree Feedback", "mdi-message-plus"]
       },
       userRole: "Employee"
     };
