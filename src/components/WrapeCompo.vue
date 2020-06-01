@@ -4,48 +4,43 @@
       <v-simple-table>
         <template v-slot:default>
           <tbody>
-            <tr v-for="header in headers" :key="header.id">
+            <tr v-for="header in headers" :key="header.name">
               <td class="text-right">{{ header.name }}</td>
-              <td class="text-right">{{ header.project }}</td>
+              <td class="text-right">{{ header.explaination }}</td>
               <td>
                 <div class="text-center pa-5">
-                  <v-btn color="primary" fab small dark class="mr-8">
-                    <span class="subtitle-2">{{ header.numberOne }}</span>
-                  </v-btn>
-                  <v-btn color="primary" fab small dark class="mr-8">
-                    <span class="subtitle-2">{{ header.numberTwo }}</span>
-                  </v-btn>
-                  <v-btn color="primary" fab small dark class="mr-8">
-                    <span class="subtitle-2">{{ header.numberThree }}</span>
-                  </v-btn>
-                  <v-btn color="primary" fab small dark class="mr-8">
-                    <span class="subtitle-2">{{ header.numberFour }}</span>
-                  </v-btn>
-                  <v-btn color="primary" fab small dark class="mr-8">
-                    <span class="subtitle-2">{{ header.numberFire }}</span>
-                  </v-btn>
-                  <v-btn color="primary" fab small dark>
-                    <span class="subtitle-2">{{ header.check }}</span>
+                  <v-btn
+                    color="primary"
+                    fab
+                    small
+                    dark
+                    class="mr-8"
+                    v-for="ratin in header.rating"
+                    :key="ratin.rating_point"
+                  >
+                    <span class="subtitle-2">
+                      {{ ratin.rating_point }}
+                    </span>
                   </v-btn>
                 </div>
               </td>
               <td>
                 <v-btn text>
-                  <v-icon @click="editItem(item)">
+                  <v-icon>
                     mdi-pencil-box-outline
                   </v-icon>
                 </v-btn>
                 <v-btn text>
-                  <v-icon @click="deleteItem(item)">
+                  <v-icon @click="deleteItem(header.id)">
                     mdi-delete
                   </v-icon>
                 </v-btn>
               </td>
             </tr>
           </tbody>
+          <AddButton class="float-left mt-8" />
         </template>
       </v-simple-table>
-      <AddButton class="float-left mt-8" />
     </v-list>
   </v-card>
 </template>
@@ -55,57 +50,18 @@ export default {
   data() {
     return {
       name: "sample main point",
-      headers: [
-        {
-          id: 1,
-          name: "Item 1",
-          project: "item exeplanation 1",
-          numberOne: 1,
-          numberTwo: 2,
-          numberThree: 3,
-          numberFour: 4,
-          numberFire: 5,
-          check: "N/A"
-        },
-        {
-          id: 2,
-          name: "Item 2",
-          project: "item exeplanation 2",
-          numberOne: 1,
-          numberTwo: 2,
-          numberThree: 3,
-          numberFour: 4,
-          numberFire: 5,
-          check: "N/A"
-        },
-        {
-          id: 3,
-          name: "Item 3",
-          project: "item exeplanation 3",
-          numberOne: 1,
-          numberTwo: 2,
-          numberThree: 3,
-          numberFour: 4,
-          numberFire: 5,
-          check: "N/A"
-        }
-      ],
       dialog: false
     };
+  },
+  props: {
+    headers: Array
   },
   components: {
     AddButton
   },
   methods: {
-    deleteItem(item) {
-      const index = this.headers.indexOf(item);
-      confirm("Are you sure you want to delete this item?") &&
-        this.headers.splice(index, 1);
-    },
-    editItem(item) {
-      this.editedIndex = this.items.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.dialog = true;
+    deleteItem(id) {
+      this.$emit("deleteCategory", id);
     }
   }
 };

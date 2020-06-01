@@ -292,40 +292,10 @@ export default {
       dialog1: false,
       select: "",
       editedIndex: -1,
-      items: [
-        {
-          title: "City",
-          item_select: ["HoChiMinh", "HaNoi", "DaNang"],
-          select: "HoChiMinh"
-        },
-        {
-          title: "SSU",
-          item_select: ["HoChiMinh1", "HaNoi1", "DaNang1"],
-          select: "HoChiMinh1"
-        },
-        {
-          title: "Team",
-          item_select: ["VueJs", "ReactJs", "Php"],
-          select: "VueJs"
-        },
-        {
-          title: "Employee",
-          item_select: [
-            "Bui Minh Dung",
-            "Nguyen Thi Thu Thanh",
-            "Pham Hoang Dai Nghia"
-          ],
-          select: "Bui Minh Dung"
-        },
-        {
-          title: "Staff ID",
-          item_select: ["12345678", "23456789", "12457689"],
-          select: "12345678"
-        }
-      ],
       desserts: [
         {
           title: "City",
+          item_select: ["HoChiMinh", "HaNoi", "DaNang"],
           employeeName: "Mark",
           satffID: 123456789,
           ssu: "SSU1OO",
