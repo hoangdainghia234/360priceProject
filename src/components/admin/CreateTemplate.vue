@@ -80,23 +80,28 @@
                       <v-icon color="indigo" large>$expand</v-icon>
                     </template>
                   </v-expansion-panel-header>
-                  <v-expansion-panel-content>
-                    <v-data-table
-                      v-model="selectedCategory"
-                      :headers="tableHeaders"
-                      :items="criteria.categories"
-                      :single-select="singleSelect"
-                      item-key="name"
-                      show-select
-                      hide-default-footer
-                      class="elevation-1"
-                    >
-                      <!-- <template v-slot:item.actions="{ item }">
-                        <v-icon medium class="" @click="editItem(item)">
-                          mdi-table-edit
-                        </v-icon>
-                      </template> -->
-                    </v-data-table>
+                  <v-expansion-panel-content class="main-point pb-5 pt-3">
+                    <div class="d-flex justify-center">
+                      <v-data-table
+                        v-model="selectedCategory"
+                        :headers="tableHeaders"
+                        :items="criteria.categories"
+                        :single-select="singleSelect"
+                        item-key="name"
+                        show-select
+                        hide-default-footer
+                        class="elevation"
+                      >
+                        <template v-slot="{ item }">
+                          <v-icon small class="mr-2" @click="editItem(item)">
+                            mdi-pencil
+                          </v-icon>
+                          <v-icon small @click="deleteItem(item)">
+                            mdi-delete
+                          </v-icon>
+                        </template>
+                      </v-data-table>
+                    </div>
                   </v-expansion-panel-content>
 
                   <v-btn
@@ -119,38 +124,6 @@
                     <span class="ml-2">Add Criteria</span>
                   </v-btn>
                 </template>
-                <!-- <v-card>
-                  <v-card-title>
-                    <span class="headline">{{ formTitle }}</span>
-                  </v-card-title>
-
-                  <v-card-text>
-                    <v-container>
-                      <v-row>
-                        <v-col cols="12" sm="6" md="4">
-                          <v-text-field
-                            v-model="editedItem.name"
-                            label="Category name"
-                          ></v-text-field>
-                        </v-col>
-                        <v-col cols="12" sm="6" md="4">
-                          <v-text-field
-                            v-model="editedItem.weight"
-                            label="Weight"
-                          ></v-text-field>
-                        </v-col>
-                      </v-row>
-                    </v-container>
-                  </v-card-text>
-
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="blue darken-1" text @click="close"
-                      >Cancel</v-btn
-                    >
-                    <v-btn color="blue darken-1" text @click="save">Save</v-btn>
-                  </v-card-actions>
-                </v-card> -->
                 <v-card>
                   <v-card-title
                     class="d-flex justify-center indigo white--text"
@@ -247,7 +220,8 @@ export default {
           sortable: false,
           value: "name"
         },
-        { text: "Weight (100%)", value: "weight" }
+        { text: "Weight (100%)", value: "weight" },
+        { text: "Actions", value: "actions", sortable: false }
       ],
       nameTemplate: "",
       mainPoints: [],
@@ -598,6 +572,12 @@ export default {
   position: absolute;
   top: 0;
   right: -3rem;
+}
+
+.elevation {
+  width: 100%;
+  max-width: 960px;
+  border: 1px gray solid;
 }
 
 .btn-bottom {
