@@ -21,7 +21,7 @@
                       hide-details
                       dense
                       class="ml-4"
-                      v-model="employee.name"
+                      v-model="fullNameUser"
                       readonly
                     ></v-text-field>
                   </v-col>
@@ -37,7 +37,7 @@
                       hide-details
                       dense
                       class="ml-4"
-                      v-model="employee.position"
+                      v-model="employeeEvaluation.user.positions[0].name"
                       readonly
                     ></v-text-field>
                   </v-col>
@@ -86,7 +86,7 @@
                       hide-details
                       dense
                       class="ml-4"
-                      v-model="employee.rater.name"
+                      v-model="fullNameRater"
                       readonly
                     ></v-text-field>
                   </v-col>
@@ -640,10 +640,42 @@ export default {
             }
           ]
         }
-      ]
+      ],
+      employeeEvaluation: "",
+      fullNameRater: "",
+      fullNameUser: ""
     };
   },
-  methods: {}
+  methods: {
+    userName(firstName, lastName, middleName) {
+      return firstName + " " + middleName + " " + lastName;
+    }
+  },
+
+  created() {
+    var assessorId = this.$route.params.assessorId;
+    var evaluationInfoId = this.$route.params.evaluationInfoId;
+    this.axios
+      .get(
+        "http://34.72.144.52/api/evaluations/assessor/" +
+          assessorId +
+          "/evaluation-info/" +
+          evaluationInfoId
+      )
+      .then(response => {
+        this.employeeEvaluation = response.data;
+        this.fullNameRater = this.userName(
+          this.employeeEvaluation.user.first_name,
+          this.employeeEvaluation.user.last_name,
+          this.employeeEvaluation.user.middle_name
+        );
+        this.fullNameUser = this.userName(
+          this.employeeEvaluation.evaluation_information.user.first_name,
+          this.employeeEvaluation.evaluation_information.user.last_name,
+          this.employeeEvaluation.evaluation_information.user.middle_name
+        );
+      });
+  }
 };
 </script>
 <style scoped>
