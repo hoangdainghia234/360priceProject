@@ -2,7 +2,7 @@
   <div class="">
     <v-content>
       <v-container fluid>
-        <h1>Home</h1>
+        <h1>Overview</h1>
       </v-container>
     </v-content>
   </div>

@@ -21,7 +21,7 @@
                       hide-details
                       dense
                       class="ml-4"
-                      v-model="employee.name"
+                      v-model="employeeEvaluation.user.first_name"
                       readonly
                     ></v-text-field>
                   </v-col>
@@ -643,7 +643,17 @@ export default {
       ]
     };
   },
-  methods: {}
+  methods: {},
+
+  created() {
+    this.axios
+      .get("http://34.72.144.52/api/evaluations/perform/1")
+      .then(response => {
+        this.employeeEvaluation = response.data.data;
+        console.log(this.employeeEvaluation);
+      });
+  },
+  computed: {}
 };
 </script>
 <style scoped>
