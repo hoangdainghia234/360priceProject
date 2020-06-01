@@ -69,8 +69,8 @@
             <i class="title">Initiative (Category)</i>
             <div
               class="grey lighten-2"
-              v-for="item in item_category"
-              :key="item"
+              v-for="(item, index) in item_category"
+              :key="index"
             >
               <div>
                 <v-row class="text-center align-center">
@@ -115,7 +115,7 @@
                         style="position: relative; bottom: 30px; z-index: 0"
                       ></v-progress-linear>
                       <div class="text-left body-2 ma-0">
-                        <p class="text-left body-2 ma-0" :value="(i = 1)">
+                        <p class="text-left body-2 ma-0" :currentTab="(i = 0)">
                           {{ item.item_choose[i].desc }}
                         </p>
                       </div>
@@ -262,6 +262,7 @@ export default {
           item_exp: "Explanation 1",
           item_comments: "",
           activeIndex: 1,
+          currentTab: 0,
           item_choose: [
             {
               id: 1,
@@ -301,6 +302,7 @@ export default {
           item_exp: "Explanation 2",
           item_comments: "",
           activeIndex: 1,
+          currentTab: 0,
           item_choose: [
             {
               id: 1,
@@ -340,6 +342,7 @@ export default {
           item_exp: "Explanation 3",
           item_comments: "",
           activeIndex: 1,
+          currentTab: 0,
           item_choose: [
             {
               id: 1,
@@ -379,6 +382,7 @@ export default {
           item_exp: "Explanation 4",
           item_comments: "",
           activeIndex: 1,
+          currentTab: 0,
           item_choose: [
             {
               id: 1,
@@ -418,6 +422,7 @@ export default {
           item_exp: "Explanation 5",
           item_comments: "",
           activeIndex: 1,
+          currentTab: 0,
           item_choose: [
             {
               id: 1,
@@ -471,6 +476,9 @@ export default {
         console.log(id + 1);
         this.item_category[id].activeIndex = i;
         console.log(this.item_category[id].activeIndex);
+        // this.items.desc = i;
+        console.log(this.item_category[id].item_choose[i - 1].desc);
+        this.item_category[id].currentTab = i;
       }
     }
     // descChange(desc) {
