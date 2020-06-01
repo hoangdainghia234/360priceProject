@@ -42,6 +42,7 @@
                 <WrapeCompo
                   :headers="headers"
                   @deleteCategory="deleteCategory"
+                  @saveTable="saveTable"
                 />
               </v-expansion-panel-content>
             </v-expansion-panel>
@@ -240,6 +241,13 @@ export default {
       const index = this.headers.find(item => item.id === id);
       confirm("Are you sure you want to delete this item?") &&
         this.headers.splice(index, 1);
+    },
+    saveTable() {
+      if (this.editedIndex > -1) {
+        Object.assign(this.headers[this.editedIndex], this.editedItem);
+      } else {
+        this.headers.push(this.editedItem);
+      }
     }
   }
 };
