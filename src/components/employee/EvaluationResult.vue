@@ -13,14 +13,26 @@
             <template v-slot:default>
               <thead>
                 <tr>
-                  <th v-for="(n, i) in 5" :key="n" class="text-center">
-                    {{ header[i] }}
+                  <th class="text-center">
+                    Main point
+                  </th>
+                  <th class="text-center">
+                    Category
+                  </th>
+                  <th class="text-center">
+                    Ratings
+                  </th>
+                  <th class="text-center">
+                    Comment
+                  </th>
+                  <th class="text-center">
+                    Detail
                   </th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="item in result" :key="item.point">
-                  <td>{{ item.point }}</td>
+                <tr v-for="item in info.totalRatingCategories" :key="item">
+                  <td>{{ item.self }}</td>
                   <td>{{ item.category }}</td>
                   <td>
                     <v-row
@@ -90,8 +102,20 @@
                   <template v-slot:default>
                     <thead>
                       <tr>
-                        <th v-for="(n, i) in 5" :key="n" class="text-center">
-                          {{ header_detail[i] }}
+                        <th class="text-center">
+                          Category
+                        </th>
+                        <th class="text-center">
+                          Item
+                        </th>
+                        <th class="text-center">
+                          Item explanation
+                        </th>
+                        <th class="text-center">
+                          Rating
+                        </th>
+                        <th class="text-center">
+                          Comment
                         </th>
                       </tr>
                     </thead>
@@ -194,67 +218,50 @@ export default {
     return {
       dialog: false,
       name: ["Self", "Team", "Manager"],
-      header: ["Main point", "Category", "Ratings", "Comment", "Detail"],
-      header_detail: [
-        "Category",
-        "Item",
-        "Item explanation",
-        "Rating",
-        "Comment"
-      ],
-      result: [
-        {
-          point: "Main point 1",
-          category: "category1",
-          rating: [0, 1, 2, 3]
-        },
-        {
-          point: "Main point 2",
-          category: "category2",
-          rating: [0, 1, 2, 3]
-        },
-        {
-          point: "Main point 3",
-          category: "category3",
-          rating: [0, 1, 2, 3]
-        },
-        {
-          point: "Main point 4",
-          category: "category4",
-          rating: [0, 1, 2, 3]
-        }
-        // {
-        //   point: "Main point 3",
-        //   category: "Category 3",
-        //   rating: [0, 5, 1, 2]
-        // },
-        // {
-        //   point: "Main point 4",
-        //   category: "Category 4",
-        //   rating: [0, 5, 1, 2]
-        // }
-      ],
+      info: null,
+      // result: [
+      //   {
+      //     point: "Main point 1",
+      //     category: "category1",
+      //     rating: [0, 1, 2, 3]
+      //   },
+      //   {
+      //     point: "Main point 2",
+      //     category: "category2",
+      //     rating: [0, 1, 2, 3]
+      //   },
+      //   {
+      //     point: "Main point 3",
+      //     category: "category3",
+      //     rating: [0, 1, 2, 3]
+      //   },
+      //   {
+      //     point: "Main point 4",
+      //     category: "category4",
+      //     rating: [0, 1, 2, 3]
+      //   }
+      // ],
 
-      detailCategory: [
-        {
-          itemCategory: "Category1",
-          itemName: "item1",
-          itemExp: "Item explanation1",
-          itemRating: [0, 1, 3, 2]
-        },
-        {
-          itemCategory: "Category1",
-          itemName: "item2",
-          itemExp: "Item explanation2",
-          itemRating: [0, 4, 1, 5]
-        },
-        {
-          itemCategory: "Category1",
-          itemName: "item2",
-          itemExp: "Item explanation2",
-          itemRating: [0, 4, 1, 5]
-        }
-      ],
+      // detailCategory: [
+      //   {
+      //     itemCategory: "Category1",
+      //     itemName: "item1",
+      //     itemExp: "Item explanation1",
+      //     itemRating: [0, 1, 3, 2]
+      //   },
+      //   {
+      //     itemCategory: "Category1",
+      //     itemName: "item2",
+      //     itemExp: "Item explanation2",
+      //     itemRating: [0, 4, 1, 5]
+      //   },
+      //   {
+      //     itemCategory: "Category1",
+      //     itemName: "item2",
+      //     itemExp: "Item explanation2",
+      //     itemRating: [0, 4, 1, 5]
+      //   }
+      // ],
 
       series: [
         {
@@ -305,6 +312,11 @@ export default {
         }
       }
     };
+  },
+  mounted() {
+    this.axios
+      .get("http://34.72.144.52/api/employee/view-evaluation-result/user-3")
+      .then(response => (this.info = response));
   }
 };
 </script>
