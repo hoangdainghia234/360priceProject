@@ -72,7 +72,8 @@ const routes = [
         component: Timeline
       },
       {
-        path: "feedback",
+        name: "feedback",
+        path: "feedback/assessor/:assessorId/evaluation-info/:evaluationInfoId",
         component: Feedback
       }
     ]
