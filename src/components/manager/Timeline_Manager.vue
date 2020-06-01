@@ -114,9 +114,9 @@
                 </template>
                 <v-card class="elevation-2 item--card">
                   <v-card-text @click="dialog = true">
-                    <p v-for="(n, i) in 4" :key="n">
-                      <span>{{ item.content[i].name }} : </span>
-                      <span>{{ item.content[i].rating }}</span>
+                    <p v-for="itemRating in item.content" :key="itemRating">
+                      <span>{{ itemRating.name }} : </span>
+                      <span>{{ itemRating.rating }}</span>
                     </p>
                   </v-card-text>
                 </v-card>

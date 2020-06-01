@@ -62,9 +62,11 @@
               <template v-slot:default>
                 <thead>
                   <tr>
-                    <th class="text-center" v-for="(n, i) in 5" :key="n">
-                      {{ thead_table[i] }}
-                    </th>
+                    <th class="text-center">#</th>
+                    <th class="text-center">Name</th>
+                    <th class="text-center">Evaluated at</th>
+                    <th class="text-center">Status</th>
+                    <th class="text-center">Detail</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -105,6 +107,7 @@
                   outlined
                   hide-details
                   dense
+                  readonly
                   v-model="hint"
                   class="ml-4 pa-0"
                 ></v-text-field>
@@ -120,15 +123,15 @@
                 <v-card>
                   <v-simple-table height="300px">
                     <template v-slot:default>
-                      <thead class="black">
+                      <thead class="grey">
                         <tr>
-                          <th
-                            class="text-center white--text"
-                            v-for="(n, i) in 5"
-                            :key="n"
-                          >
-                            {{ thead_table_dialog[i] }}
+                          <th class="text-center white--text">Category</th>
+                          <th class="text-center white--text">Item</th>
+                          <th class="text-center white--text">
+                            Item expalanation
                           </th>
+                          <th class="text-center white--text">Rating</th>
+                          <th class="text-center white--text">Comment</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -159,14 +162,6 @@ export default {
     hint: "Larry",
     panel: [0],
     readonly: false,
-    thead_table: ["#", "Name", "Evaluated at", "Status", "Detail"],
-    thead_table_dialog: [
-      "Category",
-      "Item",
-      "Item expalanation",
-      "Rating",
-      "Comment"
-    ],
     items: [
       {
         item_title: "Select the cycle name:",
@@ -252,7 +247,10 @@ export default {
 </script>
 
 <style scoped>
-.table-thead {
-  background: rgb(24, 20, 20);
+table th + th {
+  border-left: 1px solid #dddddd;
+}
+table td + td {
+  border-left: 1px solid #dddddd;
 }
 </style>
