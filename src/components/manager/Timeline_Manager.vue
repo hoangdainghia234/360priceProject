@@ -2,7 +2,7 @@
   <div class="">
     <v-content>
       <v-container fluid>
-        <v-row>
+        <v-row class="pr-3 pl-3 pr-sm-5 pl-sm-5 pr-md-7 pl-md-7">
           <v-col cols="12">
             <v-expansion-panels v-model="panel" :readonly="readonly" multiple>
               <v-expansion-panel>
@@ -87,9 +87,7 @@
                   </v-row>
                   <v-row>
                     <div class="pl-10">
-                      <v-btn rounded color="primary" dark
-                        ><v-icon>mdi-magnify</v-icon>Search</v-btn
-                      >
+                      <v-btn rounded><v-icon>mdi-magnify</v-icon>Search</v-btn>
                     </div>
                   </v-row>
                 </v-expansion-panel-content>
@@ -97,64 +95,68 @@
             </v-expansion-panels>
           </v-col>
         </v-row>
-        <v-card>
-          <v-card-title>
-            <v-icon>mdi-chart-line-variant</v-icon>
-            <span class="ml-3">Timeline</span>
-          </v-card-title>
-          <v-container>
-            <v-timeline>
-              <v-timeline-item
-                v-for="item in items_datetime"
-                :key="item.date"
-                color="red lighten-2"
-              >
-                <template v-slot:opposite>
-                  <span>{{ item.date }}</span>
-                </template>
-                <v-card class="elevation-2 item--card">
-                  <v-card-text @click="dialog = true">
-                    <p v-for="itemRating in item.content" :key="itemRating">
-                      <span>{{ itemRating.name }} : </span>
-                      <span>{{ itemRating.rating }}</span>
-                    </p>
-                  </v-card-text>
-                </v-card>
-              </v-timeline-item>
-            </v-timeline>
-            <v-dialog v-model="dialog">
-              <v-card>
-                <v-card-title class="d-flex justify-center grey lighten-2">
-                  <i>Comparison Charts</i>
-                </v-card-title>
-                <v-row class="justify-center mt-3 ml-3 mr-3">
-                  <v-col cols="12" md="6" lg="6">
-                    <v-card class="mb-3 align-center">
-                      <div class="align-center">
-                        <apexchart
-                          type="radar"
-                          :options="chartOptions"
-                          :series="series"
-                        ></apexchart>
-                      </div>
+        <v-row class="pr-3 pl-3 pr-sm-5 pl-sm-5 pr-md-7 pl-md-7">
+          <v-col cols="12">
+            <v-card>
+              <v-card-title>
+                <v-icon>mdi-chart-line-variant</v-icon>
+                <span class="ml-3">Timeline</span>
+              </v-card-title>
+              <v-container>
+                <v-timeline>
+                  <v-timeline-item
+                    v-for="item in items_datetime"
+                    :key="item.date"
+                    color="red lighten-2"
+                  >
+                    <template v-slot:opposite>
+                      <span>{{ item.date }}</span>
+                    </template>
+                    <v-card class="elevation-2 item--card">
+                      <v-card-text @click="dialog = true">
+                        <p v-for="itemRating in item.content" :key="itemRating">
+                          <span>{{ itemRating.name }} : </span>
+                          <span>{{ itemRating.rating }}</span>
+                        </p>
+                      </v-card-text>
                     </v-card>
-                  </v-col>
-                  <v-col cols="12" md="6" lg="6">
-                    <v-card>
-                      <div class="align-center">
-                        <apexchart
-                          type="radar"
-                          :options="chartOptions"
-                          :series="series"
-                        ></apexchart>
-                      </div>
-                    </v-card>
-                  </v-col>
-                </v-row>
-              </v-card>
-            </v-dialog>
-          </v-container>
-        </v-card>
+                  </v-timeline-item>
+                </v-timeline>
+                <v-dialog v-model="dialog">
+                  <v-card>
+                    <v-card-title class="d-flex justify-center grey lighten-2">
+                      <i>Comparison Charts</i>
+                    </v-card-title>
+                    <v-row class="justify-center mt-3 ml-3 mr-3">
+                      <v-col cols="12" md="6" lg="6">
+                        <v-card class="mb-3 align-center">
+                          <div class="align-center">
+                            <apexchart
+                              type="radar"
+                              :options="chartOptions"
+                              :series="series"
+                            ></apexchart>
+                          </div>
+                        </v-card>
+                      </v-col>
+                      <v-col cols="12" md="6" lg="6">
+                        <v-card>
+                          <div class="align-center">
+                            <apexchart
+                              type="radar"
+                              :options="chartOptions"
+                              :series="series"
+                            ></apexchart>
+                          </div>
+                        </v-card>
+                      </v-col>
+                    </v-row>
+                  </v-card>
+                </v-dialog>
+              </v-container>
+            </v-card>
+          </v-col>
+        </v-row>
       </v-container>
     </v-content>
   </div>
