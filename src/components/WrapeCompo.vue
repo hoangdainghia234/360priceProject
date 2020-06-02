@@ -136,7 +136,7 @@
                         color="indigo"
                         class="ma-2"
                         dark
-                        @click="dialog = false"
+                        @click="dialog2 = false"
                         >Close</v-btn
                       >
                     </v-row>
@@ -199,7 +199,7 @@ export default {
   },
   methods: {
     deleteItem(id) {
-      this.$emit("deleteCategory", id);
+      this.$emit("deleteCategoryItem", id);
     },
     save() {
       this.$emit("saveTable", this.editedItem);
