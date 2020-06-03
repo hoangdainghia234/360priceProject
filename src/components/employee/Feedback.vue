@@ -113,7 +113,7 @@
                 <i>{{ category.name }}</i>
               </p>
               <div
-                class="grey lighten-2"
+                class="grey lighten-2 notRated"
                 v-for="item in category.items_evaluation"
                 :key="item.id"
               >
@@ -122,10 +122,10 @@
                     <v-col cols="12" md="6" lg="2">
                       <p>{{ item.name }}</p>
                     </v-col>
-                    <v-col cols="12" md="6" lg="2">
+                    <v-col class="body-2" cols="12" md="6" lg="2">
                       <p>{{ item.explaination }}</p>
                     </v-col>
-                    <v-col cols="12" class="" md="6" lg="4">
+                    <v-col cols="12" class="mb-n7" md="6" lg="5">
                       <div class="ml-2 mr-2">
                         <v-list
                           class="d-flex flex-row justify-space-between mb-3"
@@ -133,17 +133,33 @@
                           style="position: relative; z-index: 1; top: 10px; bottom: 0"
                         >
                           <div
-                            v-for="point in item.rating_informations"
+                            v-for="point in sortPoints(
+                              item.rating_informations
+                            )"
                             :key="point.id"
                             class="d-flex justify-center"
                             :class="{ active: item.selectedPoint === point.id }"
                           >
                             <p
-                              style="position: absolute; bottom: 39px"
-                              class="body-2"
+                              style="position: absolute; bottom: 40px; width: 5rem;"
+                              class="ratingName body-2"
                             >
                               {{ point.rating_name }}
                             </p>
+                            <!-- <v-tooltip v-model="showPointExplain" top>
+                              <template v-slot:activator="{ on }">
+                                <v-btn
+                                  @click="clickPoint(item, point.id)"
+                                  v-on="on"
+                                  fab
+                                  small
+                                >
+                                  {{ point.rating_point }}
+                                </v-btn>
+                              </template>
+                              <span>{{ point.explaination }}</span>
+                            </v-tooltip>
+                            <div class="showPointExplain"></div> -->
                             <v-btn
                               @click="clickPoint(item, point.id)"
                               fab
@@ -159,14 +175,14 @@
                           value="100"
                           style="position: relative; bottom: 30px; z-index: 0"
                         ></v-progress-linear>
-                        <div class="text-left body-2 ma-0">
-                          <p class="text-left body-2 ma-0">
-                            {{ displayDesc(item) }}
+                        <div>
+                          <p class="" style="font-size: 0.8rem">
+                            {{ displayExplain(item) }}
                           </p>
                         </div>
                       </div>
                     </v-col>
-                    <v-col cols="12" md="6" lg="4">
+                    <v-col cols="12" md="6" lg="3">
                       <v-textarea
                         v-model="item.comment"
                         solo
@@ -201,6 +217,12 @@
             <v-icon>mdi-telegram</v-icon>
             <span class="pl-2">Submit</span>
           </v-btn>
+          <v-snackbar top v-model="snackbar">
+            {{ submitError }}
+            <v-btn color="error" text @click="snackbar = false">
+              Close
+            </v-btn>
+          </v-snackbar>
         </v-row>
       </v-container>
     </v-content>
@@ -219,7 +241,12 @@ export default {
       appraiseePosition: "",
       mainpoints: "",
       resultSubmit: [],
-      categories: []
+      ratingEvaluation: {},
+      categories: [],
+      snackbar: false,
+      showPointExplain: false,
+      submitError: "Please fill out all field",
+      isRate: false
     };
   },
   methods: {
@@ -250,20 +277,33 @@ export default {
     userName(firstName, lastName, middleName) {
       return firstName + " " + middleName + " " + lastName;
     },
-    displayDesc(item) {
+
+    sortPoints(points) {
+      return points.slice().sort(function(a, b) {
+        return a.rating_point - b.rating_point;
+      });
+    },
+
+    displayExplain(item) {
       var select = "";
       item.rating_informations
         .filter(point => point.id === item.selectedPoint)
         .forEach(i => (select = i.explaination));
       return select;
     },
+
     submit() {
       // var category_id = "";
       // var comment = "";
       var rating_evaluation = [];
+      var submitted = true;
       this.mainpoints.forEach(mainPoint =>
         mainPoint.categories_evaluation.forEach(category => {
           category.items_evaluation.forEach(item => {
+            if (!item.selectedPoint) {
+              this.isRate = true;
+              return (submitted = false);
+            }
             rating_evaluation.push({
               rating_info_id: item.selectedPoint,
               comment: item.comment || ""
@@ -276,11 +316,20 @@ export default {
           });
         })
       );
-
-      this.categories.assessment_id = this.employeeEvaluation.id;
-      this.axios
-        .post("http://34.72.144.52/api/rating-evaluation", this.categories)
-        .then(response => console.log(response));
+      if (submitted) {
+        this.ratingEvaluation.assessment_id = this.employeeEvaluation.id;
+        this.ratingEvaluation.categories = this.categories;
+        console.log(this.ratingEvaluation);
+        this.axios
+          .post(
+            "http://34.72.144.52/api/rating-evaluation",
+            this.ratingEvaluation
+          )
+          .then(response => console.log(response));
+        alert("Success!!!");
+      } else {
+        return (this.snackbar = true);
+      }
     },
     clickPoint(item, pointId) {
       item.selectedPoint = pointId;
@@ -304,8 +353,19 @@ export default {
   }
 };
 </script>
-<style scoped>
-.active > button {
-  background: blue !important;
+<style lang="scss" scoped>
+.active {
+  button {
+    background: #3f51b5 !important;
+    color: #fff;
+  }
+
+  .ratingName {
+    color: #1a237e;
+  }
+}
+
+.notRated {
+  border: 1px red solid !important;
 }
 </style>
