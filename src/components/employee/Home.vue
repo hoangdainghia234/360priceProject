@@ -31,8 +31,14 @@
                 </td>
                 <td>{{ item.evaluation_information.created_date }}</td>
                 <td>{{ item.evaluation_information.end_date }}</td>
-                <td class="status">
-                  {{ item.is_submitted ? "Rated" : "Not yet rated" }}
+                <td class="">
+                  <v-btn
+                    class="status"
+                    :class="{ 'disable-events': true }"
+                    :color="item.is_submitted ? 'info' : 'error'"
+                  >
+                    {{ item.is_submitted ? "Rated" : "Not yet rated" }}
+                  </v-btn>
                 </td>
                 <td>
                   <v-btn
@@ -86,9 +92,6 @@ export default {
       .get("http://34.72.144.52/api/evaluations/retrieve/3")
       .then(response => {
         this.listEvaluation = response.data;
-        console.log(
-          this.listEvaluation[0].evaluation_information.user.positions[0].name
-        );
       });
   }
 };
@@ -96,5 +99,12 @@ export default {
 
 //
 <style lang="scss" scoped>
-//
+.status {
+  width: 8rem;
+  font-size: 0.8rem !important;
+}
+
+.disable-events {
+  pointer-events: none;
+}
 </style>
