@@ -19,10 +19,10 @@
                   <th class="text-center">
                     Category
                   </th>
-                  <th class="text-center">
+                  <th class="text-center" style="width: 25rem">
                     Ratings
                   </th>
-                  <th class="text-center">
+                  <th class="text-center" style="width: 20rem">
                     Comment
                   </th>
                   <th class="text-center">
@@ -33,7 +33,7 @@
               <tbody>
                 <tr
                   v-for="itemCategory in mainPoints.category"
-                  :key="itemCategory.name"
+                  :key="itemCategory.id"
                 >
                   <td>{{ mainPoints.name }}</td>
                   <td>{{ itemCategory.name }}</td>
@@ -109,12 +109,11 @@
                         >
                           Category Detail
                         </v-card-title>
-                        <v-container>
+                        <v-container fluid>
                           <v-card>
                             <v-simple-table
                               fixed-header
-                              height="500"
-                              class="text-center"
+                              class="text-center mb-3 mt-3"
                               group-by="point"
                             >
                               <template v-slot:default>
@@ -126,13 +125,19 @@
                                     <th class="text-center">
                                       Item
                                     </th>
-                                    <th class="text-center">
+                                    <th class="text-center" style="width: 30%">
                                       Item explanation
                                     </th>
-                                    <th class="text-center">
+                                    <th
+                                      class="text-center"
+                                      style="width: 20rem"
+                                    >
                                       Rating
                                     </th>
-                                    <th class="text-center">
+                                    <th
+                                      class="text-center"
+                                      style="width: 15rem"
+                                    >
                                       Comment
                                     </th>
                                   </tr>
@@ -140,7 +145,7 @@
                                 <tbody>
                                   <tr
                                     v-for="item_detail in itemCategory.details"
-                                    :key="item_detail"
+                                    :key="item_detail.id"
                                   >
                                     <td>{{ itemCategory.name }}</td>
                                     <td>{{ item_detail.items.name_items }}</td>
@@ -261,26 +266,25 @@
           <v-card-title class="d-flex justify-center">
             Comparison Charts
           </v-card-title>
-
           <v-row class="justify-center ma-3">
-            <v-col cols="6">
+            <v-col cols="12" lg="6">
               <v-card class="mb-3 align-center">
                 <div class="align-center">
                   <apexchart
                     type="radar"
-                    :options="chartOptions"
-                    :series="series"
+                    :options="chartOptionsTeam"
+                    :series="seriesSelfAndTeam"
                   ></apexchart>
                 </div>
               </v-card>
             </v-col>
-            <v-col cols="6">
+            <v-col cols="12" lg="6">
               <v-card>
                 <div class="align-center">
                   <apexchart
                     type="radar"
-                    :options="chartOptions"
-                    :series="series"
+                    :options="chartOptionsManager"
+                    :series="seriesSelfAndMange"
                   ></apexchart>
                 </div>
               </v-card>
@@ -297,49 +301,11 @@ export default {
   data() {
     return {
       dialog: false,
-      name: ["Self", "Team", "Manager"],
       mainPoints: [],
-      series: [
-        {
-          name: "Self",
-          data: [80, 50, 30]
-        },
-        {
-          name: "Team",
-          data: [20, 30, 40]
-        }
-      ],
-      chartOptions: {
-        chart: {
-          type: "radar",
-          id: "vuechart",
-          align: "center",
-          toolbar: {
-            show: false
-          }
-        },
-        markers: {
-          size: 0
-        },
-        title: {
-          text: "Self vs Team",
-          align: "center"
-        },
-        stroke: {
-          width: 2
-        },
-        fill: {
-          opacity: 0.2
-        },
-        xaxis: {
-          categories: [],
-          labels: {
-            style: {
-              colors: ["#000000"]
-            }
-          }
-        }
-      }
+      seriesSelfAndTeam: [],
+      seriesSelfAndMange: [],
+      chartOptionsTeam: {},
+      chartOptionsManager: {}
     };
   },
   created() {
@@ -347,11 +313,114 @@ export default {
       .get("http://34.72.144.52/api/employee/view-evaluation-result/user-3")
       .then(response => {
         this.mainPoints = response.data.mainpoints;
-        // this.chartOptions.xaxis.categories = [this.mainPoints.category];
-        this.mainPoints.category.forEach(function(e) {
-          console.log(e);
+        var category = this.mainPoints.category;
+        var nameCategories = [];
+        var ratingSelf = [];
+        var ratingTeam = [];
+        var ratingManage = [];
+        var colorNameCategory = [];
+        Object.keys(category).forEach(function(key) {
+          nameCategories.push(category[key].name);
+          var rating_point_self = category[key].rating_point.self;
+          if (typeof category[key].rating_point.member !== "undefined") {
+            var rating_point_team = category[key].rating_point.member;
+          } else {
+            rating_point_team = 5;
+          }
+          if (typeof category[key].rating_point.mentor !== "undefined") {
+            var rating_point_manager = category[key].rating_point.mentor;
+          } else {
+            rating_point_manager = 5;
+          }
+          ratingSelf.push(rating_point_self);
+          ratingTeam.push(rating_point_team);
+          ratingManage.push(rating_point_manager);
+          colorNameCategory.push("#000000");
         });
-        console.log();
+        this.seriesSelfAndTeam = [
+          {
+            name: "Self",
+            data: ratingSelf
+          },
+          {
+            name: "Team",
+            data: ratingTeam
+          }
+        ];
+        this.seriesSelfAndMange = [
+          {
+            name: "Self",
+            data: ratingSelf
+          },
+          {
+            name: "Manager",
+            data: ratingManage
+          }
+        ];
+        this.chartOptionsTeam = {
+          chart: {
+            type: "radar",
+            id: "vuechart",
+            align: "center",
+            toolbar: {
+              show: false
+            }
+          },
+          markers: {
+            size: 0
+          },
+          title: {
+            text: "Self vs Team",
+            align: "center",
+            margin: 20
+          },
+          stroke: {
+            width: 2
+          },
+          fill: {
+            opacity: 0.2
+          },
+          xaxis: {
+            categories: nameCategories,
+            labels: {
+              style: {
+                colors: colorNameCategory
+              }
+            }
+          }
+        };
+        this.chartOptionsManager = {
+          chart: {
+            type: "radar",
+            id: "vuechart",
+            align: "center",
+            toolbar: {
+              show: false
+            }
+          },
+          markers: {
+            size: 0
+          },
+          title: {
+            text: "Self vs Manager",
+            align: "center",
+            margin: 20
+          },
+          stroke: {
+            width: 2
+          },
+          fill: {
+            opacity: 0.2
+          },
+          xaxis: {
+            categories: nameCategories,
+            labels: {
+              style: {
+                colors: colorNameCategory
+              }
+            }
+          }
+        };
       });
   }
 };
