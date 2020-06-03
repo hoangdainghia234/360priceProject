@@ -44,22 +44,6 @@
 
                 <v-row class="align-center mb-2">
                   <v-col cols="3" class="pa-0">
-                    <p class="ma-0">Department:</p>
-                  </v-col>
-                  <v-col cols="9" class="pa-0">
-                    <v-text-field
-                      outlined
-                      hide-details
-                      dense
-                      class="ml-4"
-                      v-model="appraiseePosition"
-                      readonly
-                    ></v-text-field>
-                  </v-col>
-                </v-row>
-
-                <v-row class="align-center mb-2">
-                  <v-col cols="3" class="pa-0">
                     <p class="ma-0">SSU:</p>
                   </v-col>
                   <v-col cols="9" class="pa-0">
@@ -233,6 +217,10 @@
             <v-icon>mdi-telegram</v-icon>
             <span class="pl-2">Submit</span>
           </v-btn>
+          <v-btn dark class="mt-4 ml-5" @click="submit">
+            <v-icon>mdi-content-save</v-icon>
+            <span class="pl-2">Save</span>
+          </v-btn>
           <v-snackbar top v-model="snackbar">
             {{ submitError }}
             <v-btn color="error" text @click="snackbar = false">
@@ -343,6 +331,7 @@ export default {
           )
           .then(response => console.log(response));
         alert("Success!!!");
+
       } else {
         return (this.snackbar = true);
       }
