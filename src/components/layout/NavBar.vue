@@ -2,13 +2,7 @@
   <div class="navBar">
     <v-navigation-drawer v-model="drawer" app>
       <v-list>
-        <v-list-item
-          v-for="(tag, item) in itemsNav"
-          :key="item"
-          @click="$emit('clickTag', tag[0])"
-          link
-          class=""
-        >
+        <v-list-item v-for="(tag, item) in itemsNav" :key="item" link class="">
           <v-icon class="iconNav">{{ tag[1] }}</v-icon>
           <router-link :to="item" class="itemLink">
             {{ tag[0] }}
