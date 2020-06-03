@@ -1,7 +1,7 @@
 <template>
   <v-content>
     <v-container fluid>
-      <v-row>
+      <v-row class="pr-3 pl-3 pr-sm-5 pl-sm-5 pr-md-7 pl-md-7">
         <v-col cols="12">
           <v-expansion-panels v-model="panel" :readonly="readonly" multiple>
             <v-expansion-panel>
@@ -18,7 +18,7 @@
                     <v-row
                       v-for="item in items"
                       :key="item.item_title"
-                      class="d-flex align-center ma-3"
+                      class="d-flex align-center ml-6 mb-3 mt-3"
                     >
                       <v-col cols="4" md="3" lg="4" class="pa-0">
                         <p class="ma-0">{{ item.item_title }}</p>
@@ -36,10 +36,8 @@
                   </v-col>
                 </v-row>
                 <v-row>
-                  <div class="ml-3">
-                    <v-btn rounded color="primary" dark
-                      ><v-icon>mdi-magnify</v-icon>Search</v-btn
-                    >
+                  <div class="ml-7">
+                    <v-btn rounded><v-icon>mdi-magnify</v-icon>Search</v-btn>
                   </div>
                 </v-row>
               </v-expansion-panel-content>
@@ -48,7 +46,7 @@
         </v-col>
       </v-row>
 
-      <v-row>
+      <v-row class="pr-3 pl-3 pr-sm-5 pl-sm-5 pr-md-7 pl-md-7">
         <v-col cols="12">
           <v-card outlined>
             <v-card-title>
@@ -62,9 +60,11 @@
               <template v-slot:default>
                 <thead>
                   <tr>
-                    <th class="text-center" v-for="(n, i) in 5" :key="n">
-                      {{ thead_table[i] }}
-                    </th>
+                    <th class="text-center">#</th>
+                    <th class="text-center">Name</th>
+                    <th class="text-center">Evaluated at</th>
+                    <th class="text-center">Status</th>
+                    <th class="text-center">Detail</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -83,7 +83,110 @@
                       >
                     </td>
                     <td class="text-center">
-                      <v-icon @click="dialog = true">mdi-eye</v-icon>
+                      <v-dialog v-model="dialog[0]" :key="item.id">
+                        <template v-slot:activator="{ on }">
+                          <v-btn text fab small v-on="on">
+                            <v-icon>mdi-eye</v-icon>
+                          </v-btn>
+                        </template>
+                        <v-card class="form-detail">
+                          <v-card-title
+                            class="d-flex justify-center indigo dark white--text"
+                          >
+                            <span>Evaluation Detail</span>
+                          </v-card-title>
+                          <v-container>
+                            <v-row class="ml-3 mr-3">
+                              <v-col
+                                cols="12"
+                                sm="6"
+                                md="4"
+                                lg="3"
+                                class="d-flex align-center"
+                              >
+                                <span>Rater:</span>
+                                <v-text-field
+                                  outlined
+                                  hide-details
+                                  dense
+                                  readonly
+                                  v-model="hint"
+                                  class="ml-4 pa-0"
+                                ></v-text-field>
+                              </v-col>
+                              <v-col
+                                cols="12"
+                                sm="6"
+                                md="4"
+                                lg="3"
+                                class="d-flex align-center ml-lg-12"
+                              >
+                                <span>Status:</span>
+                                <v-chip
+                                  class="ma-2 justify-center"
+                                  color="grey"
+                                  style="width:90px"
+                                  label
+                                  text-color="white"
+                                  >Done</v-chip
+                                >
+                              </v-col>
+                            </v-row>
+
+                            <v-row class="ml-3 mr-3">
+                              <v-col cols="12">
+                                <v-card>
+                                  <v-simple-table height="300px">
+                                    <template v-slot:default>
+                                      <thead class="grey">
+                                        <tr>
+                                          <th class="text-center white--text">
+                                            Category
+                                          </th>
+                                          <th class="text-center white--text">
+                                            Item
+                                          </th>
+                                          <th class="text-center white--text">
+                                            Item expalanation
+                                          </th>
+                                          <th class="text-center white--text">
+                                            Rating
+                                          </th>
+                                          <th class="text-center white--text">
+                                            Comment
+                                          </th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        <tr
+                                          v-for="itemDetail in item.detail"
+                                          :key="itemDetail.category"
+                                        >
+                                          <td class="text-center">
+                                            {{ itemDetail.category }}
+                                          </td>
+                                          <td class="text-center">
+                                            {{ itemDetail.item }}
+                                          </td>
+                                          <td class="text-center">
+                                            {{ itemDetail.itemexplan }}
+                                          </td>
+                                          <td class="text-center">
+                                            {{ itemDetail.rating }}
+                                          </td>
+                                          <td class="text-center">
+                                            {{ itemDetail.comment }}
+                                          </td>
+                                        </tr>
+                                      </tbody>
+                                    </template>
+                                  </v-simple-table>
+                                </v-card>
+                              </v-col>
+                            </v-row>
+                          </v-container>
+                        </v-card>
+                      </v-dialog>
                     </td>
                   </tr>
                 </tbody>
@@ -92,62 +195,6 @@
           </v-card>
         </v-col>
       </v-row>
-      <v-dialog v-model="dialog" max-width="90%">
-        <v-card class="form-detail">
-          <v-card-title class="d-flex justify-center grey lighten-2">
-            <span>Evaluation Detail</span>
-          </v-card-title>
-          <v-container>
-            <v-row>
-              <v-col cols="12" sm="6" md="4" lg="3" class="d-flex align-center">
-                <span>Rater:</span>
-                <v-text-field
-                  outlined
-                  hide-details
-                  dense
-                  v-model="hint"
-                  class="ml-4 pa-0"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="4" lg="3" class="d-flex align-center">
-                <span>Status:</span>
-                <v-btn class="ml-4">Done</v-btn>
-              </v-col>
-            </v-row>
-
-            <v-row>
-              <v-col cols="12">
-                <v-card>
-                  <v-simple-table height="300px">
-                    <template v-slot:default>
-                      <thead class="black">
-                        <tr>
-                          <th
-                            class="text-center white--text"
-                            v-for="(n, i) in 5"
-                            :key="n"
-                          >
-                            {{ thead_table_dialog[i] }}
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr v-for="item in dessertsDetail" :key="item.category">
-                          <td class="text-center">{{ item.category }}</td>
-                          <td class="text-center">{{ item.item }}</td>
-                          <td class="text-center">{{ item.itemexplan }}</td>
-                          <td class="text-center">{{ item.rating }}</td>
-                          <td class="text-center">{{ item.comment }}</td>
-                        </tr>
-                      </tbody>
-                    </template>
-                  </v-simple-table>
-                </v-card>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-card>
-      </v-dialog>
     </v-container>
   </v-content>
 </template>
@@ -159,14 +206,6 @@ export default {
     hint: "Larry",
     panel: [0],
     readonly: false,
-    thead_table: ["#", "Name", "Evaluated at", "Status", "Detail"],
-    thead_table_dialog: [
-      "Category",
-      "Item",
-      "Item expalanation",
-      "Rating",
-      "Comment"
-    ],
     items: [
       {
         item_title: "Select the cycle name:",
@@ -209,50 +248,122 @@ export default {
         id: "1",
         name: "Mark1",
         date: "22/12/2019",
-        status: "Pending"
+        status: "Pending",
+        detail: [
+          {
+            category: "category 1",
+            item: "item1",
+            itemexplan: "item expalanation 1",
+            rating: "3.0",
+            comment: "Lorem isum"
+          },
+          {
+            category: "category 2",
+            item: "item1",
+            itemexplan: "item expalanation 1",
+            rating: "3.0",
+            comment: "Lorem isum"
+          },
+          {
+            category: "category 3",
+            item: "item1",
+            itemexplan: "item expalanation 1",
+            rating: "3.0",
+            comment: "Lorem isum"
+          }
+        ]
       },
       {
         id: "2",
         name: "Mark2",
         date: "22/12/2019",
-        status: "In Progress"
+        status: "In Progress",
+        detail: [
+          {
+            category: "category 4",
+            item: "item1",
+            itemexplan: "item expalanation 1",
+            rating: "3.0",
+            comment: "Lorem isum"
+          },
+          {
+            category: "category 5",
+            item: "item1",
+            itemexplan: "item expalanation 1",
+            rating: "3.0",
+            comment: "Lorem isum"
+          },
+          {
+            category: "category 6",
+            item: "item1",
+            itemexplan: "item expalanation 1",
+            rating: "3.0",
+            comment: "Lorem isum"
+          }
+        ]
       },
       {
         id: "3",
         name: "Mark3",
         date: "22/12/2019",
-        status: "Done"
-      }
-    ],
-    dessertsDetail: [
-      {
-        category: "category 1",
-        item: "item1",
-        itemexplan: "item expalanation 1",
-        rating: "3.0",
-        comment: "Lorem isum"
-      },
-      {
-        category: "category 2",
-        item: "item1",
-        itemexplan: "item expalanation 1",
-        rating: "3.0",
-        comment: "Lorem isum"
-      },
-      {
-        category: "category 3",
-        item: "item1",
-        itemexplan: "item expalanation 1",
-        rating: "3.0",
-        comment: "Lorem isum"
+        status: "Done",
+        detail: [
+          {
+            category: "category 7",
+            item: "item1",
+            itemexplan: "item expalanation 1",
+            rating: "3.0",
+            comment: "Lorem isum"
+          },
+          {
+            category: "category 8",
+            item: "item1",
+            itemexplan: "item expalanation 1",
+            rating: "3.0",
+            comment: "Lorem isum"
+          },
+          {
+            category: "category 9",
+            item: "item1",
+            itemexplan: "item expalanation 1",
+            rating: "3.0",
+            comment: "Lorem isum"
+          }
+        ]
       }
     ]
+    // dessertsDetail: [
+    //   {
+    //     category: "category 1",
+    //     item: "item1",
+    //     itemexplan: "item expalanation 1",
+    //     rating: "3.0",
+    //     comment: "Lorem isum"
+    //   },
+    //   {
+    //     category: "category 2",
+    //     item: "item1",
+    //     itemexplan: "item expalanation 1",
+    //     rating: "3.0",
+    //     comment: "Lorem isum"
+    //   },
+    //   {
+    //     category: "category 3",
+    //     item: "item1",
+    //     itemexplan: "item expalanation 1",
+    //     rating: "3.0",
+    //     comment: "Lorem isum"
+    //   }
+    // ]
   })
 };
 </script>
 
 <style scoped>
-.table-thead {
-  background: rgb(24, 20, 20);
+table th + th {
+  border-left: 1px solid #dddddd;
+}
+table td + td {
+  border-left: 1px solid #dddddd;
 }
 </style>

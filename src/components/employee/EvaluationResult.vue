@@ -13,60 +13,248 @@
             <template v-slot:default>
               <thead>
                 <tr>
-                  <th v-for="(n, i) in 5" :key="n" class="text-center">
-                    {{ header[i] }}
+                  <th class="text-center">
+                    Main point
+                  </th>
+                  <th class="text-center">
+                    Category
+                  </th>
+                  <th class="text-center" style="width: 25rem">
+                    Ratings
+                  </th>
+                  <th class="text-center" style="width: 20rem">
+                    Comment
+                  </th>
+                  <th class="text-center">
+                    Detail
                   </th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="item in result" :key="item.point">
-                  <td>{{ item.point }}</td>
-                  <td>{{ item.category }}</td>
+                <tr
+                  v-for="itemCategory in mainPoints.category"
+                  :key="itemCategory.id"
+                >
+                  <td>{{ mainPoints.name }}</td>
+                  <td>{{ itemCategory.name }}</td>
                   <td>
-                    <v-row
-                      v-for="(n, i) in 3"
-                      :key="n"
-                      class="d-flex align-center"
-                      dense
-                    >
+                    <v-row class="d-flex align-center" dense>
                       <v-col cols="3 text-end">
-                        <span>{{ name[i] }}</span>
+                        <span>Seft</span>
                       </v-col>
 
-                      <v-col cols="8">
-                        <!-- <div class="text-center">
-                          <v-rating v-model="item.rating[i]"></v-rating>
-                        </div> -->
+                      <v-col cols="7">
                         <v-progress-linear
                           style="height: 15px"
-                          :value="item.rating[i] * 20"
+                          :value="itemCategory.rating_point.self * (100 / 5)"
                           color="grey"
                         >
                         </v-progress-linear>
                       </v-col>
 
-                      <v-col cols="1">
-                        <span>{{ item.rating[i] }}</span>
+                      <v-col cols="2" class="d-flex justify-start">
+                        <span>{{ itemCategory.rating_point.self }}</span>
                       </v-col>
                     </v-row>
-                    <!-- <v-progress-linear
-                      class="ma-2"
-                      style="height: 15px"
-                      :value="item.rating"
-                      color="grey"
-                    ></v-progress-linear>
-                    <v-progress-linear
-                      class="ma-2"
-                      style="height: 15px"
-                      :value="item.rating"
-                      color="grey"
-                    ></v-progress-linear> -->
+
+                    <v-row class="d-flex align-center" dense>
+                      <v-col cols="3 text-end">
+                        <span>Team</span>
+                      </v-col>
+
+                      <v-col cols="7">
+                        <v-progress-linear
+                          style="height: 15px"
+                          :value="itemCategory.rating_point.member * (100 / 5)"
+                          color="grey"
+                        >
+                        </v-progress-linear>
+                      </v-col>
+
+                      <v-col cols="2" class="d-flex justify-start">
+                        <span>{{ itemCategory.rating_point.member }}</span>
+                      </v-col>
+                    </v-row>
+
+                    <v-row class="d-flex align-center" dense>
+                      <v-col cols="3 text-end">
+                        <span>Manager</span>
+                      </v-col>
+
+                      <v-col cols="7">
+                        <v-progress-linear
+                          style="height: 15px"
+                          :value="itemCategory.rating_point.mentor * (100 / 5)"
+                          color="grey"
+                        >
+                        </v-progress-linear>
+                      </v-col>
+
+                      <v-col cols="2" class="d-flex justify-start">
+                        <span>{{ itemCategory.rating_point.mentor }}</span>
+                      </v-col>
+                    </v-row>
                   </td>
                   <td></td>
                   <td>
-                    <v-btn fab text dense small @click="dialog = true">
-                      <v-icon>mdi-information</v-icon>
-                    </v-btn>
+                    <v-dialog v-model="dialog[0]">
+                      <template v-slot:activator="{ on }">
+                        <v-btn text fab small v-on="on">
+                          <v-icon>mdi-information</v-icon>
+                        </v-btn>
+                      </template>
+                      <v-card>
+                        <v-card-title
+                          class="d-flex justify-center indigo dark white--text"
+                        >
+                          Category Detail
+                        </v-card-title>
+                        <v-container fluid>
+                          <v-card>
+                            <v-simple-table
+                              fixed-header
+                              class="text-center mb-3 mt-3"
+                              group-by="point"
+                            >
+                              <template v-slot:default>
+                                <thead class="grey">
+                                  <tr>
+                                    <th class="text-center">
+                                      Category
+                                    </th>
+                                    <th class="text-center">
+                                      Item
+                                    </th>
+                                    <th class="text-center" style="width: 30%">
+                                      Item explanation
+                                    </th>
+                                    <th
+                                      class="text-center"
+                                      style="width: 20rem"
+                                    >
+                                      Rating
+                                    </th>
+                                    <th
+                                      class="text-center"
+                                      style="width: 15rem"
+                                    >
+                                      Comment
+                                    </th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr
+                                    v-for="item_detail in itemCategory.details"
+                                    :key="item_detail.id"
+                                  >
+                                    <td>{{ itemCategory.name }}</td>
+                                    <td>{{ item_detail.items.name_items }}</td>
+                                    <td>
+                                      {{ item_detail.items.explaination }}
+                                    </td>
+                                    <td>
+                                      <v-row class="d-flex align-center" dense>
+                                        <v-col cols="3 text-end">
+                                          <span>Seft</span>
+                                        </v-col>
+
+                                        <v-col cols="7">
+                                          <v-progress-linear
+                                            style="height: 15px"
+                                            :value="
+                                              item_detail.items.rating_point
+                                                .self *
+                                                (100 / 5)
+                                            "
+                                            color="grey"
+                                          >
+                                          </v-progress-linear>
+                                        </v-col>
+
+                                        <v-col
+                                          cols="2"
+                                          class="d-flex justify-start"
+                                        >
+                                          <span>
+                                            {{
+                                              item_detail.items.rating_point
+                                                .self
+                                            }}
+                                          </span>
+                                        </v-col>
+                                      </v-row>
+
+                                      <v-row class="d-flex align-center" dense>
+                                        <v-col cols="3 text-end">
+                                          <span>Team</span>
+                                        </v-col>
+
+                                        <v-col cols="7">
+                                          <v-progress-linear
+                                            style="height: 15px"
+                                            :value="
+                                              item_detail.items.rating_point
+                                                .member *
+                                                (100 / 5)
+                                            "
+                                            color="grey"
+                                          >
+                                          </v-progress-linear>
+                                        </v-col>
+
+                                        <v-col
+                                          cols="2"
+                                          class="d-flex justify-start"
+                                        >
+                                          <span>
+                                            {{
+                                              item_detail.items.rating_point
+                                                .member
+                                            }}
+                                          </span>
+                                        </v-col>
+                                      </v-row>
+
+                                      <v-row class="d-flex align-center" dense>
+                                        <v-col cols="3 text-end">
+                                          <span>Manager</span>
+                                        </v-col>
+
+                                        <v-col cols="7">
+                                          <v-progress-linear
+                                            style="height: 15px"
+                                            :value="
+                                              item_detail.items.rating_point
+                                                .mentor *
+                                                (100 / 5)
+                                            "
+                                            color="grey"
+                                          >
+                                          </v-progress-linear>
+                                        </v-col>
+
+                                        <v-col
+                                          cols="2"
+                                          class="d-flex justify-start"
+                                        >
+                                          <span>
+                                            {{
+                                              item_detail.items.rating_point
+                                                .mentor
+                                            }}
+                                          </span>
+                                        </v-col>
+                                      </v-row>
+                                    </td>
+                                    <td></td>
+                                  </tr>
+                                </tbody>
+                              </template>
+                            </v-simple-table>
+                          </v-card>
+                        </v-container>
+                      </v-card>
+                    </v-dialog>
                   </td>
                 </tr>
               </tbody>
@@ -74,109 +262,29 @@
           </v-simple-table>
         </v-card>
 
-        <v-dialog v-model="dialog" max-width="80%">
-          <v-card>
-            <v-card-title class="d-flex justify-center grey lighten-2">
-              Category Detail
-            </v-card-title>
-            <v-container>
-              <v-card>
-                <v-simple-table
-                  fixed-header
-                  height="500"
-                  class="text-center"
-                  group-by="point"
-                >
-                  <template v-slot:default>
-                    <thead>
-                      <tr>
-                        <th v-for="(n, i) in 5" :key="n" class="text-center">
-                          {{ header_detail[i] }}
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr
-                        v-for="item_detail in detailCategory"
-                        :key="item_detail.itemCategory"
-                      >
-                        <td>{{ item_detail.itemCategory }}</td>
-                        <td>{{ item_detail.itemName }}</td>
-                        <td>{{ item_detail.itemExp }}</td>
-                        <td>
-                          <v-row
-                            v-for="(n, i) in 3"
-                            :key="n"
-                            class="d-flex align-center"
-                            dense
-                          >
-                            <v-col cols="3 text-end">
-                              <span>{{ name[i] }}</span>
-                            </v-col>
-
-                            <v-col cols="8">
-                              <!-- <div class="text-center">
-                                <v-rating v-model="item.rating[i]"></v-rating>
-                              </div> -->
-                              <v-progress-linear
-                                style="height: 15px"
-                                :value="item_detail.itemRating[i] * 20"
-                                color="grey"
-                              >
-                              </v-progress-linear>
-                            </v-col>
-
-                            <v-col cols="1">
-                              <span>{{ item_detail.itemRating[i] }}</span>
-                            </v-col>
-                          </v-row>
-                          <!-- <v-progress-linear
-                            class="ma-2"
-                            style="height: 15px"
-                            :value="item.rating"
-                            color="grey"
-                          ></v-progress-linear>
-                          <v-progress-linear
-                            class="ma-2"
-                            style="height: 15px"
-                            :value="item.rating"
-                            color="grey"
-                          ></v-progress-linear> -->
-                        </td>
-                        <td></td>
-                      </tr>
-                    </tbody>
-                  </template>
-                </v-simple-table>
-              </v-card>
-            </v-container>
-          </v-card>
-        </v-dialog>
-
         <v-card class="ml-10 mt-5 mr-10">
           <v-card-title class="d-flex justify-center">
             Comparison Charts
           </v-card-title>
-
           <v-row class="justify-center ma-3">
-            <v-col cols="6">
+            <v-col cols="12" lg="6">
               <v-card class="mb-3 align-center">
                 <div class="align-center">
                   <apexchart
                     type="radar"
-                    :options="chartOptions"
-                    :series="series"
+                    :options="chartOptionsTeam"
+                    :series="seriesSelfAndTeam"
                   ></apexchart>
                 </div>
               </v-card>
             </v-col>
-            <v-col cols="6">
+            <v-col cols="12" lg="6">
               <v-card>
                 <div class="align-center">
                   <apexchart
                     type="radar"
-                    :options="chartOptions"
-                    :series="series"
+                    :options="chartOptionsManager"
+                    :series="seriesSelfAndMange"
                   ></apexchart>
                 </div>
               </v-card>
@@ -193,123 +301,138 @@ export default {
   data() {
     return {
       dialog: false,
-      name: ["Self", "Team", "Manager"],
-      header: ["Main point", "Category", "Ratings", "Comment", "Detail"],
-      header_detail: [
-        "Category",
-        "Item",
-        "Item explanation",
-        "Rating",
-        "Comment"
-      ],
-      result: [
-        {
-          point: "Main point 1",
-          category: "category1",
-          rating: [0, 1, 2, 3]
-        },
-        {
-          point: "Main point 2",
-          category: "category2",
-          rating: [0, 1, 2, 3]
-        },
-        {
-          point: "Main point 3",
-          category: "category3",
-          rating: [0, 1, 2, 3]
-        },
-        {
-          point: "Main point 4",
-          category: "category4",
-          rating: [0, 1, 2, 3]
-        }
-        // {
-        //   point: "Main point 3",
-        //   category: "Category 3",
-        //   rating: [0, 5, 1, 2]
-        // },
-        // {
-        //   point: "Main point 4",
-        //   category: "Category 4",
-        //   rating: [0, 5, 1, 2]
-        // }
-      ],
-
-      detailCategory: [
-        {
-          itemCategory: "Category1",
-          itemName: "item1",
-          itemExp: "Item explanation1",
-          itemRating: [0, 1, 3, 2]
-        },
-        {
-          itemCategory: "Category1",
-          itemName: "item2",
-          itemExp: "Item explanation2",
-          itemRating: [0, 4, 1, 5]
-        },
-        {
-          itemCategory: "Category1",
-          itemName: "item2",
-          itemExp: "Item explanation2",
-          itemRating: [0, 4, 1, 5]
-        }
-      ],
-
-      series: [
-        {
-          name: "Self",
-          data: [80, 50, 30, 40, 100, 20]
-        },
-        {
-          name: "Team",
-          data: [20, 30, 40, 80, 20, 80]
-        }
-      ],
-      chartOptions: {
-        chart: {
-          type: "radar",
-          id: "vuechart",
-          align: "center",
-          toolbar: {
-            show: false
+      mainPoints: [],
+      seriesSelfAndTeam: [],
+      seriesSelfAndMange: [],
+      chartOptionsTeam: {},
+      chartOptionsManager: {}
+    };
+  },
+  created() {
+    this.axios
+      .get("http://34.72.144.52/api/employee/view-evaluation-result/user-3")
+      .then(response => {
+        this.mainPoints = response.data.mainpoints;
+        var category = this.mainPoints.category;
+        var nameCategories = [];
+        var ratingSelf = [];
+        var ratingTeam = [];
+        var ratingManage = [];
+        var colorNameCategory = [];
+        Object.keys(category).forEach(function(key) {
+          nameCategories.push(category[key].name);
+          var rating_point_self = category[key].rating_point.self;
+          if (typeof category[key].rating_point.member !== "undefined") {
+            var rating_point_team = category[key].rating_point.member;
+          } else {
+            rating_point_team = 5;
           }
-        },
-        markers: {
-          size: 0
-        },
-        title: {
-          text: "Self vs Team",
-          align: "center"
-        },
-        stroke: {
-          width: 2
-        },
-        fill: {
-          opacity: 0.2
-        },
-        xaxis: {
-          categories: [
-            "Category 1",
-            "Category 2",
-            "Category 3",
-            "Category 4",
-            "Category 5",
-            "Category 6"
-          ],
-          labels: {
-            style: {
-              colors: ["#000000"]
+          if (typeof category[key].rating_point.mentor !== "undefined") {
+            var rating_point_manager = category[key].rating_point.mentor;
+          } else {
+            rating_point_manager = 5;
+          }
+          ratingSelf.push(rating_point_self);
+          ratingTeam.push(rating_point_team);
+          ratingManage.push(rating_point_manager);
+          colorNameCategory.push("#000000");
+        });
+        this.seriesSelfAndTeam = [
+          {
+            name: "Self",
+            data: ratingSelf
+          },
+          {
+            name: "Team",
+            data: ratingTeam
+          }
+        ];
+        this.seriesSelfAndMange = [
+          {
+            name: "Self",
+            data: ratingSelf
+          },
+          {
+            name: "Manager",
+            data: ratingManage
+          }
+        ];
+        this.chartOptionsTeam = {
+          chart: {
+            type: "radar",
+            id: "vuechart",
+            align: "center",
+            toolbar: {
+              show: false
+            }
+          },
+          markers: {
+            size: 0
+          },
+          title: {
+            text: "Self vs Team",
+            align: "center",
+            margin: 20
+          },
+          stroke: {
+            width: 2
+          },
+          fill: {
+            opacity: 0.2
+          },
+          xaxis: {
+            categories: nameCategories,
+            labels: {
+              style: {
+                colors: colorNameCategory
+              }
             }
           }
-        }
-      }
-    };
+        };
+        this.chartOptionsManager = {
+          chart: {
+            type: "radar",
+            id: "vuechart",
+            align: "center",
+            toolbar: {
+              show: false
+            }
+          },
+          markers: {
+            size: 0
+          },
+          title: {
+            text: "Self vs Manager",
+            align: "center",
+            margin: 20
+          },
+          stroke: {
+            width: 2
+          },
+          fill: {
+            opacity: 0.2
+          },
+          xaxis: {
+            categories: nameCategories,
+            labels: {
+              style: {
+                colors: colorNameCategory
+              }
+            }
+          }
+        };
+      });
   }
 };
 </script>
 <style scoped>
 .table-thead-detail {
   background: rgb(24, 20, 20);
+}
+table th + th {
+  border-left: 1px solid #dddddd;
+}
+table td + td {
+  border-left: 1px solid #dddddd;
 }
 </style>
