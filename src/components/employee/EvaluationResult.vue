@@ -32,15 +32,15 @@
               </thead>
               <tbody>
                 <tr
-                  v-for="itemCategory in mainPoints.category"
-                  :key="itemCategory.id"
+                  v-for="(itemCategory, index) in mainPoints.category"
+                  :key="index"
                 >
                   <td>{{ mainPoints.name }}</td>
                   <td>{{ itemCategory.name }}</td>
                   <td>
                     <v-row class="d-flex align-center" dense>
                       <v-col cols="3 text-end">
-                        <span>Seft</span>
+                        <span>Self</span>
                       </v-col>
 
                       <v-col cols="7">
@@ -97,7 +97,7 @@
                   </td>
                   <td></td>
                   <td>
-                    <v-dialog v-model="dialog[0]">
+                    <v-dialog v-model="itemCategory.index">
                       <template v-slot:activator="{ on }">
                         <v-btn text fab small v-on="on">
                           <v-icon>mdi-information</v-icon>
@@ -155,7 +155,7 @@
                                     <td>
                                       <v-row class="d-flex align-center" dense>
                                         <v-col cols="3 text-end">
-                                          <span>Seft</span>
+                                          <span>Self</span>
                                         </v-col>
 
                                         <v-col cols="7">
@@ -266,27 +266,23 @@
           <v-card-title class="d-flex justify-center">
             Comparison Charts
           </v-card-title>
-          <v-row class="justify-center ma-3">
+          <v-row class="justify-center ml-3 mr-3">
             <v-col cols="12" lg="6">
-              <v-card class="mb-3 align-center">
-                <div class="align-center">
-                  <apexchart
-                    type="radar"
-                    :options="chartOptionsTeam"
-                    :series="seriesSelfAndTeam"
-                  ></apexchart>
-                </div>
+              <v-card>
+                <apexchart
+                  type="radar"
+                  :options="chartOptionsTeam"
+                  :series="seriesSelfAndTeam"
+                ></apexchart>
               </v-card>
             </v-col>
             <v-col cols="12" lg="6">
               <v-card>
-                <div class="align-center">
-                  <apexchart
-                    type="radar"
-                    :options="chartOptionsManager"
-                    :series="seriesSelfAndMange"
-                  ></apexchart>
-                </div>
+                <apexchart
+                  type="radar"
+                  :options="chartOptionsManager"
+                  :series="seriesSelfAndMange"
+                ></apexchart>
               </v-card>
             </v-col>
           </v-row>
@@ -366,8 +362,26 @@ export default {
               show: false
             }
           },
+          plotOptions: {
+            radar: {
+              size: 120,
+              polygons: {
+                strokeColors: "#e9e9e9",
+                fill: {
+                  colors: ["#f8f8f8", "#fff"]
+                }
+              }
+            }
+          },
+          tooltip: {
+            y: {
+              formatter: function(val) {
+                return val;
+              }
+            }
+          },
           markers: {
-            size: 0
+            size: 3
           },
           title: {
             text: "Self vs Team",
@@ -398,8 +412,26 @@ export default {
               show: false
             }
           },
+          plotOptions: {
+            radar: {
+              size: 120,
+              polygons: {
+                strokeColors: "#e9e9e9",
+                fill: {
+                  colors: ["#f8f8f8", "#fff"]
+                }
+              }
+            }
+          },
+          tooltip: {
+            y: {
+              formatter: function(val) {
+                return val;
+              }
+            }
+          },
           markers: {
-            size: 0
+            size: 3
           },
           title: {
             text: "Self vs Manager",
@@ -422,6 +454,10 @@ export default {
           }
         };
       });
+  },
+  success: function() {
+    console.error.clear();
+    console.clear();
   }
 };
 </script>
