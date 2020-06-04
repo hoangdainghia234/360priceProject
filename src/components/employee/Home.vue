@@ -44,12 +44,7 @@
                     Rating
                   </v-btn>
                   <v-btn
-                    @click="
-                      evaluateNav(
-                        item.assessor_user_id,
-                        item.evaluation_information.id
-                      )
-                    "
+                    @click="review"
                     v-if="item.is_submitted === 1"
                     class="ml-3"
                   >
@@ -88,14 +83,14 @@ export default {
 
     getPosition(item) {
       var positionName = "";
-      item.evaluation_information.user.positions.forEach(
-        position => (positionName = position.name)
+      item.evaluation_information.user.users_positions.forEach(
+        users_position => (positionName = users_position.position.name)
       );
       return positionName;
     },
 
     review() {
-      alert("Comming soon...");
+      alert("Coming soon...");
     },
 
     fullname(item) {
@@ -108,7 +103,7 @@ export default {
   },
   created() {
     this.axios
-      .get("http://34.72.144.52/api/evaluations/retrieve/3")
+      .get("http://34.72.144.52/api/evaluations/retrieve/2")
       .then(response => {
         this.listEvaluation = response.data;
       });

@@ -9,7 +9,7 @@
           </v-card-title>
           <v-divider></v-divider>
           <v-container>
-            <v-row class="d-flex justify-space-around">
+            <v-row class="d-flex justify-space-around mb-n5">
               <v-col cols="11" lg="4">
                 <v-row>
                   <v-col cols="5" class="text-end pa-0 pr-7">
@@ -25,7 +25,7 @@
                     <p class="ma-0">Position:</p>
                   </v-col>
                   <v-col cols="7" class="pa-0 indigo--text">
-                    <p>{{ employeeEvaluation.user.positions[0].name }}</p>
+                    <p>{{ appraiseePosition }}</p>
                   </v-col>
                 </v-row>
 
@@ -84,7 +84,10 @@
                 v-for="item in category.items_evaluation"
                 :key="item.id"
               >
-                <div style="height: 13rem;">
+                <div
+                  style="height: 13rem;"
+                  :class="{ notFillItem: item.notFill }"
+                >
                   <v-row class="text-center align-center">
                     <v-col class="mb-n5" cols="12" md="6" lg="2">
                       <p class="subtitle-1">{{ item.name }}</p>
@@ -143,7 +146,11 @@
                           style="position: relative; bottom: 30px; z-index: 0"
                         ></v-progress-linear>
                         <div>
-                          <p class="mb-n5" style="font-size: 0.8rem">
+                          <p
+                            class="mb-n5"
+                            style="font-size: 0.8rem"
+                            :class="{ notFillPoint: item.notFill }"
+                          >
                             {{ displayExplain(item) }}
                           </p>
                         </div>
@@ -181,10 +188,33 @@
         </v-card>
 
         <v-row class="d-flex justify-center mb-5">
-          <v-btn dark class="mt-4" @click="submit">
-            <v-icon>mdi-telegram</v-icon>
-            <span class="pl-2">Submit</span>
-          </v-btn>
+          <v-dialog v-model="dialog" persistent max-width="50rem">
+            <template v-slot:activator="{ on }">
+              <v-btn dark class="mt-4" @click="submit" v-on="on">
+                <v-icon>mdi-telegram</v-icon>
+                <span class="pl-2">Submit</span>
+              </v-btn>
+            </template>
+            <v-card>
+              <v-card-title class="headline">
+                <v-icon color="#1a237e" size="40" class="mr-5"
+                  >mdi-checkbox-marked-circle-outline</v-icon
+                >
+                <span>Successfully Evaluated</span>
+              </v-card-title>
+              <v-card-text>{{ successAlert() }}</v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="green darken-1" text @click="dialog = false"
+                  >Disagree</v-btn
+                >
+                <v-btn color="green darken-1" text @click="dialog = false"
+                  >Agree</v-btn
+                >
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+
           <v-btn class="mt-4 ml-5" @click="save">
             <v-icon>mdi-content-save</v-icon>
             <span class="pl-2">Save</span>
@@ -194,13 +224,6 @@
             {{ submitError }}
             <v-btn color="error" text @click="snackbar = false">
               Close
-            </v-btn>
-          </v-snackbar>
-          <v-snackbar top v-model="isSuccess">
-            <v-icon color="red">mdi-heart</v-icon>
-            {{ successAlert }}
-            <v-btn color="error" text @click="isSuccess = false">
-              Back to Home page
             </v-btn>
           </v-snackbar>
         </v-row>
@@ -226,37 +249,38 @@ export default {
       snackbar: false,
       showPointExplain: false,
       submitError: "Please fill out all field",
-      successAlert:
-        "Rate success. Thank you for taking the time and effort to rate.",
-      isRate: false,
-      isSuccess: false
+      notFillAll: false,
+      isSubmitted: false,
+      dialog: false
     };
   },
   methods: {
     initialize() {
       this.rater = this.employeeEvaluation.user;
       this.appraisee = this.employeeEvaluation.evaluation_information.user;
-      this.raterPosition = this.rater.positions[0].name;
-      this.appraiseePosition = this.appraisee.positions[0].name;
+      this.raterPosition = this.rater.users_positions[0].position.name;
+      this.appraiseePosition = this.appraisee.users_positions[0].position.name;
       this.mainpoints = this.employeeEvaluation.evaluation_information.evaluation_form.mainpoints;
       this.mainpoints.forEach(categories =>
         categories.categories_evaluation.forEach(category =>
-          category.items_evaluation.forEach(item =>
-            this.$set(item, "selectedPoint", 0)
-          )
+          category.items_evaluation.forEach(item => {
+            this.$set(item, "selectedPoint", 0);
+            this.$set(item, "notFill", 0);
+          })
         )
       );
       this.fullNameRater = this.userName(
-        this.employeeEvaluation.user.first_name,
-        this.employeeEvaluation.user.last_name,
-        this.employeeEvaluation.user.middle_name
+        this.rater.first_name,
+        this.rater.last_name,
+        this.rater.middle_name
       );
       this.fullNameUser = this.userName(
-        this.employeeEvaluation.evaluation_information.user.first_name,
-        this.employeeEvaluation.evaluation_information.user.last_name,
-        this.employeeEvaluation.evaluation_information.user.middle_name
+        this.appraisee.first_name,
+        this.appraisee.last_name,
+        this.appraisee.middle_name
       );
     },
+
     userName(firstName, lastName, middleName) {
       return firstName + " " + middleName + " " + lastName;
     },
@@ -267,12 +291,25 @@ export default {
       });
     },
 
+    clickPoint(item, pointId) {
+      item.notFill = 0;
+      item.selectedPoint = pointId;
+    },
+
     displayExplain(item) {
       var select = "";
-      item.rating_informations
-        .filter(point => point.id === item.selectedPoint)
-        .forEach(i => (select = i.explaination));
+      if (this.notFillAll && !item.selectedPoint) {
+        select = "Please fill in !";
+      } else {
+        item.rating_informations
+          .filter(point => point.id === item.selectedPoint)
+          .forEach(i => (select = i.explaination));
+      }
       return select;
+    },
+
+    successAlert() {
+      return `Hi ${this.fullNameRater}. Thank you for taking the time and effort to evaluate for ${this.fullNameUser}.`;
     },
 
     save() {
@@ -287,40 +324,37 @@ export default {
         mainPoint.categories_evaluation.forEach(category => {
           category.items_evaluation.forEach(item => {
             if (!item.selectedPoint) {
-              this.isRate = true;
-              return (submitted = false);
+              item.notFill = 1;
+              this.notFillAll = true;
+              submitted = false;
+            } else {
+              rating_evaluation.push({
+                rating_info_id: item.selectedPoint,
+                comment: item.comment || ""
+              });
+              this.categories.push({
+                category_id: category.id,
+                comment: category.comment || "",
+                rating_evaluation: rating_evaluation
+              });
             }
-            rating_evaluation.push({
-              rating_info_id: item.selectedPoint,
-              comment: item.comment || ""
-            });
-            this.categories.push({
-              category_id: category.id,
-              comment: category.comment || "",
-              rating_evaluation: rating_evaluation
-            });
           });
         })
       );
       if (submitted) {
         this.ratingEvaluation.assessment_id = this.employeeEvaluation.id;
         this.ratingEvaluation.categories = this.categories;
-        console.log(this.ratingEvaluation);
         this.axios
           .post(
             "http://34.72.144.52/api/rating-evaluation",
             this.ratingEvaluation
           )
-          .then(response => console.log(response));
-        this.isSuccess = true;
-        this.$router.replace("/employee");
-        this.$router.go();
+          .then((this.isSubmitted = true));
+        // this.$router.replace("/employee");
+        // this.$router.go();
       } else {
         return (this.snackbar = true);
       }
-    },
-    clickPoint(item, pointId) {
-      item.selectedPoint = pointId;
     }
   },
 
@@ -351,5 +385,13 @@ export default {
   .ratingName {
     color: #1a237e;
   }
+}
+
+.notFillPoint {
+  color: #f44336;
+}
+
+.notFillItem {
+  border: 1px #f44336 solid;
 }
 </style>
