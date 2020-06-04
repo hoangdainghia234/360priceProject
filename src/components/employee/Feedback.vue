@@ -198,7 +198,7 @@
             <v-dialog v-model="isSubmitted" persistent max-width="50rem">
               <v-card>
                 <v-card-title class="headline">
-                  <v-icon color="#1a237e" size="40" class="mr-5"
+                  <v-icon color="#4caf50" size="40" class="mr-5"
                     >mdi-checkbox-marked-circle-outline</v-icon
                   >
                   <span>Successfully Evaluated</span>
@@ -207,7 +207,7 @@
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <v-btn
-                    color="#1a237e"
+                    color="#4caf50"
                     text
                     @click="
                       dialog = false;
