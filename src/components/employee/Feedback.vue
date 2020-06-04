@@ -1,9 +1,9 @@
 <template>
   <div>
-    <v-content>
+    <v-content class="ma-5">
       <v-container fluid>
-        <v-card outlined class="mb-3">
-          <v-card-title>
+        <v-card outlined class="mb-5">
+          <v-card-title class="headline">
             <v-icon class="mr-3">mdi-information</v-icon>
             <span>Information</span>
           </v-card-title>
@@ -12,82 +12,48 @@
             <v-row class="d-flex justify-space-around">
               <v-col cols="11" lg="4">
                 <v-row>
-                  <v-col cols="3" class="pa-0">
+                  <v-col cols="5" class="text-end pa-0 pr-7">
                     <p class="ma-0">Full name:</p>
                   </v-col>
-                  <v-col cols="9" class="pa-0">
-                    <v-text-field
-                      outlined
-                      hide-details
-                      dense
-                      class="ml-4"
-                      v-model="fullNameUser"
-                    ></v-text-field>
+                  <v-col cols="7" class="pa-0 indigo--text">
+                    <p>{{ fullNameUser }}</p>
                   </v-col>
                 </v-row>
 
                 <v-row>
-                  <v-col cols="3" class="pa-0">
+                  <v-col cols="5" class="text-end pa-0 pr-7">
                     <p class="ma-0">Position:</p>
                   </v-col>
-                  <v-col cols="9" class="pa-0">
-                    <v-text-field
-                      outlined
-                      hide-details
-                      dense
-                      class="ml-4"
-                      v-model="appraiseePosition"
-                      readonly
-                    ></v-text-field>
+                  <v-col cols="7" class="pa-0 indigo--text">
+                    <p>{{ employeeEvaluation.user.positions[0].name }}</p>
                   </v-col>
                 </v-row>
 
                 <v-row>
-                  <v-col cols="3" class="pa-0">
+                  <v-col cols="5" class="text-end pa-0 pr-7">
                     <p class="ma-0">SSU:</p>
                   </v-col>
-                  <v-col cols="9" class="pa-0">
-                    <v-text-field
-                      outlined
-                      hide-details
-                      dense
-                      class="ml-4"
-                      v-model="appraisee.ssu_id"
-                      readonly
-                    ></v-text-field>
+                  <v-col cols="7" class="pa-0 indigo--text ">
+                    <p>{{ appraisee.ssu_id }}</p>
                   </v-col>
                 </v-row>
               </v-col>
-              <v-col cols="11" lg="4">
+              <v-col class="align-center" cols="11" lg="4">
                 <v-row>
-                  <v-col cols="3" class="pa-0">
+                  <v-col cols="5" class="text-end pa-0 pr-7">
                     <p class="ma-0">Rater's name:</p>
                   </v-col>
-                  <v-col cols="9" class="pa-0">
-                    <v-text-field
-                      outlined
-                      hide-details
-                      dense
-                      class="ml-4"
-                      v-model="fullNameRater"
-                      readonly
-                    ></v-text-field>
+                  <v-col cols="7" class="pa-0 indigo--text ">
+                    <p>{{ fullNameRater }}</p>
                   </v-col>
                 </v-row>
 
                 <v-row>
-                  <v-col cols="3" class="pa-0">
+                  <v-col cols="5" class="text-end pa-0 pr-7">
                     <p class="ma-0">Position:</p>
                   </v-col>
-                  <v-col cols="9" class="pa-0">
-                    <v-text-field
-                      outlined
-                      hide-details
-                      dense
-                      class="ml-4"
-                      v-model="raterPosition"
-                      readonly
-                    ></v-text-field>
+                  <v-col cols="7" class="pa-0 indigo--text ">
+                    <p>{{ raterPosition }}</p>
                   </v-col>
                 </v-row>
               </v-col>
@@ -97,7 +63,7 @@
 
         <v-card>
           <v-card-title>
-            <div class="">
+            <div class="headline">
               <v-icon class="mr-3">mdi-checkbox-marked-circle-outline</v-icon>
               <span>Ratings</span>
             </div>
@@ -108,21 +74,22 @@
               fluid
               v-for="category in categories.categories_evaluation"
               :key="category.id"
+              class="pa-5"
             >
               <p class="title">
-                <i>{{ category.name }}</i>
+                {{ category.name }}
               </p>
               <div
-                class="grey lighten-2 notRated"
+                class="grey lighten-3"
                 v-for="item in category.items_evaluation"
                 :key="item.id"
               >
-                <div>
+                <div style="height: 13rem;">
                   <v-row class="text-center align-center">
-                    <v-col cols="12" md="6" lg="2">
-                      <p>{{ item.name }}</p>
+                    <v-col class="mb-n5" cols="12" md="6" lg="2">
+                      <p class="subtitle-1">{{ item.name }}</p>
                     </v-col>
-                    <v-col class="body-2" cols="12" md="6" lg="2">
+                    <v-col class="body-2 mb-n5" cols="12" md="6" lg="2">
                       <p>{{ item.explaination }}</p>
                     </v-col>
                     <v-col cols="12" class="mb-n7" md="6" lg="5">
@@ -176,7 +143,7 @@
                           style="position: relative; bottom: 30px; z-index: 0"
                         ></v-progress-linear>
                         <div>
-                          <p class="" style="font-size: 0.8rem">
+                          <p class="mb-n5" style="font-size: 0.8rem">
                             {{ displayExplain(item) }}
                           </p>
                         </div>
@@ -197,7 +164,7 @@
               </div>
 
               <v-card class="mt-4 mb-5" outlined>
-                <v-card-title class="pa-1">
+                <v-card-title class="subtitle-1 pa-2 pl-3">
                   Comment:
                 </v-card-title>
                 <v-divider></v-divider>
@@ -206,6 +173,7 @@
                   solo
                   label="Sample..."
                   hide-details
+                  class=""
                 ></v-textarea>
               </v-card>
             </v-container>
@@ -217,10 +185,22 @@
             <v-icon>mdi-telegram</v-icon>
             <span class="pl-2">Submit</span>
           </v-btn>
+          <v-btn class="mt-4 ml-5" @click="save">
+            <v-icon>mdi-content-save</v-icon>
+            <span class="pl-2">Save</span>
+          </v-btn>
           <v-snackbar top v-model="snackbar">
+            <v-icon color="red">mdi-alert</v-icon>
             {{ submitError }}
             <v-btn color="error" text @click="snackbar = false">
               Close
+            </v-btn>
+          </v-snackbar>
+          <v-snackbar top v-model="isSuccess">
+            <v-icon color="red">mdi-heart</v-icon>
+            {{ successAlert }}
+            <v-btn color="error" text @click="isSuccess = false">
+              Back to Home page
             </v-btn>
           </v-snackbar>
         </v-row>
@@ -246,7 +226,10 @@ export default {
       snackbar: false,
       showPointExplain: false,
       submitError: "Please fill out all field",
-      isRate: false
+      successAlert:
+        "Rate success. Thank you for taking the time and effort to rate.",
+      isRate: false,
+      isSuccess: false
     };
   },
   methods: {
@@ -292,9 +275,12 @@ export default {
       return select;
     },
 
+    save() {
+      alert("Comming soon...");
+      this.$router.replace("/employee");
+    },
+
     submit() {
-      // var category_id = "";
-      // var comment = "";
       var rating_evaluation = [];
       var submitted = true;
       this.mainpoints.forEach(mainPoint =>
@@ -326,7 +312,9 @@ export default {
             this.ratingEvaluation
           )
           .then(response => console.log(response));
-        alert("Success!!!");
+        this.isSuccess = true;
+        this.$router.replace("/employee");
+        this.$router.go();
       } else {
         return (this.snackbar = true);
       }
@@ -363,9 +351,5 @@ export default {
   .ratingName {
     color: #1a237e;
   }
-}
-
-.notRated {
-  border: 1px red solid !important;
 }
 </style>

@@ -27,11 +27,7 @@ export default {
         "/admin": ["Dashboard", "mdi-view-dashboard"],
         "/admin/CreateEvaluation": ["360 Degree Evaluation", "mdi-book"],
         "/admin/CreateTemplate": ["Evaluation Template", "mdi-bookmark"],
-        "/admin/CreateCriteria": ["Evaluation Criteria", "mdi-flag"],
-        "/admin/CreateRelationship": [
-          "Employee Relationship",
-          "mdi-account-network"
-        ]
+        "/admin/CreateCriteria": ["Evaluation Criteria", "mdi-flag"]
       },
       userRole: "Admin"
     };

@@ -2,7 +2,7 @@
   <div class="">
     <v-content>
       <v-container fluid>
-        <h1>Dashboard</h1>
+        <h2>Comming soon...</h2>
       </v-container>
     </v-content>
   </div>
@@ -10,7 +10,7 @@
 
 <script>
 export default {
-  name: "dashboard",
+  name: "DashboardManager",
   components: {}
 };
 </script>
