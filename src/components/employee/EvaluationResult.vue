@@ -30,12 +30,12 @@
                   </th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody v-for="(itemMainPoints, index) in mainPoints" :key="index">
                 <tr
-                  v-for="(itemCategory, index) in mainPoints.category"
-                  :key="index"
+                  v-for="itemCategory in itemMainPoints.category"
+                  :key="itemCategory.id"
                 >
-                  <td>{{ mainPoints.name }}</td>
+                  <td>{{ mainPoints[index].name }}</td>
                   <td>{{ itemCategory.name }}</td>
                   <td>
                     <v-row class="d-flex align-center" dense>
@@ -95,7 +95,7 @@
                       </v-col>
                     </v-row>
                   </td>
-                  <td></td>
+                  <td>{{ itemCategory.comment }}</td>
                   <td>
                     <v-dialog v-model="itemCategory.index">
                       <template v-slot:activator="{ on }">
@@ -147,12 +147,14 @@
                                     v-for="item_detail in itemCategory.details"
                                     :key="item_detail.id"
                                   >
-                                    <td>{{ itemCategory.name }}</td>
+                                    <td>
+                                      {{ itemCategory.name }}
+                                    </td>
                                     <td>{{ item_detail.items.name_items }}</td>
                                     <td>
                                       {{ item_detail.items.explaination }}
                                     </td>
-                                    <td>
+                                    <td style="width: 25rem">
                                       <v-row class="d-flex align-center" dense>
                                         <v-col cols="3 text-end">
                                           <span>Self</span>
@@ -246,7 +248,9 @@
                                         </v-col>
                                       </v-row>
                                     </td>
-                                    <td></td>
+                                    <td>
+                                      {{ item_detail.items.comment_category }}
+                                    </td>
                                   </tr>
                                 </tbody>
                               </template>
@@ -308,31 +312,47 @@ export default {
     this.axios
       .get("http://34.72.144.52/api/employee/view-evaluation-result/user-3")
       .then(response => {
-        this.mainPoints = response.data.mainpoints;
-        var category = this.mainPoints.category;
         var nameCategories = [];
         var ratingSelf = [];
         var ratingTeam = [];
         var ratingManage = [];
         var colorNameCategory = [];
-        Object.keys(category).forEach(function(key) {
-          nameCategories.push(category[key].name);
-          var rating_point_self = category[key].rating_point.self;
-          if (typeof category[key].rating_point.member !== "undefined") {
-            var rating_point_team = category[key].rating_point.member;
-          } else {
-            rating_point_team = 5;
-          }
-          if (typeof category[key].rating_point.mentor !== "undefined") {
-            var rating_point_manager = category[key].rating_point.mentor;
-          } else {
-            rating_point_manager = 5;
-          }
-          ratingSelf.push(rating_point_self);
-          ratingTeam.push(rating_point_team);
-          ratingManage.push(rating_point_manager);
-          colorNameCategory.push("#000000");
+        var namePoint = [];
+        Object.keys(response.data).forEach(function(item) {
+          namePoint.push(response.data[item]);
+          Object.keys(response.data[item].category).forEach(function(
+            item_category
+          ) {
+            nameCategories.push(
+              response.data[item].category[item_category].name
+            );
+            var rating_point_self =
+              response.data[item].category[item_category].rating_point.self;
+            if (
+              typeof response.data[item].category[item_category].rating_point
+                .member !== "undefined"
+            ) {
+              var rating_point_team =
+                response.data[item].category[item_category].rating_point.member;
+            } else {
+              rating_point_team = 5;
+            }
+            if (
+              typeof response.data[item].category[item_category].rating_point
+                .mentor !== "undefined"
+            ) {
+              var rating_point_manager =
+                response.data[item].category[item_category].rating_point.mentor;
+            } else {
+              rating_point_manager = 5;
+            }
+            ratingSelf.push(rating_point_self);
+            ratingTeam.push(rating_point_team);
+            ratingManage.push(rating_point_manager);
+            colorNameCategory.push("#000000");
+          });
         });
+        this.mainPoints = namePoint;
         this.seriesSelfAndTeam = [
           {
             name: "Self",
@@ -454,16 +474,16 @@ export default {
           }
         };
       });
-  },
-  success: function() {
-    console.error.clear();
-    console.clear();
   }
 };
 </script>
 <style scoped>
 .table-thead-detail {
   background: rgb(24, 20, 20);
+}
+table td {
+  border-bottom: 1px solid #dddddd;
+  padding: 10px 0;
 }
 table th + th {
   border-left: 1px solid #dddddd;
