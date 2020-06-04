@@ -43,6 +43,18 @@
                   >
                     Rating
                   </v-btn>
+                  <v-btn
+                    @click="
+                      evaluateNav(
+                        item.assessor_user_id,
+                        item.evaluation_information.id
+                      )
+                    "
+                    v-if="item.is_submitted === 1"
+                    class="ml-3"
+                  >
+                    Review
+                  </v-btn>
                 </td>
               </tr>
             </tbody>
@@ -80,6 +92,10 @@ export default {
         position => (positionName = position.name)
       );
       return positionName;
+    },
+
+    review() {
+      alert("Comming soon...");
     },
 
     fullname(item) {
