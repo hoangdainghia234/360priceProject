@@ -30,17 +30,17 @@
                   </th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody v-for="(itemMainPoints, index) in mainPoints" :key="index">
                 <tr
-                  v-for="itemCategory in mainPoints.category"
+                  v-for="itemCategory in itemMainPoints.category"
                   :key="itemCategory.id"
                 >
-                  <td>{{ mainPoints.name }}</td>
+                  <td>{{ mainPoints[index].name }}</td>
                   <td>{{ itemCategory.name }}</td>
                   <td>
                     <v-row class="d-flex align-center" dense>
                       <v-col cols="3 text-end">
-                        <span>Seft</span>
+                        <span>Self</span>
                       </v-col>
 
                       <v-col cols="7">
@@ -95,9 +95,9 @@
                       </v-col>
                     </v-row>
                   </td>
-                  <td></td>
+                  <td>{{ itemCategory.comment }}</td>
                   <td>
-                    <v-dialog v-model="dialog[0]">
+                    <v-dialog v-model="itemCategory.index">
                       <template v-slot:activator="{ on }">
                         <v-btn text fab small v-on="on">
                           <v-icon>mdi-information</v-icon>
@@ -147,15 +147,17 @@
                                     v-for="item_detail in itemCategory.details"
                                     :key="item_detail.id"
                                   >
-                                    <td>{{ itemCategory.name }}</td>
+                                    <td>
+                                      {{ itemCategory.name }}
+                                    </td>
                                     <td>{{ item_detail.items.name_items }}</td>
                                     <td>
                                       {{ item_detail.items.explaination }}
                                     </td>
-                                    <td>
+                                    <td style="width: 25rem">
                                       <v-row class="d-flex align-center" dense>
                                         <v-col cols="3 text-end">
-                                          <span>Seft</span>
+                                          <span>Self</span>
                                         </v-col>
 
                                         <v-col cols="7">
@@ -246,7 +248,9 @@
                                         </v-col>
                                       </v-row>
                                     </td>
-                                    <td></td>
+                                    <td>
+                                      {{ item_detail.items.comment_category }}
+                                    </td>
                                   </tr>
                                 </tbody>
                               </template>
@@ -266,27 +270,23 @@
           <v-card-title class="d-flex justify-center">
             Comparison Charts
           </v-card-title>
-          <v-row class="justify-center ma-3">
+          <v-row class="justify-center ml-3 mr-3">
             <v-col cols="12" lg="6">
-              <v-card class="mb-3 align-center">
-                <div class="align-center">
-                  <apexchart
-                    type="radar"
-                    :options="chartOptionsTeam"
-                    :series="seriesSelfAndTeam"
-                  ></apexchart>
-                </div>
+              <v-card>
+                <apexchart
+                  type="radar"
+                  :options="chartOptionsTeam"
+                  :series="seriesSelfAndTeam"
+                ></apexchart>
               </v-card>
             </v-col>
             <v-col cols="12" lg="6">
               <v-card>
-                <div class="align-center">
-                  <apexchart
-                    type="radar"
-                    :options="chartOptionsManager"
-                    :series="seriesSelfAndMange"
-                  ></apexchart>
-                </div>
+                <apexchart
+                  type="radar"
+                  :options="chartOptionsManager"
+                  :series="seriesSelfAndMange"
+                ></apexchart>
               </v-card>
             </v-col>
           </v-row>
@@ -312,31 +312,47 @@ export default {
     this.axios
       .get("http://34.72.144.52/api/employee/view-evaluation-result/user-3")
       .then(response => {
-        this.mainPoints = response.data.mainpoints;
-        var category = this.mainPoints.category;
         var nameCategories = [];
         var ratingSelf = [];
         var ratingTeam = [];
         var ratingManage = [];
         var colorNameCategory = [];
-        Object.keys(category).forEach(function(key) {
-          nameCategories.push(category[key].name);
-          var rating_point_self = category[key].rating_point.self;
-          if (typeof category[key].rating_point.member !== "undefined") {
-            var rating_point_team = category[key].rating_point.member;
-          } else {
-            rating_point_team = 5;
-          }
-          if (typeof category[key].rating_point.mentor !== "undefined") {
-            var rating_point_manager = category[key].rating_point.mentor;
-          } else {
-            rating_point_manager = 5;
-          }
-          ratingSelf.push(rating_point_self);
-          ratingTeam.push(rating_point_team);
-          ratingManage.push(rating_point_manager);
-          colorNameCategory.push("#000000");
+        var namePoint = [];
+        Object.keys(response.data).forEach(function(item) {
+          namePoint.push(response.data[item]);
+          Object.keys(response.data[item].category).forEach(function(
+            item_category
+          ) {
+            nameCategories.push(
+              response.data[item].category[item_category].name
+            );
+            var rating_point_self =
+              response.data[item].category[item_category].rating_point.self;
+            if (
+              typeof response.data[item].category[item_category].rating_point
+                .member !== "undefined"
+            ) {
+              var rating_point_team =
+                response.data[item].category[item_category].rating_point.member;
+            } else {
+              rating_point_team = 5;
+            }
+            if (
+              typeof response.data[item].category[item_category].rating_point
+                .mentor !== "undefined"
+            ) {
+              var rating_point_manager =
+                response.data[item].category[item_category].rating_point.mentor;
+            } else {
+              rating_point_manager = 5;
+            }
+            ratingSelf.push(rating_point_self);
+            ratingTeam.push(rating_point_team);
+            ratingManage.push(rating_point_manager);
+            colorNameCategory.push("#000000");
+          });
         });
+        this.mainPoints = namePoint;
         this.seriesSelfAndTeam = [
           {
             name: "Self",
@@ -366,8 +382,26 @@ export default {
               show: false
             }
           },
+          plotOptions: {
+            radar: {
+              size: 120,
+              polygons: {
+                strokeColors: "#e9e9e9",
+                fill: {
+                  colors: ["#f8f8f8", "#fff"]
+                }
+              }
+            }
+          },
+          tooltip: {
+            y: {
+              formatter: function(val) {
+                return val;
+              }
+            }
+          },
           markers: {
-            size: 0
+            size: 3
           },
           title: {
             text: "Self vs Team",
@@ -398,8 +432,26 @@ export default {
               show: false
             }
           },
+          plotOptions: {
+            radar: {
+              size: 120,
+              polygons: {
+                strokeColors: "#e9e9e9",
+                fill: {
+                  colors: ["#f8f8f8", "#fff"]
+                }
+              }
+            }
+          },
+          tooltip: {
+            y: {
+              formatter: function(val) {
+                return val;
+              }
+            }
+          },
           markers: {
-            size: 0
+            size: 3
           },
           title: {
             text: "Self vs Manager",
@@ -428,6 +480,10 @@ export default {
 <style scoped>
 .table-thead-detail {
   background: rgb(24, 20, 20);
+}
+table td {
+  border-bottom: 1px solid #dddddd;
+  padding: 10px 0;
 }
 table th + th {
   border-left: 1px solid #dddddd;
