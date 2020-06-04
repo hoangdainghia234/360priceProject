@@ -57,7 +57,7 @@
                   </div>
                 </v-expansion-panel-header>
                 <v-expansion-panel-content>
-                  <!-- Add Team -->
+                  <!-- BEGIN: Add Team -->
                   <v-card>
                     <v-list>
                       <v-simple-table>
@@ -90,12 +90,14 @@
                               </td>
                               <td>
                                 <v-btn text>
-                                  <v-icon @click="editItem(item)">
+                                  <v-icon
+                                    @click="editItem(value.id, valueItem.id)"
+                                  >
                                     mdi-pencil-box-outline
                                   </v-icon>
                                 </v-btn>
                                 <v-btn text>
-                                  <v-icon @click="deleteItem(index)">
+                                  <v-icon @click="deleteItem(value.id)">
                                     mdi-delete
                                   </v-icon>
                                 </v-btn>
@@ -220,15 +222,15 @@
                                   color="indigo"
                                   class="ma-2"
                                   dark
-                                  @click="save"
+                                  @click="saveCategogy(value.id)"
                                   >Save</v-btn
                                 >
                                 <v-btn
                                   color="indigo"
                                   class="ma-2"
                                   dark
-                                  @click="dialog2 = false"
-                                  >Close</v-btn
+                                  @click="close"
+                                  >Cancel</v-btn
                                 >
                               </v-row>
                             </v-card-actions>
@@ -243,6 +245,7 @@
             </v-expansion-panels>
           </v-card>
         </div>
+        <!-- -->
         <div class="flex justify-end">
           <v-btn
             large
@@ -282,7 +285,7 @@ export default {
       dialog: false,
       dialog2: false,
       editedItem: {
-        parent_id: this.categogyId,
+        parent_id: "",
         name: "",
         weight: 10,
         explaination: "",
@@ -483,10 +486,12 @@ export default {
     }
   },
   methods: {
-    deleteItem(index) {
-      console.log(index);
+    deleteItem(id) {
+      this.editedItem.parent_id = id;
       this.category.forEach(value => {
-        console.log(value);
+        if (value.id === id) {
+          value.item.splice(id, 1);
+        }
       });
     },
     deleteCategory(index) {
@@ -499,14 +504,39 @@ export default {
       // );
       this.category.splice(index, 1);
     },
-    save() {
-      // this.category.push(editedItem);
-      console.log(this.editedItem);
+    saveCategogy(id) {
+      if (this.editedIndex != -1) {
+        Object.assign(this.category[this.editedIndex], this.editedItem);
+      } else {
+        this.editedItem.parent_id = id;
+        this.category.forEach(value => {
+          if (value.id === id) {
+            value.item.push(this.editedItem);
+          }
+        });
+      }
+      this.close();
     },
-    editItem(item) {
-      this.editedIndex = this.headers.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.dialog = true;
+    close() {
+      this.dialog2 = false;
+    },
+    editItem(category_id, item_id) {
+      // this.editedIndex = this.headers.indexOf(item);
+      //console.log(this.category);
+      //this.editedItem = this.category.indexOf(item);
+      //this.editedItem = Object.assign({}, item);
+      //this.dialog2 = true;
+      //this.editedItem.parent_id = id;
+      this.category.forEach(value => {
+        if (value.id === category_id) {
+          value.item.forEach(key => {
+            if (key.id === item_id) {
+              this.editedItem = key;
+            }
+          });
+        }
+      });
+      this.dialog2 = true;
     },
     addCategory() {
       let addCategory = [
