@@ -1,6 +1,10 @@
 <template>
   <div class="navBar">
     <v-navigation-drawer v-model="drawer" app>
+      <v-img
+        src="https://jobs.hybrid-technologies.vn/wp-content/uploads/2019/01/Hybrid-Technologies-LogoSuite_-fullcolor.png"
+        class="ma-10 mb-0 mt-3"
+      ></v-img>
       <v-list>
         <v-list-item v-for="(tag, item) in itemsNav" :key="item" link class="">
           <v-icon class="iconNav">{{ tag[1] }}</v-icon>

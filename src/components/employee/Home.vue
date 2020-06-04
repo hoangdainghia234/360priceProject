@@ -3,7 +3,7 @@
     <v-content>
       <v-container fluid>
         <h1>Overview</h1>
-        <v-simple-table fixed-header height="300px">
+        <v-simple-table fixed-header>
           <template v-slot:default>
             <thead>
               <tr>
@@ -22,23 +22,14 @@
                 :key="`item-${index}`"
               >
                 <td>{{ index + 1 }}</td>
-                <td>{{ item.evaluation_information.user.last_name }}</td>
-                <td
-                  v-for="position in item.evaluation_information.user.positions"
-                  :key="position.id"
-                >
-                  {{ position.name }}
-                </td>
+                <td>{{ fullname(item) }}</td>
+                <td>{{ getPosition(item) }}</td>
                 <td>{{ item.evaluation_information.created_date }}</td>
                 <td>{{ item.evaluation_information.end_date }}</td>
-                <td class="">
-                  <v-btn
-                    class="status"
-                    :class="{ 'disable-events': true }"
-                    :color="item.is_submitted ? 'info' : 'error'"
-                  >
+                <td class="d-flex align-center">
+                  <v-chip :color="item.is_submitted ? 'info' : 'error'">
                     {{ item.is_submitted ? "Rated" : "Not yet rated" }}
-                  </v-btn>
+                  </v-chip>
                 </td>
                 <td>
                   <v-btn
@@ -51,6 +42,18 @@
                     :disabled="item.is_submitted === 1"
                   >
                     Rating
+                  </v-btn>
+                  <v-btn
+                    @click="
+                      evaluateNav(
+                        item.assessor_user_id,
+                        item.evaluation_information.id
+                      )
+                    "
+                    v-if="item.is_submitted === 1"
+                    class="ml-3"
+                  >
+                    Review
                   </v-btn>
                 </td>
               </tr>
@@ -84,7 +87,23 @@ export default {
     },
 
     getPosition(item) {
-      return item.evaluation_information.user.positions[0].name;
+      var positionName = "";
+      item.evaluation_information.user.positions.forEach(
+        position => (positionName = position.name)
+      );
+      return positionName;
+    },
+
+    review() {
+      alert("Comming soon...");
+    },
+
+    fullname(item) {
+      var lastName = item.evaluation_information.user.last_name;
+      var firstName = item.evaluation_information.user.first_name;
+      var middleName = item.evaluation_information.user.middle_name;
+      var fullname = firstName + " " + middleName + " " + lastName;
+      return fullname;
     }
   },
   created() {
@@ -100,11 +119,6 @@ export default {
 //
 <style lang="scss" scoped>
 .status {
-  width: 8rem;
-  font-size: 0.8rem !important;
-}
-
-.disable-events {
-  pointer-events: none;
+  width: 5rem;
 }
 </style>

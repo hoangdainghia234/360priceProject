@@ -1,24 +1,24 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-//employee
+// employee
 import HomeEmployee from "../views/HomeEmployee";
 import EvaluationResult from "../components/employee/EvaluationResult";
 import Feedback from "../components/employee/Feedback";
 import Home from "../components/employee/Home";
 import Timeline from "../components/employee/Timeline";
-// //manager
+// manager
 import HomeManager from "../views/HomeManager";
-import Dashboard from "../components/manager/Dashboard";
+import DashboardManager from "../components/manager/DashboardManager";
 import MemberReview from "../components/manager/MemberReview";
 import Reports from "../components/manager/Reports";
 import Timeline_Manager from "../components/manager/Timeline_Manager";
 import MultiRaterReview from "../components/manager/MultiRaterReview";
-// //admin
-import HomeAdmin from "../views/HomeAdmin.vue";
-import CreateTemplate from "../components/admin/CreateTemplate.vue";
-import CreateEvaluation from "../components/admin/CreateEvaluation.vue";
-import CreateCriteria from "../components/admin/CreateCriteria.vue";
-import CreateRelationship from "../components/admin/CreateRelationship.vue";
+// admin
+import HomeAdmin from "../views/HomeAdmin";
+import DashboardAdmin from "../components/admin/DashboardAdmin";
+import CreateTemplate from "../components/admin/CreateTemplate";
+import CreateEvaluation from "../components/admin/CreateEvaluation";
+import CreateCriteria from "../components/admin/CreateCriteria";
 //login
 import Login from "../views/Login";
 
@@ -36,12 +36,12 @@ const routes = [
     props: true,
     children: [
       {
-        path: "CreateEvaluation",
-        component: CreateEvaluation
+        path: "",
+        component: DashboardAdmin
       },
       {
-        path: "CreateRelationship",
-        component: CreateRelationship
+        path: "CreateEvaluation",
+        component: CreateEvaluation
       },
       {
         path: "CreateCriteria",
@@ -86,7 +86,7 @@ const routes = [
     children: [
       {
         path: "",
-        component: Dashboard
+        component: DashboardManager
       },
       {
         path: "member-review",
