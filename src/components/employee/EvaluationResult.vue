@@ -326,8 +326,6 @@ export default {
             nameCategories.push(
               response.data[item].category[item_category].name
             );
-            var rating_point_self =
-              response.data[item].category[item_category].rating_point.self;
             if (
               typeof response.data[item].category[item_category].rating_point
                 .member !== "undefined"
@@ -345,6 +343,15 @@ export default {
                 response.data[item].category[item_category].rating_point.mentor;
             } else {
               rating_point_manager = 5;
+            }
+            if (
+              typeof response.data[item].category[item_category].rating_point
+                .self !== "undefined"
+            ) {
+              var rating_point_self =
+                response.data[item].category[item_category].rating_point.self;
+            } else {
+              rating_point_self = 5;
             }
             ratingSelf.push(rating_point_self);
             ratingTeam.push(rating_point_team);
@@ -384,7 +391,7 @@ export default {
           },
           plotOptions: {
             radar: {
-              size: 120,
+              size: 110,
               polygons: {
                 strokeColors: "#e9e9e9",
                 fill: {
@@ -434,7 +441,7 @@ export default {
           },
           plotOptions: {
             radar: {
-              size: 120,
+              size: 110,
               polygons: {
                 strokeColors: "#e9e9e9",
                 fill: {
