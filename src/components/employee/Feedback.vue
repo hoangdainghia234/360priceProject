@@ -133,13 +133,23 @@
                               >
                                 {{ point.rating_name }}
                               </p>
-                              <v-btn
-                                @click="clickPoint(item, point.id)"
-                                fab
-                                small
+                              <v-tooltip
+                                top
+                                min-width="10rem"
+                                max-width="15rem"
                               >
-                                {{ point.rating_point }}
-                              </v-btn>
+                                <template v-slot:activator="{ on }">
+                                  <v-btn
+                                    @click="clickPoint(item, point.id)"
+                                    fab
+                                    small
+                                    v-on="on"
+                                  >
+                                    {{ point.rating_point }}
+                                  </v-btn>
+                                </template>
+                                <span>{{ point.explaination }}</span>
+                              </v-tooltip>
                             </div>
                           </v-list>
                           <v-progress-linear
