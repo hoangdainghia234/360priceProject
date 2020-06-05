@@ -1,118 +1,162 @@
 <template>
-  <div id="app">
-    <v-app id="inspire">
-      <v-app id="inspire">
-        <v-content>
-          <v-container class="fill-height" fluid>
-            <v-row align="center" justify="center">
-              <v-col cols="12" sm="8" md="4">
-                <v-card class="elevation-12">
-                  <v-toolbar dark flat style="background: white">
-                    <div class="text-center" style="width: 100%">
-                      <v-toolbar-title style="color: black"
-                        >LOGIN</v-toolbar-title
-                      >
-                    </div>
-                  </v-toolbar>
-                  <v-card-text>
-                    <v-form ref="form" v-model="valid" :lazy-validation="lazy">
-                      <v-text-field
-                        outlined
-                        v-model="Username"
-                        :counter="10"
-                        :rules="userNameRules"
-                        label="Username"
-                        required
-                      ></v-text-field>
-                      <v-text-field
-                        outlined
-                        v-model="Password"
-                        :rules="passwordRules"
-                        label="Password"
-                        type="password"
-                        required
-                      ></v-text-field>
-                      <v-card-actions>
-                        <v-row>
-                          <v-col cols="6">
-                            <v-checkbox
-                              left
-                              v-model="checkbox"
-                              :rules="[
-                                v => !!v || 'You must agree to continue!'
-                              ]"
-                              label="Remember Me"
-                              required
-                            ></v-checkbox>
-                          </v-col>
-                          <v-col>
-                            <v-btn
-                              depressed
-                              color="success"
-                              dark
-                              style="float: right"
-                              @click="login()"
-                            >
-                              Sign in
-                            </v-btn>
-                          </v-col>
-                        </v-row>
-                      </v-card-actions>
-                      <v-col cols="12">
-                        <v-btn
-                          depressed
-                          color="error"
-                          class="mr-4"
-                          @click="reset"
-                          style="width: 80% ;margin: auto 50px"
-                        >
-                          With ESA Account
-                        </v-btn>
-                      </v-col>
-                    </v-form>
-                  </v-card-text>
-                </v-card>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-content>
-      </v-app>
-    </v-app>
+  <div
+    id="login"
+    class="d-flex align-center"
+    style="height: 100vh; width: 100vw"
+  >
+    <v-content>
+      <v-container class="d-flex justify-center" fluid>
+        <v-card class="card" width="27rem">
+          <v-img
+            src="https://jobs.hybrid-technologies.vn/wp-content/uploads/2019/01/Hybrid-Technologies-LogoSuite_-fullcolor.png"
+            height="8rem"
+            contain
+            class="mt-5 mb-5"
+          ></v-img>
+          <div class="d-flex justify-center align-center">
+            <p v-if="serverError" class="red--text">
+              <span v-for="(error, index) in serverError" :key="index">
+                <v-icon color="red" class="mr-1 pb-1"
+                  >mdi-alert-circle-outline
+                </v-icon>
+                {{ error[0] }}
+              </span>
+            </p>
+          </div>
+          <v-card-text>
+            <v-form>
+              <v-text-field
+                outlined
+                v-model="form.email"
+                label="Username"
+                @keyup.enter="login"
+              ></v-text-field>
+              <v-text-field
+                outlined
+                v-model="form.password"
+                label="Password"
+                type="password"
+                @keyup.enter="login"
+              ></v-text-field>
+              <v-card-actions>
+                <v-btn
+                  color="#061d45"
+                  dark
+                  style="float: right"
+                  @click="login"
+                  width="100%"
+                >
+                  Log in
+                </v-btn>
+              </v-card-actions>
+              <v-card-actions>
+                <v-btn @click="accessOn" color="#ed1b2f" dark width="100%">
+                  With ESA Account
+                </v-btn>
+              </v-card-actions>
+            </v-form>
+          </v-card-text>
+        </v-card>
+      </v-container>
+    </v-content>
   </div>
 </template>
 <script>
 import router from "../router/index";
 
 export default {
-  data: () => ({
-    valid: true,
-    Username: "",
-    userNameRules: [
-      v => !!v || "Username is required",
-      v => (v && v.length <= 10) || "Name must be less than 10 characters"
-    ],
-    Password: "",
-    passwordRules: [v => !!v || "Password is required"],
-    checkbox: false,
-    lazy: false
-  }),
+  data() {
+    return {
+      form: {
+        email: "nghia7873@gmail.com",
+        password: "fresher12345"
+      },
+      token: "",
+      serverError: "",
+      invalidCredential: "",
+      position: ""
+    };
+  },
+
+  // computed: {
+  //   isValidatedForm() {
+  //     return this.form.username != "" && this.form.password != "";
+  //   }
+  // },
 
   methods: {
-    reset() {
-      this.$refs.form.reset();
-    },
+    // login() {
+    //   event.preventDefault();
+    //   if (this.form.email == "admin") {
+    //     console.log("hello");
+    //     router.push({ name: "admin" });
+    //   } else if (this.form.email == "employee") {
+    //     router.push({ name: "employee" });
+    //   } else if (this.form.email == "manager") {
+    //     router.push({ name: "manager" });
+    //   } else {
+    //     this.logIn = true;
+    //   }
+    // },
+
     login() {
-      if (this.Username == "admin") {
-        console.log("hello");
-        router.push({ name: "admin" });
-      }
-      if (this.Username == "employee") {
-        router.push({ name: "employee" });
-      }
-      if (this.Username == "manager") {
-        router.push({ name: "manager" });
-      }
+      this.fetchApiLogin();
+      console.log("log in...");
+    },
+
+    fetchApiLogin() {
+      this.axios
+        .post("http://34.72.144.52/api/auth/login", this.form)
+        .then(response => {
+          console.log(response.data);
+          this.token = response.data.original.access_token;
+          this.position =
+            response.data.original.user.users_positions[0].position.name;
+          localStorage.setItem("user", response.data.original.user);
+          localStorage.setItem("position", this.position);
+          localStorage.setItem("access_token", this.token);
+          localStorage.setItem("isLoggedIn", true);
+
+          if (this.position == "Fresher") {
+            router
+              .push({
+                path: "/employee"
+              })
+              .catch(error => console.log(error));
+          } else {
+            router
+              .go({
+                name: "employee"
+              })
+              .catch(error => console.log(error));
+          }
+          console.log("login successfully");
+        })
+        .catch(error => {
+          // this.invalidCredential = error.response.data.error;
+          // if (this.invalidCredential) this.serverError = "";
+          // if (error.response.data.errors)
+          //   this.serverError = Object.values(error.response.data.errors);
+          // this.password = "";
+          console.log(error);
+        });
+    },
+
+    accessOn() {
+      alert("Coming soon..");
     }
   }
 };
 </script>
+
+<style lang="scss" scoped>
+#login {
+  background-image: url("../assets/bg_login_page.jpg");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+.card {
+  background-color: #ffffff70;
+}
+</style>
