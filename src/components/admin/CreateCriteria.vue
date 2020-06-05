@@ -6,7 +6,7 @@
           <div class="pa-5" style="border-bottom: 3px solid">
             <v-row>
               <v-col cols="2">
-                <span style="font-weight: bold">Name:</span>
+                <span style="font-weight: bold">Criteria name:</span>
               </v-col>
               <v-col cols="3">
                 <v-text-field
@@ -17,7 +17,7 @@
                 ></v-text-field>
               </v-col>
             </v-row>
-            <span class="headline font-weight-bold">Categorles</span>
+            <span class="headline font-weight-bold">Categories</span>
           </div>
         </div>
         <!-- END: Category 2 -->
@@ -505,16 +505,16 @@ export default {
       this.category.splice(index, 1);
     },
     saveCategogy(id) {
-      if (this.editedIndex != -1) {
+      /* if (this.editedIndex != -1) {
         Object.assign(this.category[this.editedIndex], this.editedItem);
       } else {
-        this.editedItem.parent_id = id;
-        this.category.forEach(value => {
-          if (value.id === id) {
-            value.item.push(this.editedItem);
-          }
-        });
-      }
+      } */
+      this.editedItem.parent_id = id;
+      this.category.forEach(value => {
+        if (value.id === id) {
+          value.item.push(this.editedItem);
+        }
+      });
       this.close();
     },
     close() {
@@ -531,6 +531,7 @@ export default {
         if (value.id === category_id) {
           value.item.forEach(key => {
             if (key.id === item_id) {
+              console.log(key);
               this.editedItem = key;
             }
           });
