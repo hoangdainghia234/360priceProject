@@ -27,12 +27,19 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    component: Login
+    name: "login",
+    component: Login,
+    meta: {
+      requiresAuth: false
+    }
   },
   {
     path: "/admin",
     name: "admin",
     component: HomeAdmin,
+    meta: {
+      requiresAuth: true
+    },
     props: true,
     children: [
       {
@@ -57,6 +64,9 @@ const routes = [
     path: "/employee",
     name: "employee",
     component: HomeEmployee,
+    meta: {
+      requiresAuth: true
+    },
     props: true,
     children: [
       {
@@ -82,6 +92,9 @@ const routes = [
     path: "/manager",
     name: "manager",
     component: HomeManager,
+    meta: {
+      requiresAuth: true
+    },
     props: true,
     children: [
       {
@@ -112,6 +125,21 @@ const router = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes
+});
+
+const isLoggedIn = localStorage.getItem("isLoggedIn") || false;
+// const position = localStorage.getItem("position");
+console.log(isLoggedIn);
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!isLoggedIn) {
+      next("/");
+    } else {
+      next("/employee");
+    }
+  } else {
+    next();
+  }
 });
 
 export default router;

@@ -26,8 +26,7 @@ export default {
       itemsNav: {
         "/employee": ["Home", "mdi-home"],
         "/employee/evaluation": ["Evaluation Result", "mdi-account-check"],
-        "/employee/timeline": ["Timeline", "mdi-chart-timeline"],
-        "/employee/feedback": ["360 Degree Feedback", "mdi-message-plus"]
+        "/employee/timeline": ["Timeline", "mdi-chart-timeline"]
       },
       userRole: "Employee"
     };

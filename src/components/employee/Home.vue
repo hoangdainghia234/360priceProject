@@ -2,59 +2,71 @@
   <div class="">
     <v-content>
       <v-container fluid>
-        <h1>Overview</h1>
-        <v-simple-table fixed-header>
-          <template v-slot:default>
-            <thead>
-              <tr>
-                <th class="text-left">Index</th>
-                <th class="text-left">Evaluated User</th>
-                <th class="text-left">Position</th>
-                <th class="text-left">Start Date</th>
-                <th class="text-left">End Date</th>
-                <th class="text-left">Status</th>
-                <th class="text-left">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                v-for="(item, index) in listEvaluation"
-                :key="`item-${index}`"
-              >
-                <td>{{ index + 1 }}</td>
-                <td>{{ fullname(item) }}</td>
-                <td>{{ getPosition(item) }}</td>
-                <td>{{ item.evaluation_information.created_date }}</td>
-                <td>{{ item.evaluation_information.end_date }}</td>
-                <td class="d-flex align-center">
-                  <v-chip :color="item.is_submitted ? 'info' : 'error'">
-                    {{ item.is_submitted ? "Rated" : "Not yet rated" }}
-                  </v-chip>
-                </td>
-                <td>
-                  <v-btn
-                    @click="
-                      evaluateNav(
-                        item.assessor_user_id,
-                        item.evaluation_information.id
-                      )
-                    "
-                    :disabled="item.is_submitted === 1"
-                  >
-                    Rating
-                  </v-btn>
-                  <v-btn
-                    @click="review"
-                    v-if="item.is_submitted === 1"
-                    class="ml-3"
-                  >
-                    Review
-                  </v-btn>
-                </td>
-              </tr>
-            </tbody>
-          </template>
-        </v-simple-table>
+        <div
+          class="d-flex justify-center align-center"
+          v-if="!getData"
+          style="height: 70vh"
+        >
+          <v-progress-circular
+            indeterminate
+            color="#3f51b5"
+          ></v-progress-circular>
+        </div>
+        <div v-if="getData">
+          <h1>Overview</h1>
+          <v-simple-table fixed-header>
+            <template v-slot:default>
+              <thead>
+                <tr>
+                  <th class="text-left">Index</th>
+                  <th class="text-left">Evaluated User</th>
+                  <th class="text-left">Position</th>
+                  <th class="text-left">Start Date</th>
+                  <th class="text-left">End Date</th>
+                  <th class="text-left">Status</th>
+                  <th class="text-left">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  v-for="(item, index) in listEvaluation"
+                  :key="`item-${index}`"
+                >
+                  <td>{{ index + 1 }}</td>
+                  <td>{{ fullname(item) }}</td>
+                  <td>{{ getPosition(item) }}</td>
+                  <td>{{ item.evaluation_information.created_date }}</td>
+                  <td>{{ item.evaluation_information.end_date }}</td>
+                  <td class="d-flex align-center">
+                    <v-chip :color="item.is_submitted ? 'info' : 'error'">
+                      {{ item.is_submitted ? "Rated" : "Not yet rated" }}
+                    </v-chip>
+                  </td>
+                  <td>
+                    <v-btn
+                      @click="
+                        evaluateNav(
+                          item.assessor_user_id,
+                          item.evaluation_information.id
+                        )
+                      "
+                      :disabled="item.is_submitted === 1"
+                    >
+                      Rating
+                    </v-btn>
+                    <v-btn
+                      @click="review"
+                      v-if="item.is_submitted === 1"
+                      class="ml-3"
+                    >
+                      Review
+                    </v-btn>
+                  </td>
+                </tr>
+              </tbody>
+            </template>
+          </v-simple-table>
+        </div>
       </v-container>
     </v-content>
   </div>
@@ -67,6 +79,7 @@ export default {
   position: "",
   data() {
     return {
+      getData: false,
       listEvaluation: []
     };
   },
@@ -106,6 +119,7 @@ export default {
       .get("http://34.72.144.52/api/evaluations/retrieve/3")
       .then(response => {
         this.listEvaluation = response.data;
+        this.getData = true;
       });
   }
 };
