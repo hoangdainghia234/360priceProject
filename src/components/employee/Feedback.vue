@@ -2,231 +2,236 @@
   <div>
     <v-content class="ma-5">
       <v-container fluid>
-        <v-card outlined class="mb-5">
-          <v-card-title class="headline">
-            <v-icon class="mr-3">mdi-information</v-icon>
-            <span>Information</span>
-          </v-card-title>
-          <v-divider></v-divider>
-          <v-container>
-            <v-row class="d-flex justify-space-around mb-n5">
-              <v-col cols="11" lg="4">
-                <v-row>
-                  <v-col cols="5" class="text-end pa-0 pr-7">
-                    <p class="ma-0">Full name:</p>
-                  </v-col>
-                  <v-col cols="7" class="pa-0 indigo--text">
-                    <p>{{ fullNameUser }}</p>
-                  </v-col>
-                </v-row>
-
-                <v-row>
-                  <v-col cols="5" class="text-end pa-0 pr-7">
-                    <p class="ma-0">Position:</p>
-                  </v-col>
-                  <v-col cols="7" class="pa-0 indigo--text">
-                    <p>{{ appraiseePosition }}</p>
-                  </v-col>
-                </v-row>
-
-                <v-row>
-                  <v-col cols="5" class="text-end pa-0 pr-7">
-                    <p class="ma-0">SSU:</p>
-                  </v-col>
-                  <v-col cols="7" class="pa-0 indigo--text ">
-                    <p>{{ appraisee.ssu_id }}</p>
-                  </v-col>
-                </v-row>
-              </v-col>
-              <v-col class="align-center" cols="11" lg="4">
-                <v-row>
-                  <v-col cols="5" class="text-end pa-0 pr-7">
-                    <p class="ma-0">Rater's name:</p>
-                  </v-col>
-                  <v-col cols="7" class="pa-0 indigo--text ">
-                    <p>{{ fullNameRater }}</p>
-                  </v-col>
-                </v-row>
-
-                <v-row>
-                  <v-col cols="5" class="text-end pa-0 pr-7">
-                    <p class="ma-0">Position:</p>
-                  </v-col>
-                  <v-col cols="7" class="pa-0 indigo--text ">
-                    <p>{{ raterPosition }}</p>
-                  </v-col>
-                </v-row>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-card>
-
-        <v-card>
-          <v-card-title>
-            <div class="headline">
-              <v-icon class="mr-3">mdi-checkbox-marked-circle-outline</v-icon>
-              <span>Ratings</span>
-            </div>
-          </v-card-title>
-          <v-divider></v-divider>
-          <div v-for="categories in mainpoints" :key="categories.id">
-            <v-container
-              fluid
-              v-for="category in categories.categories_evaluation"
-              :key="category.id"
-              class="pa-5"
-            >
-              <p class="title">
-                {{ category.name }}
-              </p>
-              <div
-                class="grey lighten-3"
-                v-for="item in category.items_evaluation"
-                :key="item.id"
-              >
-                <div
-                  style="height: 13rem;"
-                  :class="{ notFillItem: item.notFill }"
-                >
-                  <v-row class="text-center align-center">
-                    <v-col class="mb-n5" cols="12" md="6" lg="2">
-                      <p class="subtitle-1">{{ item.name }}</p>
+        <div
+          class="d-flex justify-center align-center"
+          v-if="!getData"
+          style="height: 70vh"
+        >
+          <v-progress-circular
+            indeterminate
+            color="#3f51b5"
+          ></v-progress-circular>
+        </div>
+        <div v-if="getData">
+          <v-btn class="mb-5" @click="returnBack()">
+            <span>Go back</span>
+            <v-icon class="ml-3">mdi-chevron-double-left</v-icon>
+          </v-btn>
+          <v-card outlined class="mb-5">
+            <v-card-title class="headline">
+              <v-icon class="mr-3">mdi-information</v-icon>
+              <span>Information</span>
+            </v-card-title>
+            <v-divider></v-divider>
+            <v-container>
+              <v-row class="d-flex justify-space-around mb-n5">
+                <v-col cols="11" lg="4">
+                  <v-row>
+                    <v-col cols="5" class="text-end pa-0 pr-7">
+                      <p class="ma-0">Full name:</p>
                     </v-col>
-                    <v-col class="body-2 mb-n5" cols="12" md="6" lg="2">
-                      <p>{{ item.explaination }}</p>
-                    </v-col>
-                    <v-col cols="12" class="mb-n7" md="6" lg="5">
-                      <div class="ml-2 mr-2">
-                        <v-list
-                          class="d-flex flex-row justify-space-between mb-3"
-                          color="transparent"
-                          style="position: relative; z-index: 1; top: 10px; bottom: 0"
-                        >
-                          <div
-                            v-for="point in sortPoints(
-                              item.rating_informations
-                            )"
-                            :key="point.id"
-                            class="d-flex justify-center"
-                            :class="{ active: item.selectedPoint === point.id }"
-                          >
-                            <p
-                              style="position: absolute; bottom: 40px; width: 5rem;"
-                              class="ratingName body-2"
-                            >
-                              {{ point.rating_name }}
-                            </p>
-                            <!-- <v-tooltip v-model="showPointExplain" top>
-                              <template v-slot:activator="{ on }">
-                                <v-btn
-                                  @click="clickPoint(item, point.id)"
-                                  v-on="on"
-                                  fab
-                                  small
-                                >
-                                  {{ point.rating_point }}
-                                </v-btn>
-                              </template>
-                              <span>{{ point.explaination }}</span>
-                            </v-tooltip>
-                            <div class="showPointExplain"></div> -->
-                            <v-btn
-                              @click="clickPoint(item, point.id)"
-                              fab
-                              small
-                            >
-                              {{ point.rating_point }}
-                            </v-btn>
-                          </div>
-                        </v-list>
-                        <v-progress-linear
-                          color="grey"
-                          rounded
-                          value="100"
-                          style="position: relative; bottom: 30px; z-index: 0"
-                        ></v-progress-linear>
-                        <div>
-                          <p
-                            class="mb-n5"
-                            style="font-size: 0.8rem"
-                            :class="{ notFillPoint: item.notFill }"
-                          >
-                            {{ displayExplain(item) }}
-                          </p>
-                        </div>
-                      </div>
-                    </v-col>
-                    <v-col cols="12" md="6" lg="3">
-                      <v-textarea
-                        v-model="item.comment"
-                        solo
-                        label="Comment: "
-                        class="pr-4 pl-4"
-                        hide-details
-                      ></v-textarea>
+                    <v-col cols="7" class="pa-0 indigo--text">
+                      <p>{{ fullNameUser }}</p>
                     </v-col>
                   </v-row>
-                </div>
-                <v-divider></v-divider>
-              </div>
 
-              <v-card class="mt-4 mb-5" outlined>
-                <v-card-title class="subtitle-1 pa-2 pl-3">
-                  Comment:
-                </v-card-title>
-                <v-divider></v-divider>
-                <v-textarea
-                  v-model="category.comment"
-                  solo
-                  label="Sample..."
-                  hide-details
-                  class=""
-                ></v-textarea>
-              </v-card>
+                  <v-row>
+                    <v-col cols="5" class="text-end pa-0 pr-7">
+                      <p class="ma-0">Position:</p>
+                    </v-col>
+                    <v-col cols="7" class="pa-0 indigo--text">
+                      <p>{{ appraiseePosition }}</p>
+                    </v-col>
+                  </v-row>
+
+                  <v-row>
+                    <v-col cols="5" class="text-end pa-0 pr-7">
+                      <p class="ma-0">SSU:</p>
+                    </v-col>
+                    <v-col cols="7" class="pa-0 indigo--text ">
+                      <p>{{ appraisee.ssu_id }}</p>
+                    </v-col>
+                  </v-row>
+                </v-col>
+                <v-col class="align-center" cols="11" lg="4">
+                  <v-row>
+                    <v-col cols="5" class="text-end pa-0 pr-7">
+                      <p class="ma-0">Rater's name:</p>
+                    </v-col>
+                    <v-col cols="7" class="pa-0 indigo--text ">
+                      <p>{{ fullNameRater }}</p>
+                    </v-col>
+                  </v-row>
+
+                  <v-row>
+                    <v-col cols="5" class="text-end pa-0 pr-7">
+                      <p class="ma-0">Position:</p>
+                    </v-col>
+                    <v-col cols="7" class="pa-0 indigo--text ">
+                      <p>{{ raterPosition }}</p>
+                    </v-col>
+                  </v-row>
+                </v-col>
+              </v-row>
             </v-container>
-          </div>
-        </v-card>
+          </v-card>
 
-        <v-row class="d-flex justify-center mb-5">
-          <v-dialog v-model="dialog" persistent max-width="50rem">
-            <template v-slot:activator="{ on }">
-              <v-btn dark class="mt-4" @click="submit" v-on="on">
-                <v-icon>mdi-telegram</v-icon>
-                <span class="pl-2">Submit</span>
-              </v-btn>
-            </template>
-            <v-card>
-              <v-card-title class="headline">
-                <v-icon color="#1a237e" size="40" class="mr-5"
-                  >mdi-checkbox-marked-circle-outline</v-icon
+          <v-card>
+            <v-card-title>
+              <div class="headline">
+                <v-icon class="mr-3">mdi-checkbox-marked-circle-outline</v-icon>
+                <span>Ratings</span>
+              </div>
+            </v-card-title>
+            <v-divider></v-divider>
+            <div v-for="categories in mainpoints" :key="categories.id">
+              <v-container
+                fluid
+                v-for="category in categories.categories_evaluation"
+                :key="category.id"
+                class="pa-5"
+              >
+                <p class="title">
+                  {{ category.name }}
+                </p>
+                <div
+                  class="grey lighten-3"
+                  v-for="item in category.items_evaluation"
+                  :key="item.id"
                 >
-                <span>Successfully Evaluated</span>
-              </v-card-title>
-              <v-card-text>{{ successAlert() }}</v-card-text>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="green darken-1" text @click="dialog = false"
-                  >Disagree</v-btn
-                >
-                <v-btn color="green darken-1" text @click="dialog = false"
-                  >Agree</v-btn
-                >
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
+                  <div
+                    style="height: 13rem;"
+                    :class="{ notFillItem: item.notFill }"
+                  >
+                    <v-row class="text-center align-center">
+                      <v-col class="mb-n5" cols="12" md="6" lg="2">
+                        <p class="subtitle-1">{{ item.name }}</p>
+                      </v-col>
+                      <v-col class="body-2 mb-n5" cols="12" md="6" lg="2">
+                        <p>{{ item.explaination }}</p>
+                      </v-col>
+                      <v-col cols="12" class="mb-n7" md="6" lg="5">
+                        <div class="ml-2 mr-2">
+                          <v-list
+                            class="d-flex flex-row justify-space-between mb-3"
+                            color="transparent"
+                            style="position: relative; z-index: 1; top: 10px; bottom: 0"
+                          >
+                            <div
+                              v-for="point in sortPoints(
+                                item.rating_informations
+                              )"
+                              :key="point.id"
+                              class="d-flex justify-center"
+                              :class="{
+                                active: item.selectedPoint === point.id
+                              }"
+                            >
+                              <p
+                                style="position: absolute; bottom: 40px; width: 5rem;"
+                                class="ratingName body-2"
+                              >
+                                {{ point.rating_name }}
+                              </p>
+                              <v-btn
+                                @click="clickPoint(item, point.id)"
+                                fab
+                                small
+                              >
+                                {{ point.rating_point }}
+                              </v-btn>
+                            </div>
+                          </v-list>
+                          <v-progress-linear
+                            color="grey"
+                            rounded
+                            value="100"
+                            style="position: relative; bottom: 30px; z-index: 0"
+                          ></v-progress-linear>
+                          <div>
+                            <p
+                              class="mb-n5"
+                              style="font-size: 0.8rem"
+                              :class="{ notFillPoint: item.notFill }"
+                            >
+                              {{ displayExplain(item) }}
+                            </p>
+                          </div>
+                        </div>
+                      </v-col>
+                      <v-col cols="12" md="6" lg="3">
+                        <v-textarea
+                          v-model="item.comment"
+                          solo
+                          label="Comment: "
+                          class="pr-4 pl-4"
+                          hide-details
+                        ></v-textarea>
+                      </v-col>
+                    </v-row>
+                  </div>
+                  <v-divider></v-divider>
+                </div>
 
-          <v-btn class="mt-4 ml-5" @click="save">
-            <v-icon>mdi-content-save</v-icon>
-            <span class="pl-2">Save</span>
-          </v-btn>
-          <v-snackbar top v-model="snackbar">
-            <v-icon color="red">mdi-alert</v-icon>
-            {{ submitError }}
-            <v-btn color="error" text @click="snackbar = false">
-              Close
+                <v-card class="mt-4 mb-5" outlined>
+                  <v-card-title class="subtitle-1 pa-2 pl-3">
+                    Comment:
+                  </v-card-title>
+                  <v-divider></v-divider>
+                  <v-textarea
+                    v-model="category.comment"
+                    solo
+                    label="Sample..."
+                    hide-details
+                    class=""
+                  ></v-textarea>
+                </v-card>
+              </v-container>
+            </div>
+          </v-card>
+
+          <v-row class="d-flex justify-center mb-5">
+            <v-btn dark class="mt-4" @click="submit">
+              <v-icon>mdi-telegram</v-icon>
+              <span class="pl-2">Submit</span>
             </v-btn>
-          </v-snackbar>
-        </v-row>
+            <v-dialog v-model="isSubmitted" persistent max-width="50rem">
+              <v-card>
+                <v-card-title class="headline">
+                  <v-icon color="#4caf50" size="40" class="mr-5"
+                    >mdi-checkbox-marked-circle-outline</v-icon
+                  >
+                  <span>Successfully Evaluated</span>
+                </v-card-title>
+                <v-card-text>{{ successAlert() }}</v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn
+                    color="#4caf50"
+                    text
+                    @click="
+                      dialog = false;
+                      goBack();
+                    "
+                    >Go Back</v-btn
+                  >
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+
+            <v-btn class="mt-4 ml-5" @click="save">
+              <v-icon>mdi-content-save</v-icon>
+              <span class="pl-2">Save</span>
+            </v-btn>
+            <v-snackbar top v-model="snackbar">
+              <v-icon color="red">mdi-alert</v-icon>
+              {{ submitError }}
+              <v-btn color="error" text @click="snackbar = false">
+                Close
+              </v-btn>
+            </v-snackbar>
+          </v-row>
+        </div>
       </v-container>
     </v-content>
   </div>
@@ -235,6 +240,7 @@
 export default {
   data() {
     return {
+      getData: false,
       employeeEvaluation: "",
       fullNameRater: "",
       fullNameUser: "",
@@ -313,8 +319,7 @@ export default {
     },
 
     save() {
-      alert("Comming soon...");
-      this.$router.replace("/employee");
+      alert("Coming soon...");
     },
 
     submit() {
@@ -350,11 +355,18 @@ export default {
             this.ratingEvaluation
           )
           .then((this.isSubmitted = true));
-        // this.$router.replace("/employee");
-        // this.$router.go();
       } else {
         return (this.snackbar = true);
       }
+    },
+
+    returnBack() {
+      this.$router.replace("/employee");
+    },
+
+    goBack() {
+      this.$router.replace("/employee");
+      this.$router.go();
     }
   },
 
@@ -371,6 +383,7 @@ export default {
       .then(response => {
         this.employeeEvaluation = response.data;
         this.initialize();
+        this.getData = true;
       });
   }
 };

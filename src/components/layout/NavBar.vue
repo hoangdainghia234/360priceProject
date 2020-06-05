@@ -22,7 +22,7 @@
         <v-icon class="icon">mdi-account</v-icon>
         <span class="textIcon">{{ userRole }}</span>
       </v-btn>
-      <v-btn depressed class="btn-nav transparent">
+      <v-btn depressed class="btn-nav transparent" @click="signOut()">
         <v-icon class="icon">mdi-logout-variant</v-icon>
         <span class="textIcon">Sign Out</span>
       </v-btn>
@@ -37,7 +37,13 @@ export default {
 
   data: () => ({
     drawer: null
-  })
+  }),
+
+  methods: {
+    signOut() {
+      this.$router.push("/");
+    }
+  }
 };
 </script>
 <style lang="scss">
