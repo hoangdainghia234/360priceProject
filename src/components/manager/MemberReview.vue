@@ -68,10 +68,16 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="item in desserts" :key="item.id">
+                  <tr v-for="item in data" :key="item.id">
                     <td class="text-center">{{ item.id }}</td>
-                    <td class="text-center">{{ item.name }}</td>
-                    <td class="text-center">{{ item.date }}</td>
+                    <td
+                      class="text-center"
+                      v-for="name in item.user"
+                      :key="name.id"
+                    >
+                      {{ name.last_name }}
+                    </td>
+                    <td class="text-center">{{ item.created_at }}</td>
                     <td class="text-center">
                       <v-chip
                         class="ma-2 justify-center"
@@ -79,7 +85,9 @@
                         style="width:90px"
                         label
                         text-color="white"
-                        >{{ item.status }}</v-chip
+                        >{{
+                          item.is_submitted ? "Pending" : "In Progress"
+                        }}</v-chip
                       >
                     </td>
                     <td class="text-center">
@@ -213,14 +221,14 @@ export default {
         select: ["2019 Second Cycle-Fresher"]
       },
       {
-        item_title: "City:",
+        item_title: "Appraisee:",
         item_select: [
-          "2019 Second Cycle-Fresher1",
-          "Design1",
-          "Vue1",
-          "Vuetify1"
+          "2019 Second Cycle-Fresher3",
+          "Design3",
+          "Vue3",
+          "Vuetify3"
         ],
-        select: ["2019 Second Cycle-Fresher1"]
+        select: ["2019 Second Cycle-Fresher3"]
       },
       {
         item_title: "SSU:",
@@ -233,17 +241,104 @@ export default {
         select: ["2019 Second Cycle-Fresher2"]
       },
       {
-        item_title: "Appraisee:",
+        item_title: "City:",
         item_select: [
-          "2019 Second Cycle-Fresher3",
-          "Design3",
-          "Vue3",
-          "Vuetify3"
+          "2019 Second Cycle-Fresher1",
+          "Design1",
+          "Vue1",
+          "Vuetify1"
         ],
-        select: ["2019 Second Cycle-Fresher3"]
+        select: ["2019 Second Cycle-Fresher1"]
       }
     ],
-    desserts: [
+    data: [
+      {
+        id: 1,
+        assessor_user_id: 5,
+        is_submitted: 0,
+        evaluation_information_id: 1,
+        created_at: null,
+        updated_at: null,
+        ef: 1,
+        user: {
+          id: 5,
+          first_name: "Nguyen",
+          middle_name: "Van",
+          last_name: "A",
+          email: "nguyenvana@gmail.com",
+          status: 1,
+          ssu_id: 2,
+          email_verified_at: null,
+          created_at: null,
+          updated_at: null
+        }
+      },
+      {
+        id: 2,
+        assessor_user_id: 4,
+        is_submitted: 0,
+        evaluation_information_id: 1,
+        created_at: null,
+        updated_at: null,
+        ef: 1,
+        user: {
+          id: 4,
+          first_name: "Tran",
+          middle_name: "Thai",
+          last_name: "Nghia",
+          email: "nghia7873@gmail.com",
+          status: 1,
+          ssu_id: 2,
+          email_verified_at: null,
+          created_at: null,
+          updated_at: null
+        }
+      },
+      {
+        id: 3,
+        assessor_user_id: 2,
+        is_submitted: 0,
+        evaluation_information_id: 1,
+        created_at: null,
+        updated_at: null,
+        ef: 1,
+        user: {
+          id: 2,
+          first_name: "Mentor",
+          middle_name: "Evaluation",
+          last_name: "360",
+          email: "mentor360evaluation@gmail.com",
+          status: 1,
+          ssu_id: 2,
+          email_verified_at: null,
+          created_at: null,
+          updated_at: null
+        }
+      },
+      {
+        id: 5,
+        assessor_user_id: 3,
+        is_submitted: 0,
+        evaluation_information_id: 1,
+        created_at: null,
+        updated_at: null,
+        ef: 1,
+        user: {
+          id: 3,
+          first_name: "Fresher",
+          middle_name: "Evaluation",
+          last_name: "360",
+          email: "fresher360evaluation@gmail.com",
+          status: 1,
+          ssu_id: 2,
+          email_verified_at: null,
+          created_at: null,
+          updated_at: null
+        }
+      }
+    ]
+    /* Data */
+    /* desserts: [
       {
         id: "1",
         name: "Mark1",
@@ -331,7 +426,7 @@ export default {
           }
         ]
       }
-    ]
+    ] */
     // dessertsDetail: [
     //   {
     //     category: "category 1",

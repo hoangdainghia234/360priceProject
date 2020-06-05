@@ -81,27 +81,28 @@
                     </template>
                   </v-expansion-panel-header>
                   <v-expansion-panel-content class="main-point pb-5 pt-3">
-                    <div class="d-flex justify-center">
-                      <v-data-table
-                        v-model="selectedCategory"
-                        :headers="tableHeaders"
-                        :items="criteria.categories"
-                        :single-select="singleSelect"
-                        item-key="name"
-                        show-select
-                        hide-default-footer
-                        class="elevation"
-                      >
-                        <template v-slot="{ item }">
-                          <v-icon small class="mr-2" @click="editItem(item)">
-                            mdi-pencil
-                          </v-icon>
-                          <v-icon small @click="deleteItem(item)">
-                            mdi-delete
-                          </v-icon>
-                        </template>
-                      </v-data-table>
-                    </div>
+                    <v-simple-table>
+                      <template v-slot:default>
+                        <thead>
+                          <tr>
+                            <th class="text-left">Name</th>
+                            <th class="text-left">Category</th>
+                            <th class="text-left">Weight</th>
+                            <th class="text-left">Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr
+                            v-for="item in criteria.categories"
+                            :key="item.id"
+                          >
+                            <td>Collum</td>
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.weight }}</td>
+                          </tr>
+                        </tbody>
+                      </template>
+                    </v-simple-table>
                   </v-expansion-panel-content>
 
                   <v-btn
@@ -213,7 +214,7 @@ export default {
         "Advance High [AH] 3"
       ],
 
-      tableHeaders: [
+      /* tableHeaders: [
         {
           text: "Category",
           align: "start",
@@ -222,7 +223,7 @@ export default {
         },
         { text: "Weight (100%)", value: "weight" },
         { text: "Actions", value: "actions", sortable: false }
-      ],
+      ], */
       nameTemplate: "",
       mainPoints: [],
       selectedDepartment: "",
