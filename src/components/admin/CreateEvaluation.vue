@@ -295,7 +295,6 @@ export default {
 
   data: () => {
     return {
-      title: "Create 360 Degree Evaluation",
       template: [
         "Java Developer - SE",
         "Software Developer - SD",

@@ -2,7 +2,17 @@
   <div>
     <v-content>
       <v-container fluid>
-        <v-card>
+        <div
+          class="d-flex justify-center align-center"
+          v-if="!getData"
+          style="height: 70vh"
+        >
+          <v-progress-circular
+            indeterminate
+            color="#3f51b5"
+          ></v-progress-circular>
+        </div>
+        <v-card v-if="getData">
           <v-simple-table
             fixed-header
             height="500px"
@@ -266,7 +276,7 @@
           </v-simple-table>
         </v-card>
 
-        <v-card class="ml-10 mt-5 mr-10">
+        <v-card v-if="getData" class="ml-10 mt-5 mr-10">
           <v-card-title class="d-flex justify-center">
             Comparison Charts
           </v-card-title>
@@ -305,13 +315,15 @@ export default {
       seriesSelfAndTeam: [],
       seriesSelfAndMange: [],
       chartOptionsTeam: {},
-      chartOptionsManager: {}
+      chartOptionsManager: {},
+      getData: false
     };
   },
   created() {
     this.axios
       .get("http://34.72.144.52/api/employee/view-evaluation-result/user-3")
       .then(response => {
+        this.getData = true;
         var nameCategories = [];
         var ratingSelf = [];
         var ratingTeam = [];

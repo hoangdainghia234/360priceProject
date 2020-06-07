@@ -6,17 +6,24 @@
         class="ma-10 mb-0 mt-3"
       ></v-img>
       <v-list>
-        <v-list-item v-for="(tag, item) in itemsNav" :key="item" link class="">
-          <v-icon class="iconNav">{{ tag[1] }}</v-icon>
-          <router-link :to="item" class="itemLink">
-            {{ tag[0] }}
+        <v-list-item
+          v-for="(item, index) in itemsNav"
+          :key="index"
+          link
+          class=""
+        >
+          <v-icon class="iconNav">{{ item.icon }}</v-icon>
+          <router-link :to="item.path" class="itemLink">
+            {{ item.name }}
           </router-link>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
     <v-app-bar hide-on-scroll aboslute app color="indigo" dark>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title class="titleNav">{{ title }}</v-toolbar-title>
+      <v-toolbar-title class="titleNav">{{
+        changeTitle(itemsNav)
+      }}</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn depressed class="btn-nav transparent">
         <v-icon class="icon">mdi-account</v-icon>
@@ -33,7 +40,7 @@
 <script>
 export default {
   name: "NavBar",
-  props: ["title", "itemsNav", "userRole"],
+  props: ["itemsNav", "userRole"],
 
   data: () => ({
     drawer: null
@@ -42,6 +49,15 @@ export default {
   methods: {
     signOut() {
       this.$router.push("/");
+    },
+    changeTitle(itemsNav) {
+      var title = "";
+      itemsNav.forEach(item => {
+        if (item.path === this.$route.path) {
+          title = item.name;
+        }
+      });
+      return title;
     }
   }
 };

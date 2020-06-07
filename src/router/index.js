@@ -5,14 +5,14 @@ import HomeEmployee from "../views/HomeEmployee";
 import EvaluationResult from "../components/employee/EvaluationResult";
 import Feedback from "../components/employee/Feedback";
 import Home from "../components/employee/Home";
-import Timeline from "../components/employee/Timeline";
+// import Timeline from "../components/employee/Timeline";
 // manager
 import HomeManager from "../views/HomeManager";
 import DashboardManager from "../components/manager/DashboardManager";
 import MemberReview from "../components/manager/MemberReview";
-import Reports from "../components/manager/Reports";
+// import Reports from "../components/manager/Reports";
 import Timeline_Manager from "../components/manager/Timeline_Manager";
-import MultiRaterReview from "../components/manager/MultiRaterReview";
+// import MultiRaterReview from "../components/manager/MultiRaterReview";
 // admin
 import HomeAdmin from "../views/HomeAdmin";
 import DashboardAdmin from "../components/admin/DashboardAdmin";
@@ -43,15 +43,15 @@ const routes = [
         component: DashboardAdmin
       },
       {
-        path: "CreateEvaluation",
+        path: "create-evaluation",
         component: CreateEvaluation
       },
       {
-        path: "CreateCriteria",
+        path: "create-criteria",
         component: CreateCriteria
       },
       {
-        path: "CreateTemplate",
+        path: "create-template",
         component: CreateTemplate
       }
     ]
@@ -72,10 +72,10 @@ const routes = [
         path: "evaluation",
         component: EvaluationResult
       },
-      {
-        path: "timeline",
-        component: Timeline
-      },
+      // {
+      //   path: "timeline",
+      //   component: Timeline
+      // },
       {
         name: "feedback",
         path: "feedback/assessor/:assessorId/evaluation-info/:evaluationInfoId",
@@ -99,18 +99,18 @@ const routes = [
         path: "member-review",
         component: MemberReview
       },
-      {
-        path: "reports",
-        component: Reports
-      },
+      // {
+      //   path: "reports",
+      //   component: Reports
+      // },
       {
         path: "timeline",
         component: Timeline_Manager
-      },
-      {
-        path: "multi-rater-review",
-        component: MultiRaterReview
       }
+      // {
+      //   path: "multi-rater-review",
+      //   component: MultiRaterReview
+      // }
     ]
   }
 ];
