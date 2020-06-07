@@ -14,7 +14,7 @@
             class="mt-5 mb-5"
           ></v-img>
           <div class="d-flex justify-center align-center">
-            <p v-if="serverError" class="red--text">
+            <p v-if="false" class="red--text">
               <span v-for="(error, index) in serverError" :key="index">
                 <v-icon color="red" class="mr-1 pb-1"
                   >mdi-alert-circle-outline
@@ -62,8 +62,6 @@
   </div>
 </template>
 <script>
-import router from "../router/index";
-
 export default {
   data() {
     return {
@@ -72,9 +70,10 @@ export default {
         password: "fresher12345"
       },
       token: "",
-      serverError: "",
-      invalidCredential: "",
-      position: ""
+      // serverError: "",
+      // invalidCredential: "",
+      position: "",
+      user: ""
     };
   },
 
@@ -85,61 +84,47 @@ export default {
   // },
 
   methods: {
-    // login() {
-    //   event.preventDefault();
-    //   if (this.form.email == "admin") {
-    //     console.log("hello");
-    //     router.push({ name: "admin" });
-    //   } else if (this.form.email == "employee") {
-    //     router.push({ name: "employee" });
-    //   } else if (this.form.email == "manager") {
-    //     router.push({ name: "manager" });
-    //   } else {
-    //     this.logIn = true;
-    //   }
-    // },
+    successRes(response) {
+      console.log("then");
+      // console.log(response.data.original);
+      this.token = response.data.original.access_token;
+      this.user = response.data.original.user;
+      this.position = this.user.users_positions[0].position.name;
+      localStorage.setItem("user", this.user);
+      localStorage.setItem("position", this.position);
+      localStorage.setItem("access_token", this.token);
+      localStorage.setItem("isLoggedIn", true);
+      console.log("assign isLoggedIn is TRUE ");
 
-    login() {
-      this.fetchApiLogin();
-      console.log("log in...");
+      if (this.position.toLowerCase() === "fresher") {
+        console.log("EMPLOYEE");
+        this.$router.push({ path: "employee" });
+        console.log("EMPLOYEE PUSH");
+      } else if (this.position.toLowerCase() === "manager") {
+        this.$router.push({ path: "manager" });
+      } else if (this.position.toLowerCase() === "admin") {
+        this.$router.push({ path: "admin" });
+      } else {
+        this.$router.go();
+      }
+      console.log("login successfully");
     },
 
-    fetchApiLogin() {
+    failRes(error) {
+      // this.invalidCredential = error.response.data.error;
+      // if (this.invalidCredential) this.serverError = "";
+      // if (error.response.data.errors)
+      //   this.serverError = Object.values(error.response.data.errors);
+      // this.password = "";
+      console.log(error);
+      console.log("Fail");
+    },
+
+    login() {
       this.axios
         .post("http://34.72.144.52/api/auth/login", this.form)
-        .then(response => {
-          console.log(response.data);
-          this.token = response.data.original.access_token;
-          this.position =
-            response.data.original.user.users_positions[0].position.name;
-          localStorage.setItem("user", response.data.original.user);
-          localStorage.setItem("position", this.position);
-          localStorage.setItem("access_token", this.token);
-          localStorage.setItem("isLoggedIn", true);
-
-          if (this.position == "Fresher") {
-            router
-              .push({
-                path: "/employee"
-              })
-              .catch(error => console.log(error));
-          } else {
-            router
-              .go({
-                name: "employee"
-              })
-              .catch(error => console.log(error));
-          }
-          console.log("login successfully");
-        })
-        .catch(error => {
-          // this.invalidCredential = error.response.data.error;
-          // if (this.invalidCredential) this.serverError = "";
-          // if (error.response.data.errors)
-          //   this.serverError = Object.values(error.response.data.errors);
-          // this.password = "";
-          console.log(error);
-        });
+        .then(response => this.successRes(response))
+        .catch(error => this.failRes(error));
     },
 
     accessOn() {

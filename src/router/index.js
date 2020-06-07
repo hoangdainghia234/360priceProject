@@ -28,10 +28,7 @@ const routes = [
   {
     path: "/",
     name: "login",
-    component: Login,
-    meta: {
-      requiresAuth: false
-    }
+    component: Login
   },
   {
     path: "/admin",
@@ -40,7 +37,6 @@ const routes = [
     meta: {
       requiresAuth: true
     },
-    props: true,
     children: [
       {
         path: "",
@@ -67,7 +63,6 @@ const routes = [
     meta: {
       requiresAuth: true
     },
-    props: true,
     children: [
       {
         path: "",
@@ -95,7 +90,6 @@ const routes = [
     meta: {
       requiresAuth: true
     },
-    props: true,
     children: [
       {
         path: "",
@@ -127,15 +121,35 @@ const router = new VueRouter({
   routes
 });
 
-const isLoggedIn = localStorage.getItem("isLoggedIn") || false;
-// const position = localStorage.getItem("position");
+let isLoggedIn = localStorage.getItem("isLoggedIn") || false;
 console.log(isLoggedIn);
+
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
+    isLoggedIn = localStorage.getItem("isLoggedIn") || false;
+    console.log(`MATCHED ${isLoggedIn}`);
     if (!isLoggedIn) {
-      next("/");
+      next({
+        name: "login"
+      });
     } else {
-      next("/employee");
+      // var position = localStorage.getItem("position");
+      // console.log(`ELSE isLoggedIn ${isLoggedIn}`);
+      // console.log(`ELSE position ${position}`);
+      // if (position.toLowerCase() === "fresher") {
+      //   console.log("before next('/employee')");
+      //   next("/employee");
+      //   console.log("after next('/employee')");
+      // } else if (position.toLowerCase() === "manager") {
+      //   next("/manager");
+      // } else if (position.toLowerCase() === "admin") {
+      //   next("/admin");
+      // } else {
+      //   next();
+      // }
+      console.log("before next('/employee')");
+      next();
+      console.log("after next('/employee')");
     }
   } else {
     next();

@@ -135,8 +135,8 @@
                               </p>
                               <v-tooltip
                                 top
-                                min-width="10rem"
-                                max-width="15rem"
+                                min-width="15rem"
+                                max-width="25rem"
                               >
                                 <template v-slot:activator="{ on }">
                                   <v-btn
