@@ -45,7 +45,6 @@
           </v-expansion-panels>
         </v-col>
       </v-row>
-
       <v-row class="pr-3 pl-3 pr-sm-5 pl-sm-5 pr-md-7 pl-md-7">
         <v-col cols="12">
           <v-card outlined>
@@ -68,14 +67,10 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="item in data" :key="item.id">
+                  <tr v-for="(item, index) in datas" :key="index">
                     <td class="text-center">{{ item.id }}</td>
-                    <td
-                      class="text-center"
-                      v-for="name in item.user"
-                      :key="name.id"
-                    >
-                      {{ name.last_name }}
+                    <td class="text-center">
+                      {{ item.user.last_name }}
                     </td>
                     <td class="text-center">{{ item.created_at }}</td>
                     <td class="text-center">
@@ -91,7 +86,8 @@
                       >
                     </td>
                     <td class="text-center">
-                      <v-dialog v-model="dialog[0]" :key="item.id">
+                      <!-- ??? -->
+                      <!-- <v-dialog v-model="dialog[0]">
                         <template v-slot:activator="{ on }">
                           <v-btn text fab small v-on="on">
                             <v-icon>mdi-eye</v-icon>
@@ -194,7 +190,7 @@
                             </v-row>
                           </v-container>
                         </v-card>
-                      </v-dialog>
+                      </v-dialog> -->
                     </td>
                   </tr>
                 </tbody>
@@ -209,251 +205,228 @@
 
 <script>
 export default {
-  data: () => ({
-    dialog: false,
-    hint: "Larry",
-    panel: [0],
-    readonly: false,
-    items: [
-      {
-        item_title: "Select the cycle name:",
-        item_select: ["2019 Second Cycle-Fresher", "Design", "Vue", "Vuetify"],
-        select: ["2019 Second Cycle-Fresher"]
-      },
-      {
-        item_title: "Appraisee:",
-        item_select: [
-          "2019 Second Cycle-Fresher3",
-          "Design3",
-          "Vue3",
-          "Vuetify3"
-        ],
-        select: ["2019 Second Cycle-Fresher3"]
-      },
-      {
-        item_title: "SSU:",
-        item_select: [
-          "2019 Second Cycle-Fresher2",
-          "Design2",
-          "Vue2",
-          "Vuetify2"
-        ],
-        select: ["2019 Second Cycle-Fresher2"]
-      },
-      {
-        item_title: "City:",
-        item_select: [
-          "2019 Second Cycle-Fresher1",
-          "Design1",
-          "Vue1",
-          "Vuetify1"
-        ],
-        select: ["2019 Second Cycle-Fresher1"]
-      }
-    ],
-    data: [
-      {
-        id: 1,
-        assessor_user_id: 5,
-        is_submitted: 0,
-        evaluation_information_id: 1,
-        created_at: null,
-        updated_at: null,
-        ef: 1,
-        user: {
-          id: 5,
-          first_name: "Nguyen",
-          middle_name: "Van",
-          last_name: "A",
-          email: "nguyenvana@gmail.com",
-          status: 1,
-          ssu_id: 2,
-          email_verified_at: null,
-          created_at: null,
-          updated_at: null
+  data() {
+    return {
+      dialog: false,
+      hint: "Larry",
+      panel: [0],
+      readonly: false,
+      items: [
+        {
+          item_title: "Select the cycle name:",
+          item_select: [
+            "2019 Second Cycle-Fresher",
+            "Design",
+            "Vue",
+            "Vuetify"
+          ],
+          select: ["2019 Second Cycle-Fresher"]
+        },
+        {
+          item_title: "Appraisee:",
+          item_select: [
+            "2019 Second Cycle-Fresher3",
+            "Design3",
+            "Vue3",
+            "Vuetify3"
+          ],
+          select: ["2019 Second Cycle-Fresher3"]
+        },
+        {
+          item_title: "SSU:",
+          item_select: [
+            "2019 Second Cycle-Fresher2",
+            "Design2",
+            "Vue2",
+            "Vuetify2"
+          ],
+          select: ["2019 Second Cycle-Fresher2"]
+        },
+        {
+          item_title: "City:",
+          item_select: [
+            "2019 Second Cycle-Fresher1",
+            "Design1",
+            "Vue1",
+            "Vuetify1"
+          ],
+          select: ["2019 Second Cycle-Fresher1"]
         }
-      },
-      {
-        id: 2,
-        assessor_user_id: 4,
-        is_submitted: 0,
-        evaluation_information_id: 1,
-        created_at: null,
-        updated_at: null,
-        ef: 1,
-        user: {
-          id: 4,
-          first_name: "Tran",
-          middle_name: "Thai",
-          last_name: "Nghia",
-          email: "nghia7873@gmail.com",
-          status: 1,
-          ssu_id: 2,
-          email_verified_at: null,
+      ],
+      datas: [
+        {
+          id: 1,
+          assessor_user_id: 5,
+          is_submitted: 0,
+          evaluation_information_id: 1,
           created_at: null,
-          updated_at: null
-        }
-      },
-      {
-        id: 3,
-        assessor_user_id: 2,
-        is_submitted: 0,
-        evaluation_information_id: 1,
-        created_at: null,
-        updated_at: null,
-        ef: 1,
-        user: {
+          updated_at: null,
+          ef: 1,
+          user: {
+            id: 5,
+            first_name: "Nguyen",
+            middle_name: "Van",
+            last_name: "A",
+            email: "nguyenvana@gmail.com",
+            status: 1,
+            ssu_id: 2,
+            email_verified_at: null,
+            created_at: null,
+            updated_at: null
+          }
+        },
+        {
           id: 2,
-          first_name: "Mentor",
-          middle_name: "Evaluation",
-          last_name: "360",
-          email: "mentor360evaluation@gmail.com",
-          status: 1,
-          ssu_id: 2,
-          email_verified_at: null,
+          assessor_user_id: 4,
+          is_submitted: 0,
+          evaluation_information_id: 1,
           created_at: null,
-          updated_at: null
-        }
-      },
-      {
-        id: 5,
-        assessor_user_id: 3,
-        is_submitted: 0,
-        evaluation_information_id: 1,
-        created_at: null,
-        updated_at: null,
-        ef: 1,
-        user: {
+          updated_at: null,
+          ef: 1,
+          user: {
+            id: 4,
+            first_name: "Tran",
+            middle_name: "Thai",
+            last_name: "Nghia",
+            email: "nghia7873@gmail.com",
+            status: 1,
+            ssu_id: 2,
+            email_verified_at: null,
+            created_at: null,
+            updated_at: null
+          }
+        },
+        {
           id: 3,
-          first_name: "Fresher",
-          middle_name: "Evaluation",
-          last_name: "360",
-          email: "fresher360evaluation@gmail.com",
-          status: 1,
-          ssu_id: 2,
-          email_verified_at: null,
+          assessor_user_id: 2,
+          is_submitted: 0,
+          evaluation_information_id: 1,
           created_at: null,
-          updated_at: null
+          updated_at: null,
+          ef: 1,
+          user: {
+            id: 2,
+            first_name: "Mentor",
+            middle_name: "Evaluation",
+            last_name: "360",
+            email: "mentor360evaluation@gmail.com",
+            status: 1,
+            ssu_id: 2,
+            email_verified_at: null,
+            created_at: null,
+            updated_at: null
+          }
+        },
+        {
+          id: 5,
+          assessor_user_id: 3,
+          is_submitted: 0,
+          evaluation_information_id: 1,
+          created_at: null,
+          updated_at: null,
+          ef: 1,
+          user: {
+            id: 3,
+            first_name: "Fresher",
+            middle_name: "Evaluation",
+            last_name: "360",
+            email: "fresher360evaluation@gmail.com",
+            status: 1,
+            ssu_id: 2,
+            email_verified_at: null,
+            created_at: null,
+            updated_at: null
+          }
         }
-      }
-    ]
-    /* Data */
-    /* desserts: [
-      {
-        id: "1",
-        name: "Mark1",
-        date: "22/12/2019",
-        status: "Pending",
-        detail: [
+      ],
+      timeData: [
+        [
           {
-            category: "category 1",
-            item: "item1",
-            itemexplan: "item expalanation 1",
-            rating: "3.0",
-            comment: "Lorem isum"
-          },
-          {
-            category: "category 2",
-            item: "item1",
-            itemexplan: "item expalanation 1",
-            rating: "3.0",
-            comment: "Lorem isum"
-          },
-          {
-            category: "category 3",
-            item: "item1",
-            itemexplan: "item expalanation 1",
-            rating: "3.0",
-            comment: "Lorem isum"
+            id: 1,
+            name: "Fresher template",
+            created_date: "2020-06-08 01:21:16",
+            created_at: null,
+            updated_at: null,
+            appraise: [
+              {
+                id: 1,
+                period_of_review_start: "2020-05-25 02:46:54",
+                period_of_review_end: "2020-05-25 02:46:54",
+                created_date: "2020-06-08 01:21:17",
+                end_date: "2020-06-08 01:21:17",
+                evaluated_user_id: 3,
+                evaluation_form_id: 1,
+                created_at: null,
+                updated_at: null,
+                user_id: 3,
+                first_name: "Fresher",
+                middle_name: "Evaluation",
+                last_name: "360",
+                email: "fresher360evaluation@gmail.com",
+                cities: [
+                  {
+                    id: 1,
+                    name: "Ha Noi",
+                    country_id: 1,
+                    created_at: null,
+                    updated_at: null,
+                    ssu: [
+                      {
+                        id: 2,
+                        ssu_name: "SSU2",
+                        city_id: 1,
+                        created_at: null,
+                        updated_at: null
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                id: 2,
+                period_of_review_start: "2020-05-25 02:46:54",
+                period_of_review_end: "2020-05-25 02:46:54",
+                created_date: "2020-06-08 01:21:17",
+                end_date: "2020-06-08 01:21:17",
+                evaluated_user_id: 2,
+                evaluation_form_id: 1,
+                created_at: null,
+                updated_at: null,
+                user_id: 2,
+                first_name: "Mentor",
+                middle_name: "Evaluation",
+                last_name: "360",
+                email: "mentor360evaluation@gmail.com",
+                cities: [
+                  {
+                    id: 2,
+                    name: "Da Nang",
+                    country_id: 1,
+                    created_at: null,
+                    updated_at: null,
+                    ssu: [
+                      {
+                        id: 3,
+                        ssu_name: "SSU3",
+                        city_id: 2,
+                        created_at: null,
+                        updated_at: null
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
           }
         ]
-      },
-      {
-        id: "2",
-        name: "Mark2",
-        date: "22/12/2019",
-        status: "In Progress",
-        detail: [
-          {
-            category: "category 4",
-            item: "item1",
-            itemexplan: "item expalanation 1",
-            rating: "3.0",
-            comment: "Lorem isum"
-          },
-          {
-            category: "category 5",
-            item: "item1",
-            itemexplan: "item expalanation 1",
-            rating: "3.0",
-            comment: "Lorem isum"
-          },
-          {
-            category: "category 6",
-            item: "item1",
-            itemexplan: "item expalanation 1",
-            rating: "3.0",
-            comment: "Lorem isum"
-          }
-        ]
-      },
-      {
-        id: "3",
-        name: "Mark3",
-        date: "22/12/2019",
-        status: "Done",
-        detail: [
-          {
-            category: "category 7",
-            item: "item1",
-            itemexplan: "item expalanation 1",
-            rating: "3.0",
-            comment: "Lorem isum"
-          },
-          {
-            category: "category 8",
-            item: "item1",
-            itemexplan: "item expalanation 1",
-            rating: "3.0",
-            comment: "Lorem isum"
-          },
-          {
-            category: "category 9",
-            item: "item1",
-            itemexplan: "item expalanation 1",
-            rating: "3.0",
-            comment: "Lorem isum"
-          }
-        ]
-      }
-    ] */
-    // dessertsDetail: [
-    //   {
-    //     category: "category 1",
-    //     item: "item1",
-    //     itemexplan: "item expalanation 1",
-    //     rating: "3.0",
-    //     comment: "Lorem isum"
-    //   },
-    //   {
-    //     category: "category 2",
-    //     item: "item1",
-    //     itemexplan: "item expalanation 1",
-    //     rating: "3.0",
-    //     comment: "Lorem isum"
-    //   },
-    //   {
-    //     category: "category 3",
-    //     item: "item1",
-    //     itemexplan: "item expalanation 1",
-    //     rating: "3.0",
-    //     comment: "Lorem isum"
-    //   }
-    // ]
-  })
+      ]
+    };
+  },
+  created() {
+    console.log(this.datas[0].id);
+  }
 };
 </script>
-
 <style scoped>
 table th + th {
   border-left: 1px solid #dddddd;
