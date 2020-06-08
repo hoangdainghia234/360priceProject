@@ -21,6 +21,8 @@
                     <v-select
                       v-model="selectedTemplate"
                       :items="template"
+                      item-text="name"
+                      item-value="id"
                       placeholder="Choose template..."
                       outlined
                       dense
@@ -182,13 +184,13 @@
                   <v-col cols="7" sm="8" md="4" lg="3" xl="2">
                     <v-select
                       v-model="appraisee"
-                      :items="members"
-                      item-text="name"
+                      :items="users"
+                      item-text="fullName"
+                      item-value="id"
                       placeholder="Choose one..."
                       outlined
                       dense
                       hide-details
-                      return-object
                     ></v-select>
                   </v-col>
                 </v-row>
@@ -218,8 +220,8 @@
                       :clear-on-select="false"
                       :preserve-search="true"
                       placeholder="Pick some"
-                      label="name"
-                      track-by="name"
+                      label="fullName"
+                      track-by="fullName"
                     >
                       <template
                         slot="selection"
@@ -246,10 +248,10 @@
 
                         <v-list-item-content>
                           <v-list-item-title
-                            v-text="rater.name"
+                            v-text="rater.fullName"
                           ></v-list-item-title>
                           <v-list-item-content
-                            v-text="rater.position"
+                            v-text="getPosition(rater)"
                           ></v-list-item-content>
                         </v-list-item-content>
 
@@ -295,38 +297,8 @@ export default {
 
   data: () => {
     return {
-      template: [
-        "Java Developer - SE",
-        "Software Developer - SD",
-        "Data Scientist - DS"
-      ],
-      members: [
-        {
-          id: 1,
-          name: "Nguyen Van A",
-          position: "Develop"
-        },
-        {
-          id: 2,
-          name: "Huynh Van B",
-          position: "Leader"
-        },
-        {
-          id: 3,
-          name: "Bui Minh C",
-          position: "Manager"
-        },
-        {
-          id: 4,
-          name: "Le Thi D",
-          position: "Tester"
-        },
-        {
-          id: 5,
-          name: "Tran Nguyen F",
-          position: "Designer"
-        }
-      ],
+      template: [],
+      users: [],
       selectedTemplate: "",
       radiosDate: "",
       appraisee: "",
@@ -338,34 +310,76 @@ export default {
       menuRecur: false,
       menuRecurEnd: false,
       checkRecurrence: true,
-      evaluations: []
+      evaluation: {},
+      sortDates: "",
+      ratersId: []
     };
+  },
+  created() {
+    this.axios
+      .get("/evaluation-information/get_appraisee_raters")
+      .then(response => {
+        this.template = response.data.template;
+        this.users = response.data.user;
+        this.users.forEach(
+          user =>
+            (user.fullName =
+              user.first_name + " " + user.middle_name + " " + user.last_name)
+        );
+      })
+      .catch(error => console.log(error));
   },
 
   computed: {
     dateRangeText() {
+      if (this.dates.length === 2) {
+        if (this.dates[0] > this.dates[1]) {
+          return this.dates
+            .slice()
+            .reverse()
+            .join(" ~ ");
+        }
+      }
       return this.dates.join(" ~ ");
     }
   },
 
   methods: {
     publish() {
-      this.evaluations.push({
-        template: this.selectedTemplate,
-        dateStart: this.dates[0],
-        dateEnd: this.dates[1],
-        dateRecurStart: this.dateRecur,
-        dateRecurEnd: this.radiosDate,
-        appraisee: this.appraisee,
-        raters: this.raters
-      });
-      console.log(this.evaluations);
-      alert("Template is created !!!");
-      this.reset();
+      this.raters.forEach(rater => this.ratersId.push(rater.id));
+
+      this.evaluation.period_of_review_start = this.dateRangeText.slice(0, 10);
+      this.evaluation.period_of_review_end = this.dateRangeText.slice(13, 23);
+      this.evaluation.created_date = this.dateRecur;
+      if (this.radiosDate) {
+        this.evaluation.end_date = this.dateRecurEnd;
+      } else {
+        this.evaluation.end_date = this.radiosDate;
+      }
+      this.evaluation.evaluated_user_id = this.selectedTemplate;
+      this.evaluation.evaluation_form_id = this.appraisee;
+      this.evaluation.assessor_user_id = this.ratersId;
+      console.log(this.evaluation);
+      this.axios
+        .post(
+          "/evaluation-information/add-evaluation-information",
+          this.evaluation
+        )
+        .then(response => {
+          console.log(response);
+          console.log("Success!!!");
+        })
+        .catch(error => console.log(error));
     },
 
     selectRaters() {
-      return this.members.filter(member => member.id !== this.appraisee.id);
+      return this.users.filter(user => user.id !== this.appraisee);
+    },
+
+    getPosition(rater) {
+      let positionRater = "";
+      rater.positions.forEach(position => (positionRater = position.name));
+      return positionRater;
     },
 
     reset() {

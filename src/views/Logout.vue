@@ -9,7 +9,7 @@ export default {
     this.axios.defaults.headers.common["Authorization"] = "Bearer " + token;
 
     this.axios
-      .post("http://34.72.144.52/api/auth/logout")
+      .post("/auth/logout")
       .then(response => {
         console.log(response);
         console.log("logout successfully");

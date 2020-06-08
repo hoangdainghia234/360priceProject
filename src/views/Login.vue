@@ -117,7 +117,7 @@ export default {
 
     login() {
       this.axios
-        .post("http://34.72.144.52/api/auth/login", this.form)
+        .post("/auth/login", this.form)
         .then(response => this.successRes(response))
         .catch(error => this.failRes(error));
     },

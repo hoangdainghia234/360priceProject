@@ -8,6 +8,7 @@ import axios from "axios";
 import VueAxios from "vue-axios";
 
 Vue.config.productionTip = false;
+axios.defaults.baseURL = "http://34.72.144.52/api";
 Vue.component("apexchart", VueApexCharts);
 Vue.use(VueAxios, axios);
 
