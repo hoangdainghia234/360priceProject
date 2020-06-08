@@ -21,6 +21,8 @@
                     <v-select
                       v-model="selectedTemplate"
                       :items="template"
+                      item-text="name"
+                      item-value="id"
                       placeholder="Choose template..."
                       outlined
                       dense
@@ -182,13 +184,13 @@
                   <v-col cols="7" sm="8" md="4" lg="3" xl="2">
                     <v-select
                       v-model="appraisee"
-                      :items="members"
-                      item-text="name"
+                      :items="users"
+                      item-text="fullName"
+                      item-value="id"
                       placeholder="Choose one..."
                       outlined
                       dense
                       hide-details
-                      return-object
                     ></v-select>
                   </v-col>
                 </v-row>
@@ -218,8 +220,8 @@
                       :clear-on-select="false"
                       :preserve-search="true"
                       placeholder="Pick some"
-                      label="name"
-                      track-by="name"
+                      label="fullName"
+                      track-by="fullName"
                     >
                       <template
                         slot="selection"
@@ -246,10 +248,10 @@
 
                         <v-list-item-content>
                           <v-list-item-title
-                            v-text="rater.name"
+                            v-text="rater.fullName"
                           ></v-list-item-title>
                           <v-list-item-content
-                            v-text="rater.position"
+                            v-text="getPosition(rater)"
                           ></v-list-item-content>
                         </v-list-item-content>
 
@@ -274,6 +276,30 @@
               </v-btn>
               <v-btn class="btn-bottom" large @click="reset">Reset</v-btn>
             </div>
+            <v-snackbar top v-model="snackbar">
+              <v-icon color="red">mdi-alert</v-icon>
+              {{ submitError }}
+              <v-btn color="error" text @click="snackbar = false">
+                Close
+              </v-btn>
+            </v-snackbar>
+            <v-dialog v-model="isSubmitted" persistent max-width="50rem">
+              <v-card>
+                <v-card-title class="headline">
+                  <v-icon color="#4caf50" size="40" class="mr-5"
+                    >mdi-checkbox-marked-circle-outline</v-icon
+                  >
+                  <span>Successfully Created</span>
+                </v-card-title>
+                <v-card-text>{{ successAlert() }}</v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="#4caf50" text @click="isSubmitted = false"
+                    >Go Back</v-btn
+                  >
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
           </v-col>
         </v-row>
       </v-container>
@@ -295,38 +321,8 @@ export default {
 
   data: () => {
     return {
-      template: [
-        "Java Developer - SE",
-        "Software Developer - SD",
-        "Data Scientist - DS"
-      ],
-      members: [
-        {
-          id: 1,
-          name: "Nguyen Van A",
-          position: "Develop"
-        },
-        {
-          id: 2,
-          name: "Huynh Van B",
-          position: "Leader"
-        },
-        {
-          id: 3,
-          name: "Bui Minh C",
-          position: "Manager"
-        },
-        {
-          id: 4,
-          name: "Le Thi D",
-          position: "Tester"
-        },
-        {
-          id: 5,
-          name: "Tran Nguyen F",
-          position: "Designer"
-        }
-      ],
+      template: [],
+      users: [],
       selectedTemplate: "",
       radiosDate: "",
       appraisee: "",
@@ -338,34 +334,154 @@ export default {
       menuRecur: false,
       menuRecurEnd: false,
       checkRecurrence: true,
-      evaluations: []
+      evaluation: {},
+      sortDates: "",
+      ratersId: [],
+      snackbar: false,
+      submitError: "",
+      submit: false,
+      isSubmitted: false
     };
+  },
+  created() {
+    this.axios
+      .get("/evaluation-information/get_appraisee_raters")
+      .then(response => {
+        this.template = response.data.template;
+        this.users = response.data.user;
+        this.users.forEach(
+          user =>
+            (user.fullName =
+              user.first_name + " " + user.middle_name + " " + user.last_name)
+        );
+      })
+      .catch(error => console.log(error));
   },
 
   computed: {
     dateRangeText() {
+      if (this.dates.length === 2) {
+        if (this.dates[0] > this.dates[1]) {
+          return this.dates
+            .slice()
+            .reverse()
+            .join(" ~ ");
+        }
+      }
       return this.dates.join(" ~ ");
     }
   },
 
   methods: {
     publish() {
-      this.evaluations.push({
-        template: this.selectedTemplate,
-        dateStart: this.dates[0],
-        dateEnd: this.dates[1],
-        dateRecurStart: this.dateRecur,
-        dateRecurEnd: this.radiosDate,
-        appraisee: this.appraisee,
-        raters: this.raters
-      });
-      console.log(this.evaluations);
-      alert("Template is created !!!");
-      this.reset();
+      this.validateData();
+      if (this.submit) {
+        this.evaluation.evaluated_user_id = this.selectedTemplate;
+        this.evaluation.period_of_review_start = this.dateRangeText.slice(
+          0,
+          10
+        );
+        this.evaluation.period_of_review_end = this.dateRangeText.slice(13, 23);
+        this.evaluation.created_date = this.dateRecur;
+        if (
+          this.evaluation.created_date < this.evaluation.period_of_review_end
+        ) {
+          this.submitError =
+            "The start date must be greater than the last date of period of review";
+          this.snackbar = true;
+          return;
+        }
+        if (this.radiosDate) {
+          this.evaluation.end_date = this.dateRecurEnd;
+          if (this.evaluation.end_date < this.evaluation.created_date) {
+            this.submitError =
+              "The end date must be greater than the start date";
+            this.snackbar = true;
+            return;
+          }
+        } else {
+          this.evaluation.end_date = this.radiosDate;
+        }
+        this.evaluation.evaluation_form_id = this.appraisee;
+        this.raters.forEach(rater => this.ratersId.push(rater.id));
+        this.evaluation.assessor_user_id = this.ratersId;
+        console.log(this.evaluation);
+        this.axios
+          .post(
+            "/evaluation-information/add-evaluation-information",
+            this.evaluation
+          )
+          .then(response => {
+            console.log(response);
+            console.log("Success!!!");
+            // this.isSubmitted = true;
+            // this.reset();
+          })
+          .catch(error => console.log(error));
+        this.isSubmitted = true;
+      }
+    },
+
+    validateData() {
+      let message = [
+        "The template is required",
+        "The period of review is required two different dates",
+        "The end date option is required to check",
+        "The appraisee name is required",
+        "The raters is required",
+        "The start date must be greater than the last date of period of review",
+        "The end date must be greater than the start date"
+      ];
+      if (!this.selectedTemplate) {
+        this.submitError = message[0];
+        this.snackbar = true;
+        this.submit = false;
+        return;
+      }
+
+      if (this.dateRangeText.length < 20) {
+        this.submitError = message[1];
+        this.snackbar = true;
+        this.submit = false;
+        return;
+      }
+
+      if (this.radiosDate === "") {
+        this.submitError = message[2];
+        this.snackbar = true;
+        this.submit = false;
+        return;
+      }
+
+      if (!this.appraisee) {
+        this.submitError = message[3];
+        this.snackbar = true;
+        this.submit = false;
+        return;
+      }
+
+      if (!this.raters) {
+        this.submitError = message[4];
+        this.snackbar = true;
+        this.submit = false;
+        return;
+      }
+
+      this.submit = true;
+    },
+
+    successAlert() {
+      return `Thank you`;
     },
 
     selectRaters() {
-      return this.members.filter(member => member.id !== this.appraisee.id);
+      return this.users.filter(user => user.id !== this.appraisee);
+    },
+
+    getPosition(rater) {
+      let positionRater = "";
+      rater.positions.forEach(position => (positionRater = position.name));
+      return positionRater;
     },
 
     reset() {

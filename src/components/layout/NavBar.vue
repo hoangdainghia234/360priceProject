@@ -29,9 +29,11 @@
         <v-icon class="icon">mdi-account</v-icon>
         <span class="textIcon">{{ userRole }}</span>
       </v-btn>
-      <v-btn depressed class="btn-nav transparent" @click="signOut()">
+      <v-btn depressed class="btn-nav transparent">
         <v-icon class="icon">mdi-logout-variant</v-icon>
-        <span class="textIcon">Sign Out</span>
+        <router-link to="/logout" class="textIcon">
+          Sign Out
+        </router-link>
       </v-btn>
     </v-app-bar>
   </div>
@@ -47,9 +49,6 @@ export default {
   }),
 
   methods: {
-    signOut() {
-      this.$router.push("/");
-    },
     changeTitle(itemsNav) {
       var title = "";
       itemsNav.forEach(item => {
@@ -84,6 +83,8 @@ export default {
 
   .textIcon {
     font-size: 1rem;
+    color: #fff;
+    text-decoration: none;
   }
 }
 
