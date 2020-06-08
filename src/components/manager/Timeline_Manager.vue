@@ -4,7 +4,7 @@
       <v-container fluid>
         <v-row class="pr-3 pl-3 pr-sm-5 pl-sm-5 pr-md-7 pl-md-7">
           <v-col cols="12">
-            <v-expansion-panels v-model="panel" :readonly="readonly" multiple>
+            <v-expansion-panels v-model="panel" multiple>
               <v-expansion-panel>
                 <v-expansion-panel-header class="pt-0 pb-0">
                   <div class="d-flex align-center">
@@ -23,7 +23,7 @@
                           md="4"
                           class="pl-lg-10 pr-lg-10"
                           v-for="item in items"
-                          :key="item.item_title"
+                          :key="item.id"
                         >
                           <p class="mb-2">{{ item.item_title }}</p>
                           <v-combobox
@@ -45,7 +45,7 @@
                             ref="menu"
                             v-model="menu"
                             :close-on-content-click="false"
-                            :return-value.sync="date"
+                            :return-value.sync="dates"
                             transition="scale-transition"
                             offset-x
                             min-width="290px"
@@ -54,7 +54,6 @@
                               <v-text-field
                                 v-model="dateRangeText"
                                 append-icon="mdi-calendar"
-                                readonly
                                 outlined
                                 dense
                                 v-on="on"
@@ -73,7 +72,7 @@
                               <v-btn
                                 text
                                 color="primary"
-                                @click="$refs.menu.save(date)"
+                                @click="$refs.menu.save(dates)"
                               >
                                 OK
                               </v-btn>
@@ -105,54 +104,31 @@
               <v-container>
                 <v-timeline>
                   <v-timeline-item
-                    v-for="item in items_datetime"
-                    :key="item.date"
+                    v-for="item_timeline in timeLine"
+                    :key="item_timeline.id"
                     color="red lighten-2"
                   >
                     <template v-slot:opposite>
-                      <span>{{ item.date }}</span>
+                      <span>{{ item_timeline.review_start }}</span>
                     </template>
                     <v-card class="elevation-2 item--card">
-                      <v-card-text @click="dialog = true">
-                        <p v-for="itemRating in item.content" :key="itemRating">
-                          <span>{{ itemRating.name }} : </span>
-                          <span>{{ itemRating.rating }}</span>
+                      <v-card-text>
+                        <p>
+                          <span>Self: </span>
+                          <span>{{ item_timeline.rating_all.self }}</span>
+                        </p>
+                        <p>
+                          <span>Member: </span>
+                          <span>{{ item_timeline.rating_all.member }}</span>
+                        </p>
+                        <p>
+                          <span>Mentor: </span>
+                          <span>{{ item_timeline.rating_all.mentor }}</span>
                         </p>
                       </v-card-text>
                     </v-card>
                   </v-timeline-item>
                 </v-timeline>
-                <v-dialog v-model="dialog">
-                  <v-card>
-                    <v-card-title class="d-flex justify-center grey lighten-2">
-                      <i>Comparison Charts</i>
-                    </v-card-title>
-                    <v-row class="justify-center mt-3 ml-3 mr-3">
-                      <v-col cols="12" md="6" lg="6">
-                        <v-card class="mb-3 align-center">
-                          <div class="align-center">
-                            <apexchart
-                              type="radar"
-                              :options="chartOptions"
-                              :series="series"
-                            ></apexchart>
-                          </div>
-                        </v-card>
-                      </v-col>
-                      <v-col cols="12" md="6" lg="6">
-                        <v-card>
-                          <div class="align-center">
-                            <apexchart
-                              type="radar"
-                              :options="chartOptions"
-                              :series="series"
-                            ></apexchart>
-                          </div>
-                        </v-card>
-                      </v-col>
-                    </v-row>
-                  </v-card>
-                </v-dialog>
               </v-container>
             </v-card>
           </v-col>
@@ -188,113 +164,7 @@ export default {
           select: ["Sample name"]
         }
       ],
-      items_datetime: [
-        {
-          date: "Dec-2017",
-          content: [
-            {
-              name: "Self",
-              rating: "3.0"
-            },
-            {
-              name: "Team Member",
-              rating: "3.0"
-            },
-            {
-              name: "Team Leader",
-              rating: "3.0"
-            },
-            {
-              name: "Manager",
-              rating: "3.0"
-            }
-          ]
-        },
-        {
-          date: "Jun-2018",
-          content: [
-            {
-              name: "Self",
-              rating: "3.2"
-            },
-            {
-              name: "Team Member",
-              rating: "3.1"
-            },
-            {
-              name: "Team Leader",
-              rating: "3.0"
-            },
-            {
-              name: "Manager",
-              rating: "3.0"
-            }
-          ]
-        },
-        {
-          date: "Dec-2018",
-          content: [
-            {
-              name: "Self",
-              rating: "4.0"
-            },
-            {
-              name: "Team Member",
-              rating: "3.1"
-            },
-            {
-              name: "Team Leader",
-              rating: "3.0"
-            },
-            {
-              name: "Manager",
-              rating: "3.0"
-            }
-          ]
-        },
-        {
-          date: "Jun-2019",
-          content: [
-            {
-              name: "Self",
-              rating: "3.9"
-            },
-            {
-              name: "Team Member",
-              rating: "3.0"
-            },
-            {
-              name: "Team Leader",
-              rating: "3.0"
-            },
-            {
-              name: "Manager",
-              rating: "3.0"
-            }
-          ]
-        },
-        {
-          date: "Dec-2019",
-          content: [
-            {
-              name: "Self",
-              rating: "3.8"
-            },
-            {
-              name: "Team Member",
-              rating: "3.4"
-            },
-            {
-              name: "Team Leader",
-              rating: "3.0"
-            },
-            {
-              name: "Manager",
-              rating: "3.0"
-            }
-          ]
-        }
-      ],
+      timeLine: [],
       //chart
       series: [
         {
@@ -350,6 +220,40 @@ export default {
     dateRangeText() {
       return this.dates.join(" ~ ");
     }
+  },
+  created() {
+    this.axios
+      .get(
+        "http://34.72.144.52/api/employee/view-evaluation-result/timeline/user-3"
+      )
+      .then(response => {
+        var itemCategory = [];
+        response.data.forEach(categories => {
+          Object.keys(categories).forEach(function(item) {
+            itemCategory.push(categories[item]);
+            // var date = Date.parse(categories[item].review_start);
+            // console.log(date.toString("dd-MMM-yyyy"));
+            const date = new Date(categories[item].review_start);
+            const formattedDate = date
+              .toLocaleDateString("en-GB", {
+                month: "short",
+                year: "numeric"
+              })
+              .replace(/ /g, " - ");
+            categories[item].review_start = formattedDate;
+            console.log(categories[item].rating_all);
+          });
+        });
+        this.timeLine = itemCategory;
+        // Object.keys(response.data).forEach(function(item) {
+        //   console.log(response.data[item].category);
+        //   // Object.keys(response.data[item].category).forEach(function(
+        //   //   item_category
+        //   // ) {
+        //   //   console.log(response.data[item].category);
+        //   // });
+        // });
+      });
   },
   methods: {
     func() {
