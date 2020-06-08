@@ -113,7 +113,12 @@
                   <v-row justify="start" class="mt-5 pl-3 mb-1">
                     <v-dialog v-model="dialog2" persistent max-width="1000px">
                       <template v-slot:activator="{ on }">
-                        <v-btn color="success" dark v-on="on">
+                        <v-btn
+                          color="success"
+                          dark
+                          v-on="on"
+                          @click="addItem()"
+                        >
                           <v-icon class="pr-2">mdi-plus-circle</v-icon>
                           Add Item
                         </v-btn>
@@ -507,17 +512,15 @@ export default {
           value.item.splice(index, 1);
         }
       });
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
     },
     deleteCategory(index) {
       this.categories.splice(index, 1);
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
+    },
+    addItem() {
+      console.log(this.categories);
+      console.log(this.defaultItem);
+      console.log(this.editedItem);
+      console.log(this.editedIndex);
     },
     saveCategogy(id) {
       this.editedItem.parent_id = id;
@@ -534,10 +537,6 @@ export default {
     },
     close() {
       this.dialog2 = false;
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
     },
     editItem(category_id, index) {
       this.editedIndex = index;

@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-content>
-      <v-container fluid>
+      <v-container fluid class="pl-7 pr-7 pt-5 pb-7">
         <div
           class="d-flex justify-center align-center"
           v-if="!getData"
@@ -280,7 +280,7 @@
           <v-card-title class="d-flex justify-center">
             Comparison Charts
           </v-card-title>
-          <v-row class="justify-center ml-3 mr-3">
+          <v-row class="justify-center ml-3 mr-3 pb-3">
             <v-col cols="12" lg="6">
               <v-card>
                 <apexchart
@@ -403,7 +403,7 @@ export default {
           },
           plotOptions: {
             radar: {
-              size: 110,
+              size: 100,
               polygons: {
                 strokeColors: "#e9e9e9",
                 fill: {
@@ -453,7 +453,7 @@ export default {
           },
           plotOptions: {
             radar: {
-              size: 110,
+              size: 100,
               polygons: {
                 strokeColors: "#e9e9e9",
                 fill: {
