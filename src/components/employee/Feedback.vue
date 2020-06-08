@@ -223,7 +223,7 @@
                       dialog = false;
                       goBack();
                     "
-                    >Go Back</v-btn
+                    >Go Back to Home page</v-btn
                   >
                 </v-card-actions>
               </v-card>
@@ -360,7 +360,7 @@ export default {
         this.ratingEvaluation.assessment_id = this.employeeEvaluation.id;
         this.ratingEvaluation.categories = this.categories;
         this.ratingEvaluation.rating_json = this.mainpoints;
-        console.log(JSON.stringify(this.ratingEvaluation));
+        // console.log(JSON.stringify(this.ratingEvaluation));
         this.axios
           .post("/rating-evaluation", this.ratingEvaluation)
           .then((this.isSubmitted = true));

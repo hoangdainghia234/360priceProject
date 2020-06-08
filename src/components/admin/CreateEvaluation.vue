@@ -276,6 +276,30 @@
               </v-btn>
               <v-btn class="btn-bottom" large @click="reset">Reset</v-btn>
             </div>
+            <v-snackbar top v-model="snackbar">
+              <v-icon color="red">mdi-alert</v-icon>
+              {{ submitError }}
+              <v-btn color="error" text @click="snackbar = false">
+                Close
+              </v-btn>
+            </v-snackbar>
+            <v-dialog v-model="isSubmitted" persistent max-width="50rem">
+              <v-card>
+                <v-card-title class="headline">
+                  <v-icon color="#4caf50" size="40" class="mr-5"
+                    >mdi-checkbox-marked-circle-outline</v-icon
+                  >
+                  <span>Successfully Created</span>
+                </v-card-title>
+                <v-card-text>{{ successAlert() }}</v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="#4caf50" text @click="isSubmitted = false"
+                    >Go Back</v-btn
+                  >
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
           </v-col>
         </v-row>
       </v-container>
@@ -312,7 +336,11 @@ export default {
       checkRecurrence: true,
       evaluation: {},
       sortDates: "",
-      ratersId: []
+      ratersId: [],
+      snackbar: false,
+      submitError: "",
+      submit: false,
+      isSubmitted: false
     };
   },
   created() {
@@ -346,30 +374,104 @@ export default {
 
   methods: {
     publish() {
-      this.raters.forEach(rater => this.ratersId.push(rater.id));
-
-      this.evaluation.period_of_review_start = this.dateRangeText.slice(0, 10);
-      this.evaluation.period_of_review_end = this.dateRangeText.slice(13, 23);
-      this.evaluation.created_date = this.dateRecur;
-      if (this.radiosDate) {
-        this.evaluation.end_date = this.dateRecurEnd;
-      } else {
-        this.evaluation.end_date = this.radiosDate;
+      this.validateData();
+      if (this.submit) {
+        this.evaluation.evaluated_user_id = this.selectedTemplate;
+        this.evaluation.period_of_review_start = this.dateRangeText.slice(
+          0,
+          10
+        );
+        this.evaluation.period_of_review_end = this.dateRangeText.slice(13, 23);
+        this.evaluation.created_date = this.dateRecur;
+        if (
+          this.evaluation.created_date < this.evaluation.period_of_review_end
+        ) {
+          this.submitError =
+            "The start date must be greater than the last date of period of review";
+          this.snackbar = true;
+          return;
+        }
+        if (this.radiosDate) {
+          this.evaluation.end_date = this.dateRecurEnd;
+          if (this.evaluation.end_date < this.evaluation.created_date) {
+            this.submitError =
+              "The end date must be greater than the start date";
+            this.snackbar = true;
+            return;
+          }
+        } else {
+          this.evaluation.end_date = this.radiosDate;
+        }
+        this.evaluation.evaluation_form_id = this.appraisee;
+        this.raters.forEach(rater => this.ratersId.push(rater.id));
+        this.evaluation.assessor_user_id = this.ratersId;
+        console.log(this.evaluation);
+        this.axios
+          .post(
+            "/evaluation-information/add-evaluation-information",
+            this.evaluation
+          )
+          .then(response => {
+            console.log(response);
+            console.log("Success!!!");
+            // this.isSubmitted = true;
+            // this.reset();
+          })
+          .catch(error => console.log(error));
+        this.isSubmitted = true;
       }
-      this.evaluation.evaluated_user_id = this.selectedTemplate;
-      this.evaluation.evaluation_form_id = this.appraisee;
-      this.evaluation.assessor_user_id = this.ratersId;
-      console.log(this.evaluation);
-      this.axios
-        .post(
-          "/evaluation-information/add-evaluation-information",
-          this.evaluation
-        )
-        .then(response => {
-          console.log(response);
-          console.log("Success!!!");
-        })
-        .catch(error => console.log(error));
+    },
+
+    validateData() {
+      let message = [
+        "The template is required",
+        "The period of review is required two different dates",
+        "The end date option is required to check",
+        "The appraisee name is required",
+        "The raters is required",
+        "The start date must be greater than the last date of period of review",
+        "The end date must be greater than the start date"
+      ];
+      if (!this.selectedTemplate) {
+        this.submitError = message[0];
+        this.snackbar = true;
+        this.submit = false;
+        return;
+      }
+
+      if (this.dateRangeText.length < 20) {
+        this.submitError = message[1];
+        this.snackbar = true;
+        this.submit = false;
+        return;
+      }
+
+      if (this.radiosDate === "") {
+        this.submitError = message[2];
+        this.snackbar = true;
+        this.submit = false;
+        return;
+      }
+
+      if (!this.appraisee) {
+        this.submitError = message[3];
+        this.snackbar = true;
+        this.submit = false;
+        return;
+      }
+
+      if (!this.raters) {
+        this.submitError = message[4];
+        this.snackbar = true;
+        this.submit = false;
+        return;
+      }
+
+      this.submit = true;
+    },
+
+    successAlert() {
+      return `Thank you`;
     },
 
     selectRaters() {
