@@ -1,11 +1,6 @@
 <template>
   <v-app id="inspire">
-    <nav-bar
-      :title="title"
-      :itemsNav="itemsNav"
-      :userRole="userRole"
-      @clickTag="changeTitle"
-    />
+    <nav-bar :itemsNav="itemsNav" :userRole="userRole" />
     <router-view />
   </v-app>
 </template>
@@ -22,21 +17,25 @@ export default {
 
   data: () => {
     return {
-      title: "Home",
-      itemsNav: {
-        "/employee": ["Home", "mdi-home"],
-        "/employee/evaluation": ["Evaluation Result", "mdi-account-check"],
-        "/employee/timeline": ["Timeline", "mdi-chart-timeline"],
-        "/employee/feedback": ["360 Degree Feedback", "mdi-message-plus"]
-      },
+      itemsNav: [
+        {
+          name: "Home",
+          icon: "mdi-home",
+          path: "/employee"
+        },
+        {
+          name: "Evaluation Result",
+          icon: "mdi-account-check",
+          path: "/employee/evaluation"
+        }
+        // {
+        //   name: "Timeline",
+        //   icon: "mdi-chart-timeline",
+        //   path: "/employee/timeline"
+        // }
+      ],
       userRole: "Employee"
     };
-  },
-
-  methods: {
-    changeTitle(tag) {
-      this.title = tag;
-    }
   }
 };
 </script>

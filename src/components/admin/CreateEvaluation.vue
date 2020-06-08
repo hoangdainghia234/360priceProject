@@ -212,7 +212,7 @@
                   <v-col cols="7" sm="8" md="4" lg="3" xl="2">
                     <multiselect
                       v-model="raters"
-                      :options="members"
+                      :options="selectRaters()"
                       :multiple="true"
                       :close-on-select="false"
                       :clear-on-select="false"
@@ -295,7 +295,6 @@ export default {
 
   data: () => {
     return {
-      title: "Create 360 Degree Evaluation",
       template: [
         "Java Developer - SE",
         "Software Developer - SD",
@@ -361,6 +360,12 @@ export default {
         raters: this.raters
       });
       console.log(this.evaluations);
+      alert("Template is created !!!");
+      this.reset();
+    },
+
+    selectRaters() {
+      return this.members.filter(member => member.id !== this.appraisee.id);
     },
 
     reset() {
