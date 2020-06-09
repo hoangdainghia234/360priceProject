@@ -80,7 +80,9 @@ export default {
   data() {
     return {
       getData: false,
-      listEvaluation: []
+      listEvaluation: [],
+      id: "",
+      user: ""
     };
   },
   methods: {
@@ -115,12 +117,12 @@ export default {
     }
   },
   created() {
-    this.axios
-      .get("http://34.72.144.52/api/evaluations/retrieve/3")
-      .then(response => {
-        this.listEvaluation = response.data;
-        this.getData = true;
-      });
+    this.user = JSON.parse(localStorage.getItem("user"));
+    this.id = this.user.id;
+    this.axios.get("/evaluations/retrieve/" + this.id).then(response => {
+      this.listEvaluation = response.data;
+      this.getData = true;
+    });
   }
 };
 </script>

@@ -1,10 +1,7 @@
 <template>
   <div class="navBar">
     <v-navigation-drawer v-model="drawer" app>
-      <v-img
-        src="https://jobs.hybrid-technologies.vn/wp-content/uploads/2019/01/Hybrid-Technologies-LogoSuite_-fullcolor.png"
-        class="ma-10 mb-0 mt-3"
-      ></v-img>
+      <v-img src="./new_logo.png" class="ma-7 mb-0 mt-3"></v-img>
       <v-list>
         <v-list-item
           v-for="(item, index) in itemsNav"
@@ -27,7 +24,7 @@
       <v-spacer></v-spacer>
       <v-btn depressed class="btn-nav transparent">
         <v-icon class="icon">mdi-account</v-icon>
-        <span class="textIcon">{{ userRole }}</span>
+        <span class="textIcon">{{ name }}</span>
       </v-btn>
       <v-btn depressed class="btn-nav transparent">
         <v-icon class="icon">mdi-logout-variant</v-icon>
@@ -45,7 +42,8 @@ export default {
   props: ["itemsNav", "userRole"],
 
   data: () => ({
-    drawer: null
+    drawer: null,
+    name: ""
   }),
 
   methods: {
@@ -58,6 +56,16 @@ export default {
       });
       return title;
     }
+  },
+
+  created() {
+    this.user = JSON.parse(localStorage.getItem("user"));
+    this.name =
+      this.user.first_name +
+      " " +
+      this.user.middle_name +
+      " " +
+      this.user.last_name;
   }
 };
 </script>
