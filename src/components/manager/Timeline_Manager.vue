@@ -4,7 +4,7 @@
       <v-container fluid>
         <v-row class="pr-3 pl-3 pr-sm-5 pl-sm-5 pr-md-7 pl-md-7">
           <v-col cols="12">
-            <v-expansion-panels v-model="panel" :readonly="readonly" multiple>
+            <v-expansion-panels v-model="panel" multiple>
               <v-expansion-panel>
                 <v-expansion-panel-header class="pt-0 pb-0">
                   <div class="d-flex align-center">
@@ -23,7 +23,7 @@
                           md="4"
                           class="pl-lg-10 pr-lg-10"
                           v-for="item in items"
-                          :key="item.item_title"
+                          :key="item.id"
                         >
                           <p class="mb-2">{{ item.item_title }}</p>
                           <v-combobox
@@ -45,7 +45,7 @@
                             ref="menu"
                             v-model="menu"
                             :close-on-content-click="false"
-                            :return-value.sync="date"
+                            :return-value.sync="dates"
                             transition="scale-transition"
                             offset-x
                             min-width="290px"
@@ -54,7 +54,6 @@
                               <v-text-field
                                 v-model="dateRangeText"
                                 append-icon="mdi-calendar"
-                                readonly
                                 outlined
                                 dense
                                 v-on="on"
@@ -73,7 +72,7 @@
                               <v-btn
                                 text
                                 color="primary"
-                                @click="$refs.menu.save(date)"
+                                @click="$refs.menu.save(dates)"
                               >
                                 OK
                               </v-btn>
@@ -105,54 +104,72 @@
               <v-container>
                 <v-timeline>
                   <v-timeline-item
-                    v-for="item in items_datetime"
-                    :key="item.date"
+                    v-for="(item_timeline, index) in timeLine"
+                    :key="index"
                     color="red lighten-2"
                   >
                     <template v-slot:opposite>
-                      <span>{{ item.date }}</span>
+                      <span>{{ item_timeline[1].review_start }}</span>
                     </template>
                     <v-card class="elevation-2 item--card">
-                      <v-card-text @click="dialog = true">
-                        <p v-for="itemRating in item.content" :key="itemRating">
-                          <span>{{ itemRating.name }} : </span>
-                          <span>{{ itemRating.rating }}</span>
-                        </p>
-                      </v-card-text>
+                      <v-dialog v-model="item_timeline.index">
+                        <template v-slot:activator="{ on }">
+                          <v-card-text v-on="on">
+                            <p>
+                              <span>Self: </span>
+                              <span>{{
+                                item_timeline[1].rating_all.self
+                              }}</span>
+                            </p>
+                            <p>
+                              <span>Member: </span>
+                              <span>{{
+                                item_timeline[1].rating_all.member
+                              }}</span>
+                            </p>
+                            <p>
+                              <span>Mentor: </span>
+                              <span>{{
+                                item_timeline[1].rating_all.mentor
+                              }}</span>
+                            </p>
+                          </v-card-text>
+                        </template>
+                        <v-card>
+                          <v-card-title
+                            class="d-flex justify-center grey lighten-2"
+                          >
+                            <p class="ma-0">Comparison Charts</p>
+                          </v-card-title>
+                          <v-row class="justify-center mt-3 ml-3 mr-3">
+                            <v-col cols="12" md="6" lg="6">
+                              <v-card class="mb-3 align-center">
+                                <div class="align-center">
+                                  <apexchart
+                                    type="radar"
+                                    :options="chartOptionsTeam"
+                                    :series="seriesSelfAndTeam"
+                                  ></apexchart>
+                                </div>
+                              </v-card>
+                            </v-col>
+                            <v-col cols="12" md="6" lg="6">
+                              <v-card>
+                                <div class="align-center">
+                                  <apexchart
+                                    type="radar"
+                                    :options="chartOptionsManager"
+                                    :series="seriesSelfAndMange"
+                                  ></apexchart>
+                                </div>
+                              </v-card>
+                            </v-col>
+                          </v-row>
+                        </v-card>
+                      </v-dialog>
                     </v-card>
                   </v-timeline-item>
                 </v-timeline>
-                <v-dialog v-model="dialog">
-                  <v-card>
-                    <v-card-title class="d-flex justify-center grey lighten-2">
-                      <i>Comparison Charts</i>
-                    </v-card-title>
-                    <v-row class="justify-center mt-3 ml-3 mr-3">
-                      <v-col cols="12" md="6" lg="6">
-                        <v-card class="mb-3 align-center">
-                          <div class="align-center">
-                            <apexchart
-                              type="radar"
-                              :options="chartOptions"
-                              :series="series"
-                            ></apexchart>
-                          </div>
-                        </v-card>
-                      </v-col>
-                      <v-col cols="12" md="6" lg="6">
-                        <v-card>
-                          <div class="align-center">
-                            <apexchart
-                              type="radar"
-                              :options="chartOptions"
-                              :series="series"
-                            ></apexchart>
-                          </div>
-                        </v-card>
-                      </v-col>
-                    </v-row>
-                  </v-card>
-                </v-dialog>
               </v-container>
             </v-card>
           </v-col>
@@ -188,168 +205,323 @@ export default {
           select: ["Sample name"]
         }
       ],
-      items_datetime: [
-        {
-          date: "Dec-2017",
-          content: [
-            {
-              name: "Self",
-              rating: "3.0"
-            },
-            {
-              name: "Team Member",
-              rating: "3.0"
-            },
-            {
-              name: "Team Leader",
-              rating: "3.0"
-            },
-            {
-              name: "Manager",
-              rating: "3.0"
-            }
-          ]
-        },
-        {
-          date: "Jun-2018",
-          content: [
-            {
-              name: "Self",
-              rating: "3.2"
-            },
-            {
-              name: "Team Member",
-              rating: "3.1"
-            },
-            {
-              name: "Team Leader",
-              rating: "3.0"
-            },
-            {
-              name: "Manager",
-              rating: "3.0"
-            }
-          ]
-        },
-        {
-          date: "Dec-2018",
-          content: [
-            {
-              name: "Self",
-              rating: "4.0"
-            },
-            {
-              name: "Team Member",
-              rating: "3.1"
-            },
-            {
-              name: "Team Leader",
-              rating: "3.0"
-            },
-            {
-              name: "Manager",
-              rating: "3.0"
-            }
-          ]
-        },
-        {
-          date: "Jun-2019",
-          content: [
-            {
-              name: "Self",
-              rating: "3.9"
-            },
-            {
-              name: "Team Member",
-              rating: "3.0"
-            },
-            {
-              name: "Team Leader",
-              rating: "3.0"
-            },
-            {
-              name: "Manager",
-              rating: "3.0"
-            }
-          ]
-        },
-        {
-          date: "Dec-2019",
-          content: [
-            {
-              name: "Self",
-              rating: "3.8"
-            },
-            {
-              name: "Team Member",
-              rating: "3.4"
-            },
-            {
-              name: "Team Leader",
-              rating: "3.0"
-            },
-            {
-              name: "Manager",
-              rating: "3.0"
-            }
-          ]
-        }
-      ],
+      timeLine: [],
       //chart
-      series: [
-        {
-          name: "Self",
-          data: [80, 50, 30, 40, 100, 20]
-        },
-        {
-          name: "Team",
-          data: [20, 30, 40, 80, 20, 80]
-        }
-      ],
-      chartOptions: {
-        chart: {
-          type: "radar",
-          id: "vuechart",
-          align: "center",
-          toolbar: {
-            show: false
-          }
-        },
-        markers: {
-          size: 0
-        },
-        title: {
-          text: "Self vs Team",
-          align: "center"
-        },
-        stroke: {
-          width: 2
-        },
-        fill: {
-          opacity: 0.2
-        },
-        xaxis: {
-          categories: [
-            "Category 1",
-            "Category 2",
-            "Category 3",
-            "Category 4",
-            "Category 5",
-            "Category 6"
-          ],
-          labels: {
-            style: {
-              colors: ["#000000"]
-            }
-          }
-        }
-      }
+      seriesSelfAndTeam: [],
+      seriesSelfAndMange: [],
+      chartOptionsTeam: {},
+      chartOptionsManager: {}
     };
   },
   computed: {
     dateRangeText() {
       return this.dates.join(" ~ ");
     }
+  },
+  created() {
+    this.axios
+      .get(
+        "http://34.72.144.52/api/employee/view-evaluation-result/timeline/user-3"
+      )
+      .then(response => {
+        this.timeLine = response.data;
+        var ratingSelf = [];
+        var ratingTeam = [];
+        var ratingManage = [];
+        var colorNameCategory = [];
+        var nameCategories = [];
+        var itemsCategory = [];
+        Object.keys(response.data[0]).forEach(function(item_category) {
+          var name_category = response.data[0][item_category].category;
+          Object.keys(name_category).forEach(function(item_name_category) {
+            nameCategories.push(name_category[item_name_category].name);
+          });
+        });
+        Object.keys(response.data).forEach(function(itemdata) {
+          var categories = response.data[itemdata];
+          itemsCategory.push(response.data[itemdata]);
+          if (itemdata == 0) {
+            Object.keys(categories).forEach(function(item) {
+              const date = new Date(categories[item].review_start);
+              const formattedDate = date
+                .toLocaleDateString("en-GB", {
+                  month: "short",
+                  year: "numeric"
+                })
+                .replace(/ /g, " - ");
+              categories[item].review_start = formattedDate;
+
+              Object.keys(categories[item].category).forEach(function(
+                itemCtegory
+              ) {
+                if (
+                  typeof categories[item].category[itemCtegory].rating_point
+                    .member !== "undefined"
+                ) {
+                  var rating_point_team =
+                    categories[item].category[itemCtegory].rating_point.member;
+                } else {
+                  rating_point_team = 5;
+                }
+                if (
+                  typeof categories[item].category[itemCtegory].rating_point
+                    .mentor !== "undefined"
+                ) {
+                  var rating_point_manager =
+                    categories[item].category[itemCtegory].rating_point.mentor;
+                } else {
+                  rating_point_manager = 5;
+                }
+                if (
+                  typeof categories[item].category[itemCtegory].rating_point
+                    .self !== "undefined"
+                ) {
+                  var rating_point_self =
+                    categories[item].category[itemCtegory].rating_point.self;
+                } else {
+                  rating_point_self = 5;
+                }
+                ratingSelf.push(rating_point_self);
+                ratingTeam.push(rating_point_team);
+                ratingManage.push(rating_point_manager);
+                colorNameCategory.push("#000000");
+              });
+            });
+            console.log(ratingSelf);
+            console.log(ratingTeam);
+            console.log(ratingManage);
+          }
+          ratingSelf.length = 0;
+          ratingTeam.length = 0;
+          ratingManage.length = 0;
+          if (itemdata == 1) {
+            Object.keys(categories).forEach(function(item) {
+              const date = new Date(categories[item].review_start);
+              const formattedDate = date
+                .toLocaleDateString("en-GB", {
+                  month: "short",
+                  year: "numeric"
+                })
+                .replace(/ /g, " - ");
+              categories[item].review_start = formattedDate;
+              Object.keys(categories[item].category).forEach(function(
+                itemCtegory
+              ) {
+                // nameCategories.push(categories[item].category[itemCtegory].name);
+                if (
+                  typeof categories[item].category[itemCtegory].rating_point
+                    .member !== "undefined"
+                ) {
+                  var rating_point_team =
+                    categories[item].category[itemCtegory].rating_point.member;
+                } else {
+                  rating_point_team = 5;
+                }
+                if (
+                  typeof categories[item].category[itemCtegory].rating_point
+                    .mentor !== "undefined"
+                ) {
+                  var rating_point_manager =
+                    categories[item].category[itemCtegory].rating_point.mentor;
+                } else {
+                  rating_point_manager = 5;
+                }
+                if (
+                  typeof categories[item].category[itemCtegory].rating_point
+                    .self !== "undefined"
+                ) {
+                  var rating_point_self =
+                    categories[item].category[itemCtegory].rating_point.self;
+                } else {
+                  rating_point_self = 5;
+                }
+                ratingSelf.push(rating_point_self);
+                ratingTeam.push(rating_point_team);
+                ratingManage.push(rating_point_manager);
+                colorNameCategory.push("#000000");
+              });
+            });
+            console.log(ratingSelf);
+            console.log(ratingTeam);
+            console.log(ratingManage);
+          }
+          // Object.keys(categories).forEach(function(item) {
+          //   // itemCategory.push(categories[item]);
+          //   // var date = Date.parse(categories[item].review_start);
+          //   // console.log(date.toString("dd-MMM-yyyy"));
+          //   const date = new Date(categories[item].review_start);
+          //   const formattedDate = date
+          //     .toLocaleDateString("en-GB", {
+          //       month: "short",
+          //       year: "numeric"
+          //     })
+          //     .replace(/ /g, " - ");
+          //   categories[item].review_start = formattedDate;
+          //   Object.keys(categories[item].category).forEach(function(
+          //     itemCtegory
+          //   ) {
+          //     // nameCategories.push(categories[item].category[itemCtegory].name);
+          //     if (
+          //       typeof categories[item].category[itemCtegory].rating_point
+          //         .member !== "undefined"
+          //     ) {
+          //       var rating_point_team =
+          //         categories[item].category[itemCtegory].rating_point.member;
+          //     } else {
+          //       rating_point_team = 5;
+          //     }
+          //     if (
+          //       typeof categories[item].category[itemCtegory].rating_point
+          //         .mentor !== "undefined"
+          //     ) {
+          //       var rating_point_manager =
+          //         categories[item].category[itemCtegory].rating_point.mentor;
+          //     } else {
+          //       rating_point_manager = 5;
+          //     }
+          //     if (
+          //       typeof categories[item].category[itemCtegory].rating_point
+          //         .self !== "undefined"
+          //     ) {
+          //       var rating_point_self =
+          //         categories[item].category[itemCtegory].rating_point.self;
+          //     } else {
+          //       rating_point_self = 5;
+          //     }
+          //     ratingSelf.push(rating_point_self);
+          //     ratingTeam.push(rating_point_team);
+          //     ratingManage.push(rating_point_manager);
+          //     colorNameCategory.push("#000000");
+          //   });
+          // });
+        });
+        // itemsCategory.forEach(items_category => {
+        //   Object.keys(items_category).forEach(function(name_item_category) {
+        //     console.log(items_category[name_item_category]);
+        //   });
+        // });
+        // this.timeLine = itemCategory;
+        this.seriesSelfAndTeam = [
+          {
+            name: "Self",
+            data: ratingSelf
+          },
+          {
+            name: "Team",
+            data: ratingTeam
+          }
+        ];
+        this.seriesSelfAndMange = [
+          {
+            name: "Self",
+            data: ratingSelf
+          },
+          {
+            name: "Manager",
+            data: ratingManage
+          }
+        ];
+        this.chartOptionsTeam = {
+          chart: {
+            type: "radar",
+            id: "vuechart",
+            align: "center",
+            toolbar: {
+              show: false
+            }
+          },
+          plotOptions: {
+            radar: {
+              size: 100,
+              polygons: {
+                strokeColors: "#e9e9e9",
+                fill: {
+                  colors: ["#f8f8f8", "#fff"]
+                }
+              }
+            }
+          },
+          tooltip: {
+            y: {
+              formatter: function(val) {
+                return val;
+              }
+            }
+          },
+          markers: {
+            size: 3
+          },
+          title: {
+            text: "Self vs Team",
+            align: "center",
+            margin: 20
+          },
+          stroke: {
+            width: 2
+          },
+          fill: {
+            opacity: 0.2
+          },
+          xaxis: {
+            categories: nameCategories,
+            labels: {
+              style: {
+                colors: colorNameCategory
+              }
+            }
+          }
+        };
+        this.chartOptionsManager = {
+          chart: {
+            type: "radar",
+            id: "vuechart",
+            align: "center",
+            toolbar: {
+              show: false
+            }
+          },
+          plotOptions: {
+            radar: {
+              size: 100,
+              polygons: {
+                strokeColors: "#e9e9e9",
+                fill: {
+                  colors: ["#f8f8f8", "#fff"]
+                }
+              }
+            }
+          },
+          tooltip: {
+            y: {
+              formatter: function(val) {
+                return val;
+              }
+            }
+          },
+          markers: {
+            size: 3
+          },
+          title: {
+            text: "Self vs Manager",
+            align: "center",
+            margin: 20
+          },
+          stroke: {
+            width: 2
+          },
+          fill: {
+            opacity: 0.2
+          },
+          xaxis: {
+            categories: nameCategories,
+            labels: {
+              style: {
+                colors: colorNameCategory
+              }
+            }
+          }
+        };
+      });
   },
   methods: {
     func() {

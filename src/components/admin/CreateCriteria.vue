@@ -4,14 +4,14 @@
       <v-container fluid class="pl-7 pr-7">
         <div>
           <v-row>
-            <v-col cols="4" class="d-flex align-center">
+            <v-col cols="12" sm="8" md="6" lg="4" class="d-flex align-center">
               <b class="mr-3">Criteria name:</b>
               <v-text-field
                 dense
                 placeholder="Sample main point"
                 outlined
                 hide-details
-                v-model="name"
+                v-model="categories.name"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -19,7 +19,11 @@
           <hr />
         </div>
         <!-- END: Category 2 -->
-        <div v-for="(value, index) in categories" :key="index" class="ma-7">
+        <div
+          v-for="(value, index) in categories.category"
+          :key="index"
+          class="ma-7"
+        >
           <v-icon
             class="float-right"
             color="black"
@@ -113,7 +117,12 @@
                   <v-row justify="start" class="mt-5 pl-3 mb-1">
                     <v-dialog v-model="dialog2" persistent max-width="1000px">
                       <template v-slot:activator="{ on }">
-                        <v-btn color="success" dark v-on="on">
+                        <v-btn
+                          color="success"
+                          dark
+                          v-on="on"
+                          @click="addItem()"
+                        >
                           <v-icon class="pr-2">mdi-plus-circle</v-icon>
                           Add Item
                         </v-btn>
@@ -225,7 +234,7 @@
                               color="indigo"
                               class="ma-2"
                               dark
-                              @click="close"
+                              @click="close()"
                               >Cancel</v-btn
                             >
                           </div>
@@ -241,16 +250,16 @@
         </div>
         <!-- -->
         <div class="d-flex justify-end mr-12 pr-2">
-          <v-btn large color="indigo" class="ma-2" dark @click="addCategory">
+          <v-btn large color="indigo" class="ma-1" dark @click="addCategory">
             <v-icon class="pr-2">mdi-plus-circle</v-icon>Add Category
           </v-btn>
-          <v-btn large class="ma-2" dark color="indigo">
+          <!-- <v-btn large class="ma-2" dark color="indigo">
             <v-icon>mdi-crop-portrait</v-icon>Clone
-          </v-btn>
+          </v-btn> -->
         </div>
 
         <div class="text-center mt-10">
-          <v-btn class="btn-bottom mr-7" large>Save</v-btn>
+          <v-btn class="btn-bottom mr-7" large @click="submit">Save</v-btn>
           <v-btn class="btn-bottom" large>Cancel</v-btn>
         </div>
       </v-container>
@@ -331,7 +340,6 @@ export default {
           }
         ]
       },
-      name: "Kỹ năng",
       beforeEditCache: "",
       categories: []
     };
@@ -343,8 +351,14 @@ export default {
       }
     }
   },
+  watch: {
+    dialog(val) {
+      val || this.close();
+    }
+  },
   created() {
     this.initialize();
+    this.loadUsers();
   },
   computed: {
     formTitle() {
@@ -355,173 +369,60 @@ export default {
   },
   methods: {
     initialize() {
-      this.categories = [
-        {
-          id: this.create_UUID(),
-          name: "Kỹ năng làm việc nhóm",
-          weight: 10,
-          item: [
-            {
-              name: "Kỹ năng làm việc nhóm 1",
-              weight: 10,
-              explaination: "Chi tiết 1",
-              rating: [
-                {
-                  explaination: "Lịch sử trong làm việc nhóm 1",
-                  rating_point: 1,
-                  rating_name: "Rating 1"
-                },
-                {
-                  explaination: "Lịch sử trong làm việc nhóm 1",
-                  rating_point: 2,
-                  rating_name: "Rating 2"
-                },
-                {
-                  explaination: "Lịch sử trong làm việc nhóm 1",
-                  rating_point: 3,
-                  rating_name: "Rating 3"
-                },
-                {
-                  explaination: "Lịch sử trong làm việc nhóm 1",
-                  rating_point: 4,
-                  rating_name: "Rating 4"
-                },
-                {
-                  explaination: "Lịch sử trong làm việc nhóm 1",
-                  rating_point: 5,
-                  rating_name: "Rating 5"
-                }
-              ]
-            },
-            {
-              name: "Kỹ năng làm việc nhóm 2",
-              weight: 10,
-              explaination: "Chi tiết 1",
-              rating: [
-                {
-                  explaination: "Lịch sử trong làm việc nhóm 2",
-                  rating_point: 1,
-                  rating_name: "Rating 1"
-                },
-                {
-                  explaination: "Lịch sử trong làm việc nhóm 2",
-                  rating_point: 2,
-                  rating_name: "Rating 2"
-                },
-                {
-                  explaination: "Lịch sử trong làm việc nhóm 2",
-                  rating_point: 3,
-                  rating_name: "Rating 3"
-                },
-                {
-                  explaination: "Lịch sử trong làm việc nhóm 2",
-                  rating_point: 4,
-                  rating_name: "Rating 4"
-                },
-                {
-                  explaination: "Lịch sử trong làm việc nhóm 2",
-                  rating_point: 5,
-                  rating_name: "Rating 5"
-                }
-              ]
-            }
-          ]
-        },
-        {
-          id: this.create_UUID(),
-          name: "Kỹ năng code",
-          weight: 10,
-          item: [
-            {
-              name: "Kỹ năng code 1",
-              weight: 10,
-              explaination: "Chi tiết 1",
-              rating: [
-                {
-                  explaination: "Lịch sử trong code 1",
-                  rating_point: 1,
-                  rating_name: "Rating 1"
-                },
-                {
-                  explaination: "Lịch sử trong code1",
-                  rating_point: 2,
-                  rating_name: "Rating 2"
-                },
-                {
-                  explaination: "Lịch sử trong code 1",
-                  rating_point: 3,
-                  rating_name: "Rating 3"
-                },
-                {
-                  explaination: "Lịch sử trong code 1",
-                  rating_point: 4,
-                  rating_name: "Rating 4"
-                },
-                {
-                  explaination: "Lịch sử trong code 1",
-                  rating_point: 5,
-                  rating_name: "Rating 5"
-                }
-              ]
-            },
-            {
-              name: "Kỹ năng làm việc nhóm 2",
-              weight: 10,
-              explaination: "Chi tiết 1",
-              rating: [
-                {
-                  explaination: "Lịch sử trong code 2",
-                  rating_point: 1,
-                  rating_name: "Rating 1"
-                },
-                {
-                  explaination: "Lịch sử trong code 2",
-                  rating_point: 2,
-                  rating_name: "Rating 2"
-                },
-                {
-                  explaination: "Lịch sử trong code 2",
-                  rating_point: 3,
-                  rating_name: "Rating 3"
-                },
-                {
-                  explaination: "Lịch sử trong code 2",
-                  rating_point: 4,
-                  rating_name: "Rating 4"
-                },
-                {
-                  explaination: "Lịch sử trong làm việc nhóm 2",
-                  rating_point: 5,
-                  rating_name: "Rating 5"
-                }
-              ]
-            }
-          ]
-        }
-      ];
+      this.categories = [];
+    },
+    loadUsers() {
+      if (this.axios == null) {
+        return;
+      }
+      this.axios
+        .get(
+          "http://34.72.144.52/api/category-evaluation/get-category-evaluation-4"
+        )
+        .then(response => {
+          if (response.status === 200) {
+            this.categories = response.data.data;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     deleteItem(id, index) {
       this.editedItem.parent_id = id;
-      this.categories.forEach(value => {
+      this.categories.category.forEach(value => {
         if (value.id === id) {
           value.item.splice(index, 1);
         }
       });
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
     },
     deleteCategory(index) {
-      this.categories.splice(index, 1);
+      this.categories.category.splice(index, 1);
+    },
+    addItem() {
+      console.log(this.categories);
+      // console.log(this.defaultItem);
+      // console.log(this.editedItem);
+      // console.log(this.editedIndex);
+    },
+    close() {
+      this.dialog2 = false;
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
+        // this.editedIndex = -1;
+        // this.$set(this.editedItem, 1, this.defaultItem);
+        // this.editedIndex = -1;
       });
+      // setTimeout(() => {
+      //   this.editedItem = Object.assign({}, this.defaultItem);
+      //   this.editedIndex = -1;
+      //   // this.$set(this.editedItem, 1, this.defaultItem);
+      //   // this.editedIndex = -1;
+      // }, 300);
     },
     saveCategogy(id) {
       this.editedItem.parent_id = id;
-      this.categories.forEach(value => {
+      this.categories.category.forEach(value => {
         if (value.id === id) {
           if (this.editedIndex > -1) {
             Object.assign(value.item[this.editedIndex], this.editedItem);
@@ -532,16 +433,9 @@ export default {
       });
       this.close();
     },
-    close() {
-      this.dialog2 = false;
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
-    },
     editItem(category_id, index) {
       this.editedIndex = index;
-      this.categories.forEach(value => {
+      this.categories.category.forEach(value => {
         if (value.id === category_id) {
           this.editedItem = Object.assign({}, value.item[index]);
         }
@@ -556,11 +450,10 @@ export default {
           item: []
         }
       ];
-      this.categories = [...this.categories, addCategory[0]];
-      console.log(this.categories);
+      this.categories.category = [...this.categories.category, addCategory[0]];
     },
     editTextCategory(name, id) {
-      this.categories.forEach(value => {
+      this.categories.category.forEach(value => {
         if (value.id === id) {
           console.log(value.id);
           this.beforeEditCache = name;
@@ -590,6 +483,10 @@ export default {
         }
       );
       return uuid;
+    },
+    submit() {
+      var evaluation_criteria = [];
+      console.log(evaluation_criteria);
     }
   }
 };

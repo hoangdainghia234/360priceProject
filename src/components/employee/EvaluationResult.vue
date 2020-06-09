@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-content>
-      <v-container fluid>
+      <v-container fluid class="pl-7 pr-7 pt-5 pb-7">
         <div
           class="d-flex justify-center align-center"
           v-if="!getData"
@@ -259,7 +259,7 @@
                                       </v-row>
                                     </td>
                                     <td>
-                                      {{ item_detail.items.comment_category }}
+                                      {{ item_detail.items.comment_items }}
                                     </td>
                                   </tr>
                                 </tbody>
@@ -280,7 +280,7 @@
           <v-card-title class="d-flex justify-center">
             Comparison Charts
           </v-card-title>
-          <v-row class="justify-center ml-3 mr-3">
+          <v-row class="justify-center ml-3 mr-3 pb-3">
             <v-col cols="12" lg="6">
               <v-card>
                 <apexchart
@@ -320,175 +320,179 @@ export default {
     };
   },
   created() {
-    this.axios.get("/employee/view-evaluation-result/user-3").then(response => {
-      this.getData = true;
-      var nameCategories = [];
-      var ratingSelf = [];
-      var ratingTeam = [];
-      var ratingManage = [];
-      var colorNameCategory = [];
-      var namePoint = [];
-      Object.keys(response.data).forEach(function(item) {
-        namePoint.push(response.data[item]);
-        Object.keys(response.data[item].category).forEach(function(
-          item_category
-        ) {
-          nameCategories.push(response.data[item].category[item_category].name);
-          if (
-            typeof response.data[item].category[item_category].rating_point
-              .member !== "undefined"
+    this.axios
+      .get("http://34.72.144.52/api/employee/view-evaluation-result/user-3")
+      .then(response => {
+        this.getData = true;
+        var nameCategories = [];
+        var ratingSelf = [];
+        var ratingTeam = [];
+        var ratingManage = [];
+        var colorNameCategory = [];
+        var namePoint = [];
+        Object.keys(response.data).forEach(function(item) {
+          namePoint.push(response.data[item]);
+          Object.keys(response.data[item].category).forEach(function(
+            item_category
           ) {
-            var rating_point_team =
-              response.data[item].category[item_category].rating_point.member;
-          } else {
-            rating_point_team = 5;
-          }
-          if (
-            typeof response.data[item].category[item_category].rating_point
-              .mentor !== "undefined"
-          ) {
-            var rating_point_manager =
-              response.data[item].category[item_category].rating_point.mentor;
-          } else {
-            rating_point_manager = 5;
-          }
-          if (
-            typeof response.data[item].category[item_category].rating_point
-              .self !== "undefined"
-          ) {
-            var rating_point_self =
-              response.data[item].category[item_category].rating_point.self;
-          } else {
-            rating_point_self = 5;
-          }
-          ratingSelf.push(rating_point_self);
-          ratingTeam.push(rating_point_team);
-          ratingManage.push(rating_point_manager);
-          colorNameCategory.push("#000000");
+            nameCategories.push(
+              response.data[item].category[item_category].name
+            );
+            if (
+              typeof response.data[item].category[item_category].rating_point
+                .member !== "undefined"
+            ) {
+              var rating_point_team =
+                response.data[item].category[item_category].rating_point.member;
+            } else {
+              rating_point_team = 5;
+            }
+            if (
+              typeof response.data[item].category[item_category].rating_point
+                .mentor !== "undefined"
+            ) {
+              var rating_point_manager =
+                response.data[item].category[item_category].rating_point.mentor;
+            } else {
+              rating_point_manager = 5;
+            }
+            if (
+              typeof response.data[item].category[item_category].rating_point
+                .self !== "undefined"
+            ) {
+              var rating_point_self =
+                response.data[item].category[item_category].rating_point.self;
+            } else {
+              rating_point_self = 5;
+            }
+            ratingSelf.push(rating_point_self);
+            ratingTeam.push(rating_point_team);
+            ratingManage.push(rating_point_manager);
+            colorNameCategory.push("#000000");
+          });
         });
+        this.mainPoints = namePoint;
+        this.seriesSelfAndTeam = [
+          {
+            name: "Self",
+            data: ratingSelf
+          },
+          {
+            name: "Team",
+            data: ratingTeam
+          }
+        ];
+        this.seriesSelfAndMange = [
+          {
+            name: "Self",
+            data: ratingSelf
+          },
+          {
+            name: "Manager",
+            data: ratingManage
+          }
+        ];
+        this.chartOptionsTeam = {
+          chart: {
+            type: "radar",
+            id: "vuechart",
+            align: "center",
+            toolbar: {
+              show: false
+            }
+          },
+          plotOptions: {
+            radar: {
+              size: 100,
+              polygons: {
+                strokeColors: "#e9e9e9",
+                fill: {
+                  colors: ["#f8f8f8", "#fff"]
+                }
+              }
+            }
+          },
+          tooltip: {
+            y: {
+              formatter: function(val) {
+                return val;
+              }
+            }
+          },
+          markers: {
+            size: 3
+          },
+          title: {
+            text: "Self vs Team",
+            align: "center",
+            margin: 20
+          },
+          stroke: {
+            width: 2
+          },
+          fill: {
+            opacity: 0.2
+          },
+          xaxis: {
+            categories: nameCategories,
+            labels: {
+              style: {
+                colors: colorNameCategory
+              }
+            }
+          }
+        };
+        this.chartOptionsManager = {
+          chart: {
+            type: "radar",
+            id: "vuechart",
+            align: "center",
+            toolbar: {
+              show: false
+            }
+          },
+          plotOptions: {
+            radar: {
+              size: 100,
+              polygons: {
+                strokeColors: "#e9e9e9",
+                fill: {
+                  colors: ["#f8f8f8", "#fff"]
+                }
+              }
+            }
+          },
+          tooltip: {
+            y: {
+              formatter: function(val) {
+                return val;
+              }
+            }
+          },
+          markers: {
+            size: 3
+          },
+          title: {
+            text: "Self vs Manager",
+            align: "center",
+            margin: 20
+          },
+          stroke: {
+            width: 2
+          },
+          fill: {
+            opacity: 0.2
+          },
+          xaxis: {
+            categories: nameCategories,
+            labels: {
+              style: {
+                colors: colorNameCategory
+              }
+            }
+          }
+        };
       });
-      this.mainPoints = namePoint;
-      this.seriesSelfAndTeam = [
-        {
-          name: "Self",
-          data: ratingSelf
-        },
-        {
-          name: "Team",
-          data: ratingTeam
-        }
-      ];
-      this.seriesSelfAndMange = [
-        {
-          name: "Self",
-          data: ratingSelf
-        },
-        {
-          name: "Manager",
-          data: ratingManage
-        }
-      ];
-      this.chartOptionsTeam = {
-        chart: {
-          type: "radar",
-          id: "vuechart",
-          align: "center",
-          toolbar: {
-            show: false
-          }
-        },
-        plotOptions: {
-          radar: {
-            size: 110,
-            polygons: {
-              strokeColors: "#e9e9e9",
-              fill: {
-                colors: ["#f8f8f8", "#fff"]
-              }
-            }
-          }
-        },
-        tooltip: {
-          y: {
-            formatter: function(val) {
-              return val;
-            }
-          }
-        },
-        markers: {
-          size: 3
-        },
-        title: {
-          text: "Self vs Team",
-          align: "center",
-          margin: 20
-        },
-        stroke: {
-          width: 2
-        },
-        fill: {
-          opacity: 0.2
-        },
-        xaxis: {
-          categories: nameCategories,
-          labels: {
-            style: {
-              colors: colorNameCategory
-            }
-          }
-        }
-      };
-      this.chartOptionsManager = {
-        chart: {
-          type: "radar",
-          id: "vuechart",
-          align: "center",
-          toolbar: {
-            show: false
-          }
-        },
-        plotOptions: {
-          radar: {
-            size: 110,
-            polygons: {
-              strokeColors: "#e9e9e9",
-              fill: {
-                colors: ["#f8f8f8", "#fff"]
-              }
-            }
-          }
-        },
-        tooltip: {
-          y: {
-            formatter: function(val) {
-              return val;
-            }
-          }
-        },
-        markers: {
-          size: 3
-        },
-        title: {
-          text: "Self vs Manager",
-          align: "center",
-          margin: 20
-        },
-        stroke: {
-          width: 2
-        },
-        fill: {
-          opacity: 0.2
-        },
-        xaxis: {
-          categories: nameCategories,
-          labels: {
-            style: {
-              colors: colorNameCategory
-            }
-          }
-        }
-      };
-    });
   }
 };
 </script>
