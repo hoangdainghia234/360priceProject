@@ -122,7 +122,7 @@ export default {
         {
           position: "admin",
           email: "admin360evaluation@gmail.com",
-          password: "fresher12345"
+          password: "admin12345"
         },
         {
           position: "employee",
@@ -132,7 +132,7 @@ export default {
         {
           position: "manager",
           email: "mentor360evaluation@gmail.com",
-          password: "fresher12345"
+          password: "mentor12345"
         }
       ],
       status: ""
