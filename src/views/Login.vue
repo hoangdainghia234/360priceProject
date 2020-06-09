@@ -8,7 +8,7 @@
       <v-container class="d-flex justify-center" fluid>
         <v-card class="card" width="27rem">
           <v-img
-            src="../assets/new_logo.png"
+            :src="require('../assets/new_logo.png')"
             height="5rem"
             contain
             class="mt-5 mb-5"

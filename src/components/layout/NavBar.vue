@@ -1,7 +1,7 @@
 <template>
   <div class="navBar">
     <v-navigation-drawer v-model="drawer" app>
-      <v-img src="./new_logo.png" class="ma-7 mb-0 mt-3"></v-img>
+      <v-img :src="require('./new_logo.png')" class="ma-7 mb-0 mt-3"></v-img>
       <v-list>
         <v-list-item
           v-for="(item, index) in itemsNav"

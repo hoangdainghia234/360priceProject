@@ -376,7 +376,7 @@ export default {
     publish() {
       this.validateData();
       if (this.submit) {
-        this.evaluation.evaluated_user_id = this.selectedTemplate;
+        this.evaluation.evaluated_user_id = this.appraisee;
         this.evaluation.period_of_review_start = this.dateRangeText.slice(
           0,
           10
@@ -402,7 +402,7 @@ export default {
         } else {
           this.evaluation.end_date = null;
         }
-        this.evaluation.evaluation_form_id = this.appraisee;
+        this.evaluation.evaluation_form_id = this.selectedTemplate;
         this.raters.forEach(rater => this.ratersId.push(rater.id));
         this.evaluation.assessor_user_id = this.ratersId;
         this.axios
