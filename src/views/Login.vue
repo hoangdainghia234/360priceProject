@@ -28,7 +28,7 @@
               <v-text-field
                 outlined
                 v-model="form.email"
-                label="Username"
+                label="Email"
                 @keyup.enter="login"
               ></v-text-field>
               <v-text-field
