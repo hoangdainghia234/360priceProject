@@ -73,7 +73,8 @@ export default {
       // serverError: "",
       // invalidCredential: "",
       position: "",
-      user: ""
+      user: "",
+      id: ""
     };
   },
 
@@ -88,11 +89,10 @@ export default {
       this.token = response.data.original.access_token;
       this.user = response.data.original.user;
       this.position = this.user.users_positions[0].position.name;
-      localStorage.setItem("user", this.user);
+      localStorage.setItem("user", JSON.stringify(this.user));
       localStorage.setItem("position", this.position);
       localStorage.setItem("access_token", this.token);
       localStorage.setItem("isLoggedIn", true);
-
       if (this.position.toLowerCase() === "fresher") {
         this.$router.push({ path: "employee" });
       } else if (this.position.toLowerCase() === "manager") {

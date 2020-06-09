@@ -400,12 +400,13 @@ export default {
             return;
           }
         } else {
-          this.evaluation.end_date = this.radiosDate;
+          console.log(this.radiosDate);
+          this.evaluation.end_date = null;
         }
         this.evaluation.evaluation_form_id = this.appraisee;
         this.raters.forEach(rater => this.ratersId.push(rater.id));
         this.evaluation.assessor_user_id = this.ratersId;
-        console.log(this.evaluation);
+        console.log(JSON.stringify(this.evaluation));
         this.axios
           .post(
             "/evaluation-information/add-evaluation-information",
