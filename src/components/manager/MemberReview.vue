@@ -16,25 +16,50 @@
                 <v-row>
                   <v-col cols="12" lg="6">
                     <v-row
-                      v-for="item in items"
-                      :key="item.item_title"
+                      v-for="(item, index) in timeData"
+                      :key="index"
                       class="d-flex align-center ml-6 mb-3 mt-3"
                     >
-                      <v-col cols="4" md="3" lg="4" class="pa-0">
-                        <p class="ma-0">{{ item.item_title }}</p>
+                      <v-col cols="4" md="3" lg="4" class="pt-0">
+                        <p class="ma-0">Template</p>
                       </v-col>
-                      <v-col cols="8" md="6" lg="8" class="pa-0">
-                        <v-combobox
-                          v-model="item.select"
-                          :items="item.item_select"
-                          hide-details
+                      <v-col cols="8" md="6" lg="8" class="pt-2">
+                        <v-select
+                          v-model="selectedTemplate"
+                          :items="templates"
+                          item-value="id"
+                          item-text="name"
+                          placeholder="Choose one"
                           outlined
-                          dense
-                        ></v-combobox>
+                          solo
+                        >
+                          <!-- Select -->
+                        </v-select>
                       </v-col>
                     </v-row>
                   </v-col>
                 </v-row>
+                <!-- <v-row>
+                  <v-col cols="12" lg="6">
+                    <v-row
+                      v-for="(item, index) in timeData"
+                      :key="index"
+                      class="d-flex align-center ml-6 mb-3 mt-3"
+                    >
+                      <v-col cols="4" md="3" lg="4" class="pt-0">
+                        <p class="ma-0">City</p>
+                      </v-col>
+                      <v-col cols="8" md="6" lg="8" class="pt-2">
+                        <v-select
+                          v-for=""
+                          outlined 
+                          solo>
+                           Select
+                        </v-select>
+                      </v-col>
+                    </v-row>
+                  </v-col>
+                </v-row>  -->
                 <v-row>
                   <div class="ml-7">
                     <v-btn rounded><v-icon>mdi-magnify</v-icon>Search</v-btn>
@@ -211,6 +236,9 @@ export default {
       hint: "Larry",
       panel: [0],
       readonly: false,
+      appraisee: "",
+      city: "",
+      selectedTemplate: "",
       items: [
         {
           item_title: "Select the cycle name:",
@@ -339,86 +367,84 @@ export default {
           }
         }
       ],
-      timeData: [
-        [
-          {
-            id: 1,
-            name: "Fresher template",
-            created_date: "2020-06-08 01:21:16",
-            created_at: null,
-            updated_at: null,
-            appraise: [
-              {
-                id: 1,
-                period_of_review_start: "2020-05-25 02:46:54",
-                period_of_review_end: "2020-05-25 02:46:54",
-                created_date: "2020-06-08 01:21:17",
-                end_date: "2020-06-08 01:21:17",
-                evaluated_user_id: 3,
-                evaluation_form_id: 1,
-                created_at: null,
-                updated_at: null,
-                user_id: 3,
-                first_name: "Fresher",
-                middle_name: "Evaluation",
-                last_name: "360",
-                email: "fresher360evaluation@gmail.com",
-                cities: [
-                  {
-                    id: 1,
-                    name: "Ha Noi",
-                    country_id: 1,
-                    created_at: null,
-                    updated_at: null,
-                    ssu: [
-                      {
-                        id: 2,
-                        ssu_name: "SSU2",
-                        city_id: 1,
-                        created_at: null,
-                        updated_at: null
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                id: 2,
-                period_of_review_start: "2020-05-25 02:46:54",
-                period_of_review_end: "2020-05-25 02:46:54",
-                created_date: "2020-06-08 01:21:17",
-                end_date: "2020-06-08 01:21:17",
-                evaluated_user_id: 2,
-                evaluation_form_id: 1,
-                created_at: null,
-                updated_at: null,
-                user_id: 2,
-                first_name: "Mentor",
-                middle_name: "Evaluation",
-                last_name: "360",
-                email: "mentor360evaluation@gmail.com",
-                cities: [
-                  {
-                    id: 2,
-                    name: "Da Nang",
-                    country_id: 1,
-                    created_at: null,
-                    updated_at: null,
-                    ssu: [
-                      {
-                        id: 3,
-                        ssu_name: "SSU3",
-                        city_id: 2,
-                        created_at: null,
-                        updated_at: null
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          }
-        ]
+      templates: [
+        {
+          id: 1,
+          name: "Fresher template",
+          created_date: "2020-06-08 01:21:16",
+          created_at: null,
+          updated_at: null,
+          appraise: [
+            {
+              id: 1,
+              period_of_review_start: "2020-05-25 02:46:54",
+              period_of_review_end: "2020-05-25 02:46:54",
+              created_date: "2020-06-08 01:21:17",
+              end_date: "2020-06-08 01:21:17",
+              evaluated_user_id: 3,
+              evaluation_form_id: 1,
+              created_at: null,
+              updated_at: null,
+              user_id: 3,
+              first_name: "Fresher",
+              middle_name: "Evaluation",
+              last_name: "360",
+              email: "fresher360evaluation@gmail.com",
+              cities: [
+                {
+                  id: 1,
+                  name: "Ha Noi",
+                  country_id: 1,
+                  created_at: null,
+                  updated_at: null,
+                  ssu: [
+                    {
+                      id: 2,
+                      ssu_name: "SSU2",
+                      city_id: 1,
+                      created_at: null,
+                      updated_at: null
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              id: 2,
+              period_of_review_start: "2020-05-25 02:46:54",
+              period_of_review_end: "2020-05-25 02:46:54",
+              created_date: "2020-06-08 01:21:17",
+              end_date: "2020-06-08 01:21:17",
+              evaluated_user_id: 2,
+              evaluation_form_id: 1,
+              created_at: null,
+              updated_at: null,
+              user_id: 2,
+              first_name: "Mentor",
+              middle_name: "Evaluation",
+              last_name: "360",
+              email: "mentor360evaluation@gmail.com",
+              cities: [
+                {
+                  id: 2,
+                  name: "Da Nang",
+                  country_id: 1,
+                  created_at: null,
+                  updated_at: null,
+                  ssu: [
+                    {
+                      id: 3,
+                      ssu_name: "SSU3",
+                      city_id: 2,
+                      created_at: null,
+                      updated_at: null
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
       ]
     };
   },
