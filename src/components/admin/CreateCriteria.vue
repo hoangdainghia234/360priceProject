@@ -4,7 +4,7 @@
       <v-container fluid class="pl-7 pr-7">
         <div>
           <v-row>
-            <v-col cols="4" class="d-flex align-center">
+            <v-col cols="12" sm="8" md="6" lg="4" class="d-flex align-center">
               <b class="mr-3">Criteria name:</b>
               <v-text-field
                 dense
@@ -259,7 +259,7 @@
         </div>
 
         <div class="text-center mt-10">
-          <v-btn class="btn-bottom mr-7" large>Save</v-btn>
+          <v-btn class="btn-bottom mr-7" large @click="submit">Save</v-btn>
           <v-btn class="btn-bottom" large>Cancel</v-btn>
         </div>
       </v-container>
@@ -483,6 +483,10 @@ export default {
         }
       );
       return uuid;
+    },
+    submit() {
+      var evaluation_criteria = [];
+      console.log(evaluation_criteria);
     }
   }
 };
