@@ -8,18 +8,18 @@
       <v-container class="d-flex justify-center" fluid>
         <v-card class="card" width="27rem">
           <v-img
-            src="https://jobs.hybrid-technologies.vn/wp-content/uploads/2019/01/Hybrid-Technologies-LogoSuite_-fullcolor.png"
-            height="8rem"
+            src="../assets/new_logo.png"
+            height="5rem"
             contain
             class="mt-5 mb-5"
           ></v-img>
-          <div class="d-flex justify-center align-center">
-            <p v-if="false" class="red--text">
-              <span v-for="(error, index) in serverError" :key="index">
+          <div class="d-flex justify-center align-center mb-n5">
+            <p v-if="serverError" class="red--text">
+              <span>
                 <v-icon color="red" class="mr-1 pb-1"
                   >mdi-alert-circle-outline
                 </v-icon>
-                {{ error[0] }}
+                {{ invalidCredential }}
               </span>
             </p>
           </div>
@@ -38,6 +38,7 @@
                 type="password"
                 @keyup.enter="login"
               ></v-text-field>
+
               <v-card-actions>
                 <v-btn
                   color="#061d45"
@@ -49,11 +50,49 @@
                   Log in
                 </v-btn>
               </v-card-actions>
-              <v-card-actions>
-                <v-btn @click="accessOn" color="#ed1b2f" dark width="100%">
-                  With ESA Account
+
+              <!-- HINT -->
+              <v-card-actions class="d-flex justify-center">
+                <v-btn icon @click="show = !show">
+                  <v-icon>{{
+                    show ? "mdi-chevron-up" : "mdi-chevron-down"
+                  }}</v-icon>
                 </v-btn>
               </v-card-actions>
+              <v-expand-transition>
+                <div v-show="show">
+                  <v-simple-table
+                    :dense="dense"
+                    :fixed-header="fixedHeader"
+                    :height="height"
+                  >
+                    <template v-slot:default>
+                      <thead>
+                        <tr>
+                          <th class="text-left">Position</th>
+                          <th class="text-left">Email</th>
+                          <th class="text-left">Password</th>
+                          <th class="text-left">Copy</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="item in accounts" :key="item.email">
+                          <td>{{ item.position }}</td>
+                          <td>{{ item.email }}</td>
+                          <td>{{ item.password }}</td>
+                          <td>
+                            <v-btn @click="copyData(item)">
+                              <v-icon small>
+                                mdi-content-copy
+                              </v-icon>
+                            </v-btn>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </template>
+                  </v-simple-table>
+                </div>
+              </v-expand-transition>
             </v-form>
           </v-card-text>
         </v-card>
@@ -66,64 +105,79 @@ export default {
   data() {
     return {
       form: {
-        email: "nghia7873@gmail.com",
-        password: "fresher12345"
+        email: "",
+        password: ""
       },
       token: "",
-      // serverError: "",
-      // invalidCredential: "",
+      serverError: false,
+      invalidCredential: "Invalid username or password.",
       position: "",
       user: "",
-      id: ""
+      id: "",
+      show: false,
+      dense: false,
+      fixedHeader: false,
+      height: 200,
+      accounts: [
+        {
+          position: "admin",
+          email: "admin360evaluation@gmail.com",
+          password: "fresher12345"
+        },
+        {
+          position: "employee",
+          email: "fresher360evaluation@gmail.com",
+          password: "fresher12345"
+        },
+        {
+          position: "manager",
+          email: "mentor360evaluation@gmail.com",
+          password: "fresher12345"
+        }
+      ],
+      status: ""
     };
   },
 
-  // computed: {
-  //   isValidatedForm() {
-  //     return this.form.username != "" && this.form.password != "";
-  //   }
-  // },
-
   methods: {
     successRes(response) {
-      this.token = response.data.original.access_token;
-      this.user = response.data.original.user;
-      this.position = this.user.users_positions[0].position.name;
-      localStorage.setItem("user", JSON.stringify(this.user));
-      localStorage.setItem("position", this.position);
-      localStorage.setItem("access_token", this.token);
-      localStorage.setItem("isLoggedIn", true);
-      if (this.position.toLowerCase() === "fresher") {
-        this.$router.push({ path: "employee" });
-      } else if (this.position.toLowerCase() === "manager") {
-        this.$router.push({ path: "manager" });
-      } else if (this.position.toLowerCase() === "admin") {
-        this.$router.push({ path: "admin" });
+      if (response.data.original.status === 200) {
+        this.status = 200;
+        this.token = response.data.original.access_token;
+        this.user = response.data.original.user;
+        this.position = this.user.users_positions[0].position.name;
+        localStorage.setItem("user", JSON.stringify(this.user));
+        localStorage.setItem("position", this.position);
+        localStorage.setItem("access_token", this.token);
+        localStorage.setItem("isLoggedIn", true);
+        if (this.position.toLowerCase() === "fresher") {
+          this.$router.push({ path: "employee" });
+        } else if (this.position.toLowerCase() === "manager") {
+          this.$router.push({ path: "manager" });
+        } else if (this.position.toLowerCase() === "admin") {
+          this.$router.push({ path: "admin" });
+        } else {
+          this.$router.go();
+        }
       } else {
-        this.$router.go();
+        this.serverError = true;
       }
-      console.log("login successfully");
-    },
-
-    failRes(error) {
-      // this.invalidCredential = error.response.data.error;
-      // if (this.invalidCredential) this.serverError = "";
-      // if (error.response.data.errors)
-      //   this.serverError = Object.values(error.response.data.errors);
-      // this.password = "";
-      console.log(error);
-      console.log("Fail");
     },
 
     login() {
       this.axios
         .post("/auth/login", this.form)
         .then(response => this.successRes(response))
-        .catch(error => this.failRes(error));
+        .catch(() => {
+          if (!this.status) {
+            this.serverError = true;
+          }
+        });
     },
 
-    accessOn() {
-      alert("Coming soon..");
+    copyData(item) {
+      this.form.email = item.email;
+      this.form.password = item.password;
     }
   }
 };

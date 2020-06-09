@@ -400,13 +400,11 @@ export default {
             return;
           }
         } else {
-          console.log(this.radiosDate);
           this.evaluation.end_date = null;
         }
         this.evaluation.evaluation_form_id = this.appraisee;
         this.raters.forEach(rater => this.ratersId.push(rater.id));
         this.evaluation.assessor_user_id = this.ratersId;
-        console.log(JSON.stringify(this.evaluation));
         this.axios
           .post(
             "/evaluation-information/add-evaluation-information",
@@ -414,9 +412,8 @@ export default {
           )
           .then(response => {
             console.log(response);
-            console.log("Success!!!");
-            // this.isSubmitted = true;
-            // this.reset();
+            this.isSubmitted = true;
+            this.reset();
           })
           .catch(error => console.log(error));
         this.isSubmitted = true;
