@@ -1,26 +1,31 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+
 // employee
 import HomeEmployee from "../views/HomeEmployee";
 import EvaluationResult from "../components/employee/EvaluationResult";
 import Feedback from "../components/employee/Feedback";
 import Home from "../components/employee/Home";
-// import Timeline from "../components/employee/Timeline";
+
 // manager
 import HomeManager from "../views/HomeManager";
 import DashboardManager from "../components/manager/DashboardManager";
 import MemberReview from "../components/manager/MemberReview";
-// import Reports from "../components/manager/Reports";
+
 import Timeline_Manager from "../components/manager/Timeline_Manager";
-// import MultiRaterReview from "../components/manager/MultiRaterReview";
+
 // admin
 import HomeAdmin from "../views/HomeAdmin";
 import DashboardAdmin from "../components/admin/DashboardAdmin";
 import CreateTemplate from "../components/admin/CreateTemplate";
 import CreateEvaluation from "../components/admin/CreateEvaluation";
 import CreateCriteria from "../components/admin/CreateCriteria";
-//login
+
+// login
 import Login from "../views/Login";
+
+// logout
+import Logout from "../views/Logout";
 
 Vue.use(VueRouter);
 
@@ -30,6 +35,15 @@ const routes = [
     name: "login",
     component: Login
   },
+  {
+    path: "/logout",
+    name: "logout",
+    component: Logout,
+    meta: {
+      requiresAuth: true
+    }
+  },
+
   {
     path: "/admin",
     name: "admin",
@@ -72,10 +86,6 @@ const routes = [
         path: "evaluation",
         component: EvaluationResult
       },
-      // {
-      //   path: "timeline",
-      //   component: Timeline
-      // },
       {
         name: "feedback",
         path: "feedback/assessor/:assessorId/evaluation-info/:evaluationInfoId",
@@ -99,18 +109,10 @@ const routes = [
         path: "member-review",
         component: MemberReview
       },
-      // {
-      //   path: "reports",
-      //   component: Reports
-      // },
       {
         path: "timeline",
         component: Timeline_Manager
       }
-      // {
-      //   path: "multi-rater-review",
-      //   component: MultiRaterReview
-      // }
     ]
   }
 ];
@@ -127,7 +129,7 @@ console.log(isLoggedIn);
 router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
     isLoggedIn = localStorage.getItem("isLoggedIn") || false;
-    console.log(`MATCHED ${isLoggedIn}`);
+    // console.log(`MATCHED ${isLoggedIn}`);
     if (!isLoggedIn) {
       next({
         name: "login"
@@ -147,9 +149,9 @@ router.beforeEach((to, from, next) => {
       // } else {
       //   next();
       // }
-      console.log("before next('/employee')");
+      // console.log("before next('/employee')");
       next();
-      console.log("after next('/employee')");
+      // console.log("after next('/employee')");
     }
   } else {
     next();

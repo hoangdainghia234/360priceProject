@@ -85,8 +85,6 @@ export default {
 
   methods: {
     successRes(response) {
-      console.log("then");
-      // console.log(response.data.original);
       this.token = response.data.original.access_token;
       this.user = response.data.original.user;
       this.position = this.user.users_positions[0].position.name;
@@ -94,12 +92,9 @@ export default {
       localStorage.setItem("position", this.position);
       localStorage.setItem("access_token", this.token);
       localStorage.setItem("isLoggedIn", true);
-      console.log("assign isLoggedIn is TRUE ");
 
       if (this.position.toLowerCase() === "fresher") {
-        console.log("EMPLOYEE");
         this.$router.push({ path: "employee" });
-        console.log("EMPLOYEE PUSH");
       } else if (this.position.toLowerCase() === "manager") {
         this.$router.push({ path: "manager" });
       } else if (this.position.toLowerCase() === "admin") {
@@ -122,7 +117,7 @@ export default {
 
     login() {
       this.axios
-        .post("http://34.72.144.52/api/auth/login", this.form)
+        .post("/auth/login", this.form)
         .then(response => this.successRes(response))
         .catch(error => this.failRes(error));
     },

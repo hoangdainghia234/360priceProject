@@ -223,7 +223,7 @@
                       dialog = false;
                       goBack();
                     "
-                    >Go Back</v-btn
+                    >Go Back to Home page</v-btn
                   >
                 </v-card-actions>
               </v-card>
@@ -359,11 +359,10 @@ export default {
       if (submitted) {
         this.ratingEvaluation.assessment_id = this.employeeEvaluation.id;
         this.ratingEvaluation.categories = this.categories;
+        this.ratingEvaluation.rating_json = this.mainpoints;
+        // console.log(JSON.stringify(this.ratingEvaluation));
         this.axios
-          .post(
-            "http://34.72.144.52/api/rating-evaluation",
-            this.ratingEvaluation
-          )
+          .post("/rating-evaluation", this.ratingEvaluation)
           .then((this.isSubmitted = true));
       } else {
         return (this.snackbar = true);
@@ -385,7 +384,7 @@ export default {
     var evaluationInfoId = this.$route.params.evaluationInfoId;
     this.axios
       .get(
-        "http://34.72.144.52/api/evaluations/assessor/" +
+        "/evaluations/assessor/" +
           assessorId +
           "/evaluation-info/" +
           evaluationInfoId
