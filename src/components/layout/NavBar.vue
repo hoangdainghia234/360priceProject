@@ -27,7 +27,7 @@
       <v-spacer></v-spacer>
       <v-btn depressed class="btn-nav transparent">
         <v-icon class="icon">mdi-account</v-icon>
-        <span class="textIcon">{{ userRole }}</span>
+        <span class="textIcon">{{ name }}</span>
       </v-btn>
       <v-btn depressed class="btn-nav transparent">
         <v-icon class="icon">mdi-logout-variant</v-icon>
@@ -45,7 +45,8 @@ export default {
   props: ["itemsNav", "userRole"],
 
   data: () => ({
-    drawer: null
+    drawer: null,
+    name: ""
   }),
 
   methods: {
@@ -58,6 +59,16 @@ export default {
       });
       return title;
     }
+  },
+
+  created() {
+    this.user = JSON.parse(localStorage.getItem("user"));
+    this.name =
+      this.user.first_name +
+      " " +
+      this.user.middle_name +
+      " " +
+      this.user.last_name;
   }
 };
 </script>
