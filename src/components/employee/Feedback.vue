@@ -333,10 +333,10 @@ export default {
     },
 
     submit() {
-      var rating_evaluation = [];
       var submitted = true;
       this.mainpoints.forEach(mainPoint =>
         mainPoint.categories_evaluation.forEach(category => {
+          let rating_evaluation = [];
           category.items_evaluation.forEach(item => {
             if (!item.selectedPoint) {
               item.notFill = 1;
@@ -347,13 +347,14 @@ export default {
                 rating_info_id: item.selectedPoint,
                 comment: item.comment || ""
               });
-              this.categories.push({
-                category_id: category.id,
-                comment: category.comment || "",
-                rating_evaluation: rating_evaluation
-              });
             }
           });
+          this.categories.push({
+            category_id: category.id,
+            comment: category.comment || "",
+            rating_evaluation: rating_evaluation
+          });
+          // console.log(this.categories);
         })
       );
       if (submitted) {

@@ -376,7 +376,7 @@ export default {
     publish() {
       this.validateData();
       if (this.submit) {
-        this.evaluation.evaluated_user_id = this.selectedTemplate;
+        this.evaluation.evaluated_user_id = this.appraisee;
         this.evaluation.period_of_review_start = this.dateRangeText.slice(
           0,
           10
@@ -400,12 +400,11 @@ export default {
             return;
           }
         } else {
-          this.evaluation.end_date = this.radiosDate;
+          this.evaluation.end_date = null;
         }
-        this.evaluation.evaluation_form_id = this.appraisee;
+        this.evaluation.evaluation_form_id = this.selectedTemplate;
         this.raters.forEach(rater => this.ratersId.push(rater.id));
         this.evaluation.assessor_user_id = this.ratersId;
-        console.log(this.evaluation);
         this.axios
           .post(
             "/evaluation-information/add-evaluation-information",
@@ -413,9 +412,8 @@ export default {
           )
           .then(response => {
             console.log(response);
-            console.log("Success!!!");
-            // this.isSubmitted = true;
-            // this.reset();
+            this.isSubmitted = true;
+            this.reset();
           })
           .catch(error => console.log(error));
         this.isSubmitted = true;
