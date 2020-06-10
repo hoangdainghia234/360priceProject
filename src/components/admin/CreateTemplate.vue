@@ -29,22 +29,6 @@
 
                 <v-row class="evaluation-line" dense>
                   <v-col cols="5" sm="4" md="3" lg="2">
-                    <p class="subtitle-1">Department:</p>
-                  </v-col>
-                  <v-col cols="7" sm="8" md="4" lg="3" xl="2">
-                    <v-select
-                      v-model="selectedDepartment"
-                      :items="departments"
-                      placeholder="Choose one"
-                      outlined
-                      dense
-                      hide-details
-                    ></v-select>
-                  </v-col>
-                </v-row>
-
-                <v-row class="evaluation-line" dense>
-                  <v-col cols="5" sm="4" md="3" lg="2">
                     <p class="subtitle-1">Total weight (%):</p>
                   </v-col>
                   <v-col cols="7" sm="8" md="4" lg="3" xl="2">
@@ -196,22 +180,7 @@ export default {
 
   data: () => {
     return {
-      departments: [
-        "Software Development Departement",
-        "Department 1",
-        "Department 2",
-        "Department 3"
-      ],
-
-      totalWeights: [100, 90, 80],
-
-      layers: ["Staff", "Admin", "HR", "Developer"],
-
-      grades: [
-        "Advance High [AH]",
-        "Advance High [AH] 2",
-        "Advance High [AH] 3"
-      ],
+      totalWeights: 0,
 
       tableHeaders: [
         {
@@ -258,6 +227,9 @@ export default {
   },
 
   created() {
+    this.axios.get("/evaluation-form/create").then(response => {
+      console.log(response.data.data);
+    });
     this.initialize();
   },
 

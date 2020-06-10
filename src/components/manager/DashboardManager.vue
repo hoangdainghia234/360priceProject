@@ -11,7 +11,7 @@
           <h4 class="d-flex justify-center mb-5">
             <span style="border: 1px black solid">THIS PAGE IS NOT RATED</span>
           </h4>
-          <h5>&copy; HYBIRD TECHNOLOGIES</h5>
+          <h5>&copy; HYBRID TECHNOLOGIES</h5>
         </div>
       </v-container>
     </v-content>
