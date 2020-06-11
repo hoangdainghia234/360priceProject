@@ -15,25 +15,41 @@
               <v-expansion-panel-content>
                 <v-row>
                   <v-col cols="12" lg="6">
-                    <v-row
-                      v-for="(item, index) in timeData"
-                      :key="index"
-                      class="d-flex align-center ml-6 mb-3 mt-3"
-                    >
+                    <v-row class="d-flex align-center ml-6 mb-3 mt-3">
                       <v-col cols="4" md="3" lg="4" class="pt-0">
-                        <p class="ma-0">Template</p>
+                        <p class="ma-0">City</p>
                       </v-col>
                       <v-col cols="8" md="6" lg="8" class="pt-2">
                         <v-select
-                          v-model="selectedTemplate"
-                          :items="templates"
-                          item-value="id"
-                          item-text="name"
+                          :items="info[0]"
                           placeholder="Choose one"
                           outlined
-                          solo
+                          dense
                         >
-                          <!-- Select -->
+                        </v-select>
+                      </v-col>
+                      <v-col cols="4" md="3" lg="4" class="pt-0">
+                        <p class="ma-0">SSU</p>
+                      </v-col>
+                      <v-col cols="8" md="6" lg="8" class="pt-1">
+                        <v-select
+                          :items="info[1]"
+                          placeholder="Choose one"
+                          outlined
+                          dense
+                        >
+                        </v-select>
+                      </v-col>
+                      <v-col cols="4" md="3" lg="4" class="pt-0">
+                        <p class="ma-0">Appraise</p>
+                      </v-col>
+                      <v-col cols="8" md="6" lg="8" class="pt-2">
+                        <v-select
+                          :items="info[2]"
+                          placeholder="Choose one"
+                          outlined
+                          dense
+                        >
                         </v-select>
                       </v-col>
                     </v-row>
@@ -232,6 +248,8 @@
 export default {
   data() {
     return {
+      info: [],
+      apiData: undefined,
       dialog: false,
       hint: "Larry",
       panel: [0],
@@ -449,7 +467,36 @@ export default {
     };
   },
   created() {
-    console.log(this.datas[0].id);
+    this.axios.get("/manage/filter").then(response => {
+      this.apiData = response.data;
+      var apiArr = [];
+      var ssuArr = [];
+      var appraiseArr = [];
+      this.apiData.forEach(data => {
+        data.appraise.forEach(city => {
+          appraiseArr.push(city.last_name);
+          city.cities.forEach(item => {
+            apiArr.push(item.name);
+            item.ssu.forEach(itemSSU => {
+              ssuArr.push(itemSSU.ssu_name);
+            });
+          });
+        });
+      });
+      var arrFilter = apiArr.filter(
+        (item, index) => apiArr.indexOf(item) === index
+      );
+      var ssuFilter = ssuArr.filter(
+        (item_ssu, index) => ssuArr.indexOf(item_ssu) === index
+      );
+      var appraiseFilter = appraiseArr.filter(
+        (item_appraise, index) => appraiseArr.indexOf(item_appraise) === index
+      );
+      this.info.push(arrFilter);
+      this.info.push(ssuFilter);
+      this.info.push(appraiseFilter);
+    });
+    console.log(this.info);
   }
 };
 </script>
