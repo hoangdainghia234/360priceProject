@@ -405,6 +405,8 @@ export default {
         this.evaluation.evaluation_form_id = this.selectedTemplate;
         this.raters.forEach(rater => this.ratersId.push(rater.id));
         this.evaluation.assessor_user_id = this.ratersId;
+        let token = localStorage.getItem("access_token") || null;
+        this.axios.defaults.headers.common["Authorization"] = "Bearer " + token;
         this.axios
           .post(
             "/evaluation-information/add-evaluation-information",

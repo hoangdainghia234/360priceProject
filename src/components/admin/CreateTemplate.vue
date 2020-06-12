@@ -64,8 +64,8 @@
                       <v-icon color="indigo" large>$expand</v-icon>
                     </template>
                   </v-expansion-panel-header>
-                  <v-expansion-panel-content class="main-point pb-5 pt-3">
-                    <div class="d-flex justify-center">
+                  <v-expansion-panel-content class="main-point">
+                    <div>
                       <v-simple-table>
                         <template v-slot:default>
                           <thead>
@@ -91,16 +91,16 @@
                               <td>{{ category.name }}</td>
                               <td class="text-center">{{ category.weight }}</td>
                               <td class="text-center">
-                                <v-dialog
+                                <v-btn>
+                                  <v-icon>
+                                    mdi-pencil-box-outline
+                                  </v-icon>
+                                </v-btn>
+                                <!-- <v-dialog
                                   v-model="dialogEdit"
                                   max-width="960px"
                                 >
                                   <template v-slot:activator="{ on }">
-                                    <v-btn v-on="on">
-                                      <v-icon @click="editItem(category)">
-                                        mdi-pencil-box-outline
-                                      </v-icon>
-                                    </v-btn>
                                   </template>
                                   <v-card>
                                     <v-card-title
@@ -127,8 +127,10 @@
                                           md="3"
                                         >
                                           <v-text-field
-                                            :label="category.name"
+                                            v-model="category.name"
                                             solo
+                                            readonly
+                                            hide-details
                                           ></v-text-field>
                                         </v-col>
                                         <v-col
@@ -148,8 +150,10 @@
                                           md="3"
                                         >
                                           <v-text-field
-                                            :label="category.weight"
+                                            placeholder=""
                                             solo
+                                            readonly
+                                            hide-details
                                           ></v-text-field>
                                         </v-col>
                                       </v-row>
@@ -159,8 +163,12 @@
                                             <tr>
                                               <th class="pb-5"></th>
                                               <th>Name</th>
-                                              <th class="text-center">Explanation</th>
-                                              <th class="text-center">Weight</th>
+                                              <th class="text-center">
+                                                Explanation
+                                              </th>
+                                              <th class="text-center">
+                                                Weight
+                                              </th>
                                             </tr>
                                           </thead>
                                           <tbody>
@@ -175,12 +183,17 @@
                                                   hide-details
                                                 ></v-checkbox>
                                               </td>
-                                              <td class="text-center">{{ item.name }}</td>
-                                              <td class="text-center">{{ item.explaination }}</td>
+                                              <td class="text-center">
+                                                {{ item.name }}
+                                              </td>
+                                              <td class="text-center">
+                                                {{ item.explaination }}
+                                              </td>
                                               <td>
                                                 <v-text-field
-                                                  :label="item.weight"
+                                                  v-model="item.weight"
                                                   solo
+                                                  hide-details
                                                 ></v-text-field>
                                               </td>
                                             </tr>
@@ -188,8 +201,27 @@
                                         </template>
                                       </v-simple-table>
                                     </v-card-text>
+
+                                    <v-card-actions
+                                      class="d-flex justify-center"
+                                    >
+                                      <div class="mb-5">
+                                        <v-btn
+                                          class="btn-bottom mr-7"
+                                          dark
+                                          @click="save(category)"
+                                          >Save</v-btn
+                                        >
+                                        <v-btn
+                                          class="btn-bottom"
+                                          dark
+                                          @click="close"
+                                          >Cancel</v-btn
+                                        >
+                                      </div>
+                                    </v-card-actions>
                                   </v-card>
-                                </v-dialog>
+                                </v-dialog> -->
                               </td>
                             </tr>
                           </tbody>
@@ -281,6 +313,8 @@
 </template>
 
 <script>
+import data from "./data.json";
+
 export default {
   name: "createTemplate",
 
@@ -294,25 +328,24 @@ export default {
       totalWeights: [100, 90],
       selectedCriterias: [],
       categories: "",
-      criterias: "",
+      criterias: data.data,
       selected: [],
-      allSelected: false,
-      categoryIds: [],
       dialog: false,
       addedCriteria: "",
-      dialogEdit: false
+      dialogEdit: false,
+      modifyCategory: ""
     };
   },
 
   computed: {},
 
   created() {
-    this.axios
-      .get("/evaluation-form/create")
-      .then(response => {
-        this.criterias = response.data.data;
-      })
-      .catch(error => console.log(error));
+    // this.axios
+    //   .get("/evaluation-form/create")
+    //   .then(response => {
+    //     this.criterias = response.data.data;
+    //   })
+    //   .catch(error => console.log(error));
   },
 
   watch: {
@@ -322,15 +355,44 @@ export default {
   },
 
   methods: {
-    editItem(category) {},
+    // editItem(category) {
+    //   this.modifyCategory = category;
+    //   console.log(this.modifyCategory);
+    // },
+
+    // computeCategoryWeight() {
+    //   if (!this.modifyCategory) {
+    //     return "0";
+    //   } else {
+    //     let total = 0;
+    //     this.modifyCategory.items_evaluation.forEach(
+    //       item => (total += +item.weight)
+    //     );
+    //     return String(total);
+    //   }
+    // },
 
     close() {
+      this.modifyCategory = "";
       this.dialog = false;
+      this.dialogEdit = false;
     },
 
-    save() {
-      this.close();
-    },
+    // save(category) {
+    //   console.log(category);
+    //   category.weight = this.modifyCategory.weight;
+    //   let weightItems = [];
+    //   this.modifyCategory.items_evaluation.forEach(item =>
+    //     weightItems.push(item.weight)
+    //   );
+    //   for (let item of category.items_evaluation) {
+    //     let count = 0;
+    //     item.weight = weightItems[count];
+    //     count++;
+    //   }
+    //   this.close();
+    //   this.modifyCategory = "";
+    // },
 
     deletePanel(id) {
       this.selectedCriterias = this.selectedCriterias.filter(
@@ -339,7 +401,11 @@ export default {
     },
 
     addCriteria() {
-      if (this.selectedCriterias.includes(this.addedCriteria)) return;
+      if (
+        this.selectedCriterias.includes(this.addedCriteria) ||
+        !this.addedCriteria
+      )
+        return;
       this.addedCriteria.categories_evaluation.forEach(
         category => (category.checked = false)
       );
