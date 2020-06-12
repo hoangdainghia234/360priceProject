@@ -17,23 +17,11 @@
                   <v-col cols="12" lg="6">
                     <v-row class="d-flex align-center ml-6 mb-3 mt-3">
                       <v-col cols="4" md="3" lg="4" class="pt-0">
-                        <p class="ma-0">City</p>
+                        <p class="ma-0">Select the cycle name</p>
                       </v-col>
                       <v-col cols="8" md="6" lg="8" class="pt-2">
                         <v-select
-                          :items="info[0]"
-                          placeholder="Choose one"
-                          outlined
-                          dense
-                        >
-                        </v-select>
-                      </v-col>
-                      <v-col cols="4" md="3" lg="4" class="pt-0">
-                        <p class="ma-0">SSU</p>
-                      </v-col>
-                      <v-col cols="8" md="6" lg="8" class="pt-1">
-                        <v-select
-                          :items="info[1]"
+                          :items="selectName"
                           placeholder="Choose one"
                           outlined
                           dense
@@ -45,7 +33,31 @@
                       </v-col>
                       <v-col cols="8" md="6" lg="8" class="pt-2">
                         <v-select
-                          :items="info[2]"
+                          :items="appraisee"
+                          placeholder="Choose one"
+                          outlined
+                          dense
+                        >
+                        </v-select>
+                      </v-col>
+                      <v-col cols="4" md="3" lg="4" class="pt-0">
+                        <p class="ma-0">City</p>
+                      </v-col>
+                      <v-col cols="8" md="6" lg="8" class="pt-2">
+                        <v-select
+                          :items="cities"
+                          placeholder="Choose one"
+                          outlined
+                          dense
+                        >
+                        </v-select>
+                      </v-col>
+                      <v-col cols="4" md="3" lg="4" class="pt-0">
+                        <p class="ma-0">SSU</p>
+                      </v-col>
+                      <v-col cols="8" md="6" lg="8" class="pt-1">
+                        <v-select
+                          :items="ssu"
                           placeholder="Choose one"
                           outlined
                           dense
@@ -60,7 +72,7 @@
                     <v-row
                       v-for="(item, index) in timeData"
                       :key="index"
-                      class="d-flex align-center ml-6 mb-3 mt-3"
+                      class="d-flex align-center ml-6 mb-3 mt-3"                          :items="info[2]"
                     >
                       <v-col cols="4" md="3" lg="4" class="pt-0">
                         <p class="ma-0">City</p>
@@ -128,7 +140,7 @@
                     </td>
                     <td class="text-center">
                       <!-- ??? -->
-                      <!-- <v-dialog v-model="dialog[0]">
+                      <v-dialog v-model="dialog[0]">
                         <template v-slot:activator="{ on }">
                           <v-btn text fab small v-on="on">
                             <v-icon>mdi-eye</v-icon>
@@ -231,7 +243,7 @@
                             </v-row>
                           </v-container>
                         </v-card>
-                      </v-dialog> -->
+                      </v-dialog>
                     </td>
                   </tr>
                 </tbody>
@@ -248,57 +260,16 @@
 export default {
   data() {
     return {
-      info: [],
-      apiData: undefined,
+      selectName: [],
+      ssu: [],
+      cities: [],
       dialog: false,
       hint: "Larry",
       panel: [0],
       readonly: false,
-      appraisee: "",
+      appraisee: [],
       city: "",
       selectedTemplate: "",
-      items: [
-        {
-          item_title: "Select the cycle name:",
-          item_select: [
-            "2019 Second Cycle-Fresher",
-            "Design",
-            "Vue",
-            "Vuetify"
-          ],
-          select: ["2019 Second Cycle-Fresher"]
-        },
-        {
-          item_title: "Appraisee:",
-          item_select: [
-            "2019 Second Cycle-Fresher3",
-            "Design3",
-            "Vue3",
-            "Vuetify3"
-          ],
-          select: ["2019 Second Cycle-Fresher3"]
-        },
-        {
-          item_title: "SSU:",
-          item_select: [
-            "2019 Second Cycle-Fresher2",
-            "Design2",
-            "Vue2",
-            "Vuetify2"
-          ],
-          select: ["2019 Second Cycle-Fresher2"]
-        },
-        {
-          item_title: "City:",
-          item_select: [
-            "2019 Second Cycle-Fresher1",
-            "Design1",
-            "Vue1",
-            "Vuetify1"
-          ],
-          select: ["2019 Second Cycle-Fresher1"]
-        }
-      ],
       datas: [
         {
           id: 1,
@@ -467,7 +438,7 @@ export default {
     };
   },
   created() {
-    this.axios.get("/manage/filter").then(response => {
+    /* this.axios.get("/manage/filter").then(response => {
       this.apiData = response.data;
       var apiArr = [];
       var ssuArr = [];
@@ -496,7 +467,19 @@ export default {
       this.info.push(ssuFilter);
       this.info.push(appraiseFilter);
     });
-    console.log(this.info);
+    console.log(this.info); */
+    this.templates.forEach(data => {
+      this.selectName.push(data.name);
+      data.appraise.forEach(appraisee => {
+        this.appraisee.push(appraisee.first_name);
+        appraisee.cities.forEach(city => {
+          this.cities.push(city.name);
+          city.ssu.forEach(ssu => {
+            this.ssu.push(ssu.ssu_name);
+          });
+        });
+      });
+    });
   }
 };
 </script>
