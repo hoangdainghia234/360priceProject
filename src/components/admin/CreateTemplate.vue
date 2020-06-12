@@ -159,8 +159,12 @@
                                             <tr>
                                               <th class="pb-5"></th>
                                               <th>Name</th>
-                                              <th class="text-center">Explanation</th>
-                                              <th class="text-center">Weight</th>
+                                              <th class="text-center">
+                                                Explanation
+                                              </th>
+                                              <th class="text-center">
+                                                Weight
+                                              </th>
                                             </tr>
                                           </thead>
                                           <tbody>
@@ -175,8 +179,12 @@
                                                   hide-details
                                                 ></v-checkbox>
                                               </td>
-                                              <td class="text-center">{{ item.name }}</td>
-                                              <td class="text-center">{{ item.explaination }}</td>
+                                              <td class="text-center">
+                                                {{ item.name }}
+                                              </td>
+                                              <td class="text-center">
+                                                {{ item.explaination }}
+                                              </td>
                                               <td>
                                                 <v-text-field
                                                   :label="item.weight"
@@ -322,7 +330,9 @@ export default {
   },
 
   methods: {
-    editItem(category) {},
+    editItem(category) {
+      console.log(category);
+    },
 
     close() {
       this.dialog = false;
