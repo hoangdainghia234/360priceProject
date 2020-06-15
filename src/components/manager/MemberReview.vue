@@ -122,10 +122,10 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(item, index) in datas" :key="index">
+                  <tr v-for="(item, index) in participants" :key="index">
                     <td class="text-center">{{ item.id }}</td>
                     <td class="text-center">
-                      {{ item.user.last_name }}
+                      {{ item.last_name }}
                     </td>
                     <td class="text-center">{{ item.created_at }}</td>
                     <td class="text-center">
@@ -272,6 +272,7 @@ export default {
       appraisee: [],
       city: "",
       selectedTemplate: "",
+      participants: [],
       datas: [
         {
           id: 1,
@@ -482,6 +483,11 @@ export default {
         });
       });
     });
+    this.axios
+      .get("/manage/view-manage/template-id-1/city-id-1/ssu-id-2/appraise-id-1")
+      .then(response => {
+        this.participants = response.data;
+      });
   },
   methods: {
     searchName() {
