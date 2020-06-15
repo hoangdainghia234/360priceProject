@@ -114,7 +114,7 @@
                     <v-card class="elevation-2 item--card">
                       <v-dialog v-model="item_timeline.index">
                         <template v-slot:activator="{ on }">
-                          <v-card-text v-on="on">
+                          <v-card-text v-on="on" @click="updateChart">
                             <p>
                               <span>Self: </span>
                               <span>{{
@@ -240,6 +240,7 @@ export default {
         Object.keys(response.data).forEach(function(itemdata) {
           var categories = response.data[itemdata];
           itemsCategory.push(response.data[itemdata]);
+          console.log(response.data[itemdata]);
           if (itemdata == 0) {
             Object.keys(categories).forEach(function(item) {
               const date = new Date(categories[item].review_start);
@@ -287,13 +288,10 @@ export default {
                 colorNameCategory.push("#000000");
               });
             });
-            console.log(ratingSelf);
-            console.log(ratingTeam);
-            console.log(ratingManage);
           }
-          ratingSelf.length = 0;
-          ratingTeam.length = 0;
-          ratingManage.length = 0;
+          // ratingSelf.length = 0;
+          // ratingTeam.length = 0;
+          // ratingManage.length = 0;
           if (itemdata == 1) {
             Object.keys(categories).forEach(function(item) {
               const date = new Date(categories[item].review_start);
@@ -341,59 +339,22 @@ export default {
                 colorNameCategory.push("#000000");
               });
             });
-            console.log(ratingSelf);
-            console.log(ratingTeam);
-            console.log(ratingManage);
           }
-          // Object.keys(categories).forEach(function(item) {
-          //   // itemCategory.push(categories[item]);
-          //   // var date = Date.parse(categories[item].review_start);
-          //   // console.log(date.toString("dd-MMM-yyyy"));
-          //   const date = new Date(categories[item].review_start);
-          //   const formattedDate = date
-          //     .toLocaleDateString("en-GB", {
-          //       month: "short",
-          //       year: "numeric"
-          //     })
-          //     .replace(/ /g, " - ");
-          //   categories[item].review_start = formattedDate;
-          //   Object.keys(categories[item].category).forEach(function(
-          //     itemCtegory
-          //   ) {
-          //     // nameCategories.push(categories[item].category[itemCtegory].name);
-          //     if (
-          //       typeof categories[item].category[itemCtegory].rating_point
-          //         .member !== "undefined"
-          //     ) {
-          //       var rating_point_team =
-          //         categories[item].category[itemCtegory].rating_point.member;
-          //     } else {
-          //       rating_point_team = 5;
-          //     }
-          //     if (
-          //       typeof categories[item].category[itemCtegory].rating_point
-          //         .mentor !== "undefined"
-          //     ) {
-          //       var rating_point_manager =
-          //         categories[item].category[itemCtegory].rating_point.mentor;
-          //     } else {
-          //       rating_point_manager = 5;
-          //     }
-          //     if (
-          //       typeof categories[item].category[itemCtegory].rating_point
-          //         .self !== "undefined"
-          //     ) {
-          //       var rating_point_self =
-          //         categories[item].category[itemCtegory].rating_point.self;
-          //     } else {
-          //       rating_point_self = 5;
-          //     }
-          //     ratingSelf.push(rating_point_self);
-          //     ratingTeam.push(rating_point_team);
-          //     ratingManage.push(rating_point_manager);
-          //     colorNameCategory.push("#000000");
-          //   });
-          // });
+          Object.keys(categories).forEach(function(item) {
+            // itemCategory.push(categories[item]);
+            // var date = Date.parse(categories[item].review_start);
+            // console.log(date.toString("dd-MMM-yyyy"));
+            const date = new Date(categories[item].review_start);
+            const formattedDate = date
+              .toLocaleDateString("en-GB", {
+                month: "short",
+                year: "numeric"
+              })
+              .replace(/ /g, " - ");
+            categories[item].review_start = formattedDate;
+            // console.log(categories);
+            // console.log(item);
+          });
         });
         // itemsCategory.forEach(items_category => {
         //   Object.keys(items_category).forEach(function(name_item_category) {
