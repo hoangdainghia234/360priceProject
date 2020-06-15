@@ -254,15 +254,6 @@
                             v-text="getPosition(rater)"
                           ></v-list-item-content>
                         </v-list-item-content>
-
-                        <v-list-item-icon class="mt-5 ml-2">
-                          <v-icon
-                            v-if="rater.position === 'Leader'"
-                            color="indigo"
-                          >
-                            mdi-star
-                          </v-icon>
-                        </v-list-item-icon>
                       </v-list-item>
                     </v-list>
                   </v-col>
@@ -481,7 +472,9 @@ export default {
 
     getPosition(rater) {
       let positionRater = "";
-      rater.positions.forEach(position => (positionRater = position.name));
+      rater.users_positions.forEach(
+        position => (positionRater = position.position.name)
+      );
       return positionRater;
     },
 

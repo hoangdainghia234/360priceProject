@@ -87,7 +87,8 @@
             <div v-for="categories in mainpoints" :key="categories.id">
               <v-container
                 fluid
-                v-for="category in categories.categories_evaluation"
+                v-for="category in categories.main_point_evaluation
+                  .categories_evaluation"
                 :key="category.id"
                 class="pa-5"
               >
@@ -276,13 +277,14 @@ export default {
       this.appraisee = this.employeeEvaluation.evaluation_information.user;
       this.raterPosition = this.rater.users_positions[0].position.name;
       this.appraiseePosition = this.appraisee.users_positions[0].position.name;
-      this.mainpoints = this.employeeEvaluation.evaluation_information.evaluation_form.mainpoints;
+      this.mainpoints = this.employeeEvaluation.evaluation_information.evaluation_form.evaluation_form_details;
       this.mainpoints.forEach(categories =>
-        categories.categories_evaluation.forEach(category =>
-          category.items_evaluation.forEach(item => {
-            this.$set(item, "selectedPoint", 0);
-            this.$set(item, "notFill", 0);
-          })
+        categories.main_point_evaluation.categories_evaluation.forEach(
+          category =>
+            category.items_evaluation.forEach(item => {
+              this.$set(item, "selectedPoint", 0);
+              this.$set(item, "notFill", 0);
+            })
         )
       );
       this.fullNameRater = this.userName(
@@ -335,27 +337,29 @@ export default {
     submit() {
       var submitted = true;
       this.mainpoints.forEach(mainPoint =>
-        mainPoint.categories_evaluation.forEach(category => {
-          let rating_evaluation = [];
-          category.items_evaluation.forEach(item => {
-            if (!item.selectedPoint) {
-              item.notFill = 1;
-              this.notFillAll = true;
-              submitted = false;
-            } else {
-              rating_evaluation.push({
-                rating_info_id: item.selectedPoint,
-                comment: item.comment || ""
-              });
-            }
-          });
-          this.categories.push({
-            category_id: category.id,
-            comment: category.comment || "",
-            rating_evaluation: rating_evaluation
-          });
-          // console.log(this.categories);
-        })
+        mainPoint.main_point_evaluation.categories_evaluation.forEach(
+          category => {
+            let rating_evaluation = [];
+            category.items_evaluation.forEach(item => {
+              if (!item.selectedPoint) {
+                item.notFill = 1;
+                this.notFillAll = true;
+                submitted = false;
+              } else {
+                rating_evaluation.push({
+                  rating_info_id: item.selectedPoint,
+                  comment: item.comment || ""
+                });
+              }
+            });
+            this.categories.push({
+              category_id: category.id,
+              comment: category.comment || "",
+              rating_evaluation: rating_evaluation
+            });
+            // console.log(this.categories);
+          }
+        )
       );
       if (submitted) {
         this.ratingEvaluation.assessment_id = this.employeeEvaluation.id;
