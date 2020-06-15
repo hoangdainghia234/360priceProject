@@ -1,0 +1,190 @@
+{
+    "data": [
+        {
+            "id": 1,
+            "name": "Kỹ năng",
+            "category_json": null,
+            "created_at": null,
+            "updated_at": null,
+            "categories_evaluation": [
+                {
+                    "id": 1,
+                    "name": "Kĩ năng và khả năng làm việc ",
+                    "weight": 50,
+                    "mainpoint_id": 1,
+                    "created_at": null,
+                    "updated_at": null,
+                    "items_evaluation": [
+                        {
+                            "id": 1,
+                            "name": "Hiêu công việc",
+                            "weight": 25,
+                            "explaination": "- Mức độ mà nhân viên nhận thức rõ và đầy đủ về vai trò nhiệm vụ của mình trong việc phân công công việc cũng như sắp xếp của tổ chức.",
+                            "category_id": 1,
+                            "created_at": null,
+                            "updated_at": null
+                        },
+                        {
+                            "id": 2,
+                            "name": "Kiến thức và kỹ năng",
+                            "weight": 25,
+                            "explaination": "- Mức độ mà nhân viên sở hữu kiến thức và kĩ năng để thực hiện công việc chuyên trách.",
+                            "category_id": 1,
+                            "created_at": null,
+                            "updated_at": null
+                        }
+                    ]
+                },
+                {
+                    "id": 2,
+                    "name": "Kĩ năng thích ứng",
+                    "weight": 50,
+                    "mainpoint_id": 1,
+                    "created_at": null,
+                    "updated_at": null,
+                    "items_evaluation": [
+                        {
+                            "id": 3,
+                            "name": "Hiệu suất làm việc trong tình huống mới",
+                            "weight": 32,
+                            "explaination": "Mức độ mà nhân viên không gặp khó khăn nhiều để thực hiện công việc trong khi phải thích nghi với dự án mới/công việc mới, với chính sách thay đổi nhân sự mới, với các nhiệm vụ khác nhau.",
+                            "category_id": 2,
+                            "created_at": null,
+                            "updated_at": null
+                        },
+                        {
+                            "id": 4,
+                            "name": "Hiệu suất làm việc với chỉ thị tối thiểu",
+                            "weight": 32,
+                            "explaination": "Mức độ mà nhân viên làm việc hiệu quả với các chỉ thị hướng dẫn ngắn gọn, không cần giải thích nhiều.",
+                            "category_id": 2,
+                            "created_at": null,
+                            "updated_at": null
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "name": "Tinh thần",
+            "category_json": null,
+            "created_at": null,
+            "updated_at": null,
+            "categories_evaluation": [
+                {
+                    "id": 3,
+                    "name": "Thói quen làm việc",
+                    "weight": 50,
+                    "mainpoint_id": 2,
+                    "created_at": null,
+                    "updated_at": null,
+                    "items_evaluation": [
+                        {
+                            "id": 5,
+                            "name": "Tuân thủ giờ làm việc",
+                            "weight": 9,
+                            "explaination": "\tMức độ mà nhân viên đi trễ, vắng mặt không phép trong thời gian làm việc",
+                            "category_id": 3,
+                            "created_at": null,
+                            "updated_at": null
+                        },
+                        {
+                            "id": 6,
+                            "name": " Chuyên cần",
+                            "weight": 9,
+                            "explaination": "Mức độ tuân thủ quy định khi xin nghỉ việc và thu xếp công việc khi vắng mặt.",
+                            "category_id": 3,
+                            "created_at": null,
+                            "updated_at": null
+                        }
+                    ]
+                },
+                {
+                    "id": 4,
+                    "name": "Đóng góp cho công ty ",
+                    "weight": 50,
+                    "mainpoint_id": 2,
+                    "created_at": null,
+                    "updated_at": null,
+                    "items_evaluation": [
+                        {
+                            "id": 7,
+                            "name": " Đóng góp cho nhiệm vụ của bộ phận",
+                            "weight": 24,
+                            "explaination": "Mức độ đóng góp của nhân viên mang lại cho bộ phận trong kỳ đánh giá.",
+                            "category_id": 4,
+                            "created_at": null,
+                            "updated_at": null
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "name": "Thái độ",
+            "category_json": null,
+            "created_at": null,
+            "updated_at": null,
+            "categories_evaluation": [
+                {
+                    "id": 5,
+                    "name": " Định lượng ",
+                    "weight": 50,
+                    "mainpoint_id": 3,
+                    "created_at": null,
+                    "updated_at": null,
+                    "items_evaluation": [
+                        {
+                            "id": 8,
+                            "name": "Khối lượng công việc đã thực hiện",
+                            "weight": 24,
+                            "explaination": "Khối lượng công việc đã thực hiện trong trong mối tương quan với số khối lượng công việc được giao cần phải hoàn thành.",
+                            "category_id": 5,
+                            "created_at": null,
+                            "updated_at": null
+                        },
+                        {
+                            "id": 9,
+                            "name": " Hoàn thành công việc theo kế hoạch",
+                            "weight": 24,
+                            "explaination": "Mức độ mà nhân viên hoàn thành công việc trong một khoảng thời gian nhất định hoặc trong một giới hạn thời gian hợp lý.",
+                            "category_id": 5,
+                            "created_at": null,
+                            "updated_at": null
+                        }
+                    ]
+                },
+                {
+                    "id": 6,
+                    "name": "Chất lượng",
+                    "weight": 50,
+                    "mainpoint_id": 3,
+                    "created_at": null,
+                    "updated_at": null,
+                    "items_evaluation": [
+                        {
+                            "id": 10,
+                            "name": "Tính chính xác",
+                            "weight": 24,
+                            "explaination": "Mức độ mà công việc không có lỗi hoặc không có thiếu sót.",
+                            "category_id": 6,
+                            "created_at": null,
+                            "updated_at": null
+                        },
+                        {
+                            "id": 11,
+                            "name": "Sự tỉ mỉ, sự tận tâm",
+                            "weight": 24,
+                            "explaination": "Mức độ hoàn thành công việc một cách chi tiết đầy đủ nhất, tránh được việc phải làm thêm bất cứ công việc nào khác để hoàn thành công việc.",
+                            "category_id": 6,
+                            "created_at": null,
+                            "updated_at": null
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

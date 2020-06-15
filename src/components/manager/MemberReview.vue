@@ -374,7 +374,7 @@ export default {
               evaluation_form_id: 1,
               created_at: null,
               updated_at: null,
-              user_id: 3,
+              user_id: 3,ư
               first_name: "Fresher",
               middle_name: "Evaluation",
               last_name: "360",
