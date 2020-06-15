@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div class="timeline">
     <v-content>
       <v-container fluid>
         <v-row class="pr-3 pl-3 pr-sm-5 pl-sm-5 pr-md-7 pl-md-7">
@@ -9,7 +9,7 @@
                 <v-expansion-panel-header class="pt-0 pb-0">
                   <div class="d-flex align-center">
                     <v-icon>mdi-filter-variant</v-icon>
-                    <span class="ml-3">Filter</span>
+                    <span class="ml-3 ">Filter</span>
                   </div>
                 </v-expansion-panel-header>
                 <v-divider></v-divider>

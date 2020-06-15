@@ -54,7 +54,9 @@
                   class="mt-5"
                 >
                   <v-expansion-panel-header @click="selectCriteria(criteria)">
-                    <span class="header-template">{{ criteria.name }}</span>
+                    <span class="subtitle-1 indigo--text">{{
+                      criteria.name
+                    }}</span>
                     <template v-slot:actions>
                       <v-icon color="indigo" large>$expand</v-icon>
                     </template>
@@ -65,27 +67,22 @@
                         <template v-slot:default>
                           <thead>
                             <tr>
-                              <th class="pb-5"></th>
+                              <th>Index</th>
                               <th>Category</th>
-                              <th class="text-center">Weight (100%)</th>
-                              <th class="text-center">Modify Item</th>
+                              <th>Weight (100%)</th>
+                              <th>Modify Item</th>
                             </tr>
                           </thead>
                           <tbody>
                             <tr
-                              v-for="category in criteria.categories_evaluation"
+                              v-for="(category,
+                              indexCategory) in criteria.categories_evaluation"
                               :key="category.id"
                             >
-                              <td class="pb-5">
-                                <v-checkbox
-                                  v-model="category.checked"
-                                  color="indigo"
-                                  hide-details
-                                ></v-checkbox>
-                              </td>
+                              <td>{{ indexCategory + 1 }}</td>
                               <td>{{ category.name }}</td>
-                              <td class="text-center">{{ category.weight }}</td>
-                              <td class="text-center">
+                              <td>{{ category.weight }}</td>
+                              <td>
                                 <v-btn @click="editItem(category)">
                                   <v-icon>
                                     mdi-pencil-box-outline
@@ -97,7 +94,7 @@
                         </template>
                       </v-simple-table>
                     </div>
-                    <v-dialog v-model="dialogEdit" max-width="960px">
+                    <v-dialog v-model="dialogEdit" max-width="1280px">
                       <template v-slot:activator="{ on }">
                         <v-btn v-on="on" style="display: none">
                           <v-icon>
@@ -124,17 +121,16 @@
                               </span>
                             </v-col>
                             <v-col
-                              class="d-flex justify-center align-center"
+                              class="d-flex align-center"
                               cols="12"
                               sm="6"
                               md="3"
                             >
-                              <v-text-field
-                                :placeholder="modifyCategory.name"
-                                solo
-                                readonly
-                                hide-details
-                              ></v-text-field>
+                              <span
+                                class="subtitle-1 font-weight-bold indigo--text"
+                              >
+                                {{ modifyCategory.name }}
+                              </span>
                             </v-col>
                             <v-col
                               class="d-flex justify-center align-center"
@@ -147,52 +143,46 @@
                               </span>
                             </v-col>
                             <v-col
-                              class="d-flex justify-center align-center"
+                              class="d-flex align-center"
                               cols="12"
                               sm="6"
                               md="3"
                             >
-                              <v-text-field
-                                :placeholder="computeCategoryWeight()"
-                                solo
-                                readonly
-                                hide-details
-                              ></v-text-field>
+                              <span
+                                class="subtitle-1 font-weight-bold indigo--text"
+                              >
+                                {{ computeCategoryWeight() }}
+                              </span>
                             </v-col>
                           </v-row>
                           <v-simple-table>
                             <template v-slot:default>
                               <thead>
                                 <tr>
-                                  <th class="pb-5"></th>
+                                  <th>Index</th>
                                   <th>Name</th>
-                                  <th class="text-center">
+                                  <th>
                                     Explanation
                                   </th>
-                                  <th class="text-center">
+                                  <th>
                                     Weight
                                   </th>
                                 </tr>
                               </thead>
                               <tbody>
                                 <tr
-                                  v-for="item in modifyCategory.items_evaluation"
+                                  v-for="(item,
+                                  indexItem) in modifyCategory.items_evaluation"
                                   :key="item.id"
                                 >
-                                  <td class="pb-5">
-                                    <v-checkbox
-                                      v-model="item.checked"
-                                      color="indigo"
-                                      hide-details
-                                    ></v-checkbox>
-                                  </td>
-                                  <td class="text-center">
+                                  <td>{{ indexItem + 1 }}</td>
+                                  <td>
                                     {{ item.name }}
                                   </td>
-                                  <td class="text-center">
+                                  <td>
                                     {{ item.explaination }}
                                   </td>
-                                  <td>
+                                  <td style="max-width: 10rem">
                                     <v-text-field
                                       v-model="item.weight"
                                       solo
@@ -327,8 +317,6 @@
 </template>
 
 <script>
-import data from "./data.json";
-
 export default {
   name: "createTemplate",
 
@@ -341,7 +329,7 @@ export default {
       nameTemplate: "",
       selectedCriterias: [],
       categories: "",
-      criterias: data.data,
+      criterias: "",
       selected: [],
       dialog: false,
       addedCriteria: "",
@@ -352,7 +340,8 @@ export default {
       snackbar: false,
       submitError: "",
       submit: false,
-      isSubmitted: false
+      isSubmitted: false,
+      submitData: {}
     };
   },
 
@@ -370,12 +359,12 @@ export default {
   },
 
   created() {
-    // this.axios
-    //   .get("/evaluation-form/create")
-    //   .then(response => {
-    //     this.criterias = response.data.data;
-    //   })
-    //   .catch(error => console.log(error));
+    this.axios
+      .get("/evaluation-form/create")
+      .then(response => {
+        this.criterias = response.data.data;
+      })
+      .catch(error => console.log(error));
   },
 
   watch: {
@@ -498,15 +487,27 @@ export default {
       this.submit = true;
     },
 
+    addCriteriaWeight() {
+      this.selectedCriterias.forEach(criteria => {
+        let weight = 0;
+        criteria.categories_evaluation.forEach(category => {
+          weight += +category.weight;
+        });
+        criteria.weight = weight;
+      });
+    },
+
     create() {
-      console.log(this.selectedCriterias);
       this.validate();
       if (this.submit) {
-        this.selectedCriterias.name = this.nameTemplate;
+        this.addCriteriaWeight();
+        this.submitData.mainpoints = this.selectedCriterias;
+        this.submitData.name = this.nameTemplate;
+        console.log(JSON.stringify(this.submitData));
         let token = localStorage.getItem("access_token") || null;
         this.axios.defaults.headers.common["Authorization"] = "Bearer " + token;
         this.axios
-          .post("/evaluation-information/", this.selectedCriterias)
+          .post("/evaluation-form", this.submitData)
           .then(response => {
             console.log(response);
             this.isSubmitted = true;
@@ -525,6 +526,8 @@ export default {
       this.selectedCriterias = [];
       this.modifyCategory = "";
       this.modifyCriteria = "";
+      this.submit = false;
+      this.isSubmitted = false;
     }
   }
 };
