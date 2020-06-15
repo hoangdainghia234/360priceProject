@@ -259,7 +259,7 @@
                                       </v-row>
                                     </td>
                                     <td>
-                                      {{ item_detail.items.comment_category }}
+                                      {{ item_detail.items.comment_items }}
                                     </td>
                                   </tr>
                                 </tbody>

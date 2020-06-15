@@ -24,17 +24,17 @@ export default {
           path: "/admin"
         },
         {
-          name: "360 Degree Evaluation",
+          name: "Create 360 Degree Evaluation",
           icon: "mdi-book",
           path: "/admin/create-evaluation"
         },
         {
-          name: "Evaluation Template",
+          name: "Create Evaluation Template",
           icon: "mdi-bookmark",
           path: "/admin/create-template"
         },
         {
-          name: "Evaluation Criteria",
+          name: "Create Evaluation Criteria",
           icon: "mdi-flag",
           path: "/admin/create-criteria"
         }

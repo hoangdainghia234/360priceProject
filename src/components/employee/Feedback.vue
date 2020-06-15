@@ -362,6 +362,8 @@ export default {
         this.ratingEvaluation.categories = this.categories;
         this.ratingEvaluation.rating_json = this.mainpoints;
         // console.log(JSON.stringify(this.ratingEvaluation));
+        let token = localStorage.getItem("access_token") || null;
+        this.axios.defaults.headers.common["Authorization"] = "Bearer " + token;
         this.axios
           .post("/rating-evaluation", this.ratingEvaluation)
           .then((this.isSubmitted = true));
