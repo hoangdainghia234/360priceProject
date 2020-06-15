@@ -64,7 +64,6 @@
                       <v-icon color="indigo" large>$expand</v-icon>
                     </template>
                   </v-expansion-panel-header>
-<<<<<<< HEAD
                   <v-expansion-panel-content class="main-point pb-5 pt-3">
                     <v-simple-table>
                       <template v-slot:default>
@@ -88,7 +87,6 @@
                         </tbody>
                       </template>
                     </v-simple-table>
-=======
                   <v-expansion-panel-content class="main-point">
                     <div>
                       <v-simple-table>
@@ -253,9 +251,7 @@
                         </template>
                       </v-simple-table>
                     </div>
->>>>>>> dungbm-test
                   </v-expansion-panel-content>
-
                   <v-btn
                     class="minus-btn"
                     icon
@@ -350,7 +346,6 @@ export default {
 
   data: () => {
     return {
-<<<<<<< HEAD
       departments: [
         "Software Development Departement",
         "Department 1",
@@ -378,8 +373,6 @@ export default {
         { text: "Weight (100%)", value: "weight" },
         { text: "Actions", value: "actions", sortable: false }
       ], */
-=======
->>>>>>> dungbm-test
       nameTemplate: "",
       totalWeights: [100, 90],
       selectedCriterias: [],
