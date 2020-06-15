@@ -64,27 +64,169 @@
                       <v-icon color="indigo" large>$expand</v-icon>
                     </template>
                   </v-expansion-panel-header>
-                  <v-expansion-panel-content class="main-point pb-5 pt-3">
-                    <div class="d-flex justify-center">
-                      <v-data-table
-                        v-model="selectedCategory"
-                        :headers="tableHeaders"
-                        :items="criteria.categories"
-                        :single-select="singleSelect"
-                        item-key="name"
-                        show-select
-                        hide-default-footer
-                        class="elevation"
-                      >
-                        <template v-slot="{ item }">
-                          <v-icon small class="mr-2" @click="editItem(item)">
-                            mdi-pencil
-                          </v-icon>
-                          <v-icon small @click="deleteItem(item)">
-                            mdi-delete
-                          </v-icon>
+                  <v-expansion-panel-content class="main-point">
+                    <div>
+                      <v-simple-table>
+                        <template v-slot:default>
+                          <thead>
+                            <tr>
+                              <th class="pb-5"></th>
+                              <th>Category</th>
+                              <th class="text-center">Weight (100%)</th>
+                              <th class="text-center">Modify Item</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr
+                              v-for="category in criteria.categories_evaluation"
+                              :key="category.id"
+                            >
+                              <td class="pb-5">
+                                <v-checkbox
+                                  v-model="category.checked"
+                                  color="indigo"
+                                  hide-details
+                                ></v-checkbox>
+                              </td>
+                              <td>{{ category.name }}</td>
+                              <td class="text-center">{{ category.weight }}</td>
+                              <td class="text-center">
+                                <v-btn>
+                                  <v-icon>
+                                    mdi-pencil-box-outline
+                                  </v-icon>
+                                </v-btn>
+                                <!-- <v-dialog
+                                  v-model="dialogEdit"
+                                  max-width="960px"
+                                >
+                                  <template v-slot:activator="{ on }">
+                                  </template>
+                                  <v-card>
+                                    <v-card-title
+                                      class="d-flex justify-center indigo white--text"
+                                    >
+                                      <span class="headline">Modify Item</span>
+                                    </v-card-title>
+                                    <v-card-text>
+                                      <v-row>
+                                        <v-col
+                                          class="d-flex justify-center align-center"
+                                          cols="12"
+                                          sm="6"
+                                          md="3"
+                                        >
+                                          <span class="subtitle-1 black--text">
+                                            Category:
+                                          </span>
+                                        </v-col>
+                                        <v-col
+                                          class="d-flex justify-center align-center"
+                                          cols="12"
+                                          sm="6"
+                                          md="3"
+                                        >
+                                          <v-text-field
+                                            v-model="category.name"
+                                            solo
+                                            readonly
+                                            hide-details
+                                          ></v-text-field>
+                                        </v-col>
+                                        <v-col
+                                          class="d-flex justify-center align-center"
+                                          cols="12"
+                                          sm="12"
+                                          md="3"
+                                        >
+                                          <span class="subtitle-1 black--text">
+                                            Total weight:
+                                          </span>
+                                        </v-col>
+                                        <v-col
+                                          class="d-flex justify-center align-center"
+                                          cols="12"
+                                          sm="6"
+                                          md="3"
+                                        >
+                                          <v-text-field
+                                            placeholder=""
+                                            solo
+                                            readonly
+                                            hide-details
+                                          ></v-text-field>
+                                        </v-col>
+                                      </v-row>
+                                      <v-simple-table>
+                                        <template v-slot:default>
+                                          <thead>
+                                            <tr>
+                                              <th class="pb-5"></th>
+                                              <th>Name</th>
+                                              <th class="text-center">
+                                                Explanation
+                                              </th>
+                                              <th class="text-center">
+                                                Weight
+                                              </th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>
+                                            <tr
+                                              v-for="item in category.items_evaluation"
+                                              :key="item.id"
+                                            >
+                                              <td class="pb-5">
+                                                <v-checkbox
+                                                  v-model="item.checked"
+                                                  color="indigo"
+                                                  hide-details
+                                                ></v-checkbox>
+                                              </td>
+                                              <td class="text-center">
+                                                {{ item.name }}
+                                              </td>
+                                              <td class="text-center">
+                                                {{ item.explaination }}
+                                              </td>
+                                              <td>
+                                                <v-text-field
+                                                  v-model="item.weight"
+                                                  solo
+                                                  hide-details
+                                                ></v-text-field>
+                                              </td>
+                                            </tr>
+                                          </tbody>
+                                        </template>
+                                      </v-simple-table>
+                                    </v-card-text>
+
+                                    <v-card-actions
+                                      class="d-flex justify-center"
+                                    >
+                                      <div class="mb-5">
+                                        <v-btn
+                                          class="btn-bottom mr-7"
+                                          dark
+                                          @click="save(category)"
+                                          >Save</v-btn
+                                        >
+                                        <v-btn
+                                          class="btn-bottom"
+                                          dark
+                                          @click="close"
+                                          >Cancel</v-btn
+                                        >
+                                      </div>
+                                    </v-card-actions>
+                                  </v-card>
+                                </v-dialog> -->
+                              </td>
+                            </tr>
+                          </tbody>
                         </template>
-                      </v-data-table>
+                      </v-simple-table>
                     </div>
                   </v-expansion-panel-content>
 
@@ -134,9 +276,9 @@
                       >
                         <v-select
                           v-model="addedCriteria"
-                          :items="mainPoints"
+                          :items="criterias"
                           item-text="name"
-                          placeholder="Select"
+                          placeholder="Select one"
                           outlined
                           dense
                           hide-details
@@ -171,6 +313,8 @@
 </template>
 
 <script>
+import data from "./data.json";
+
 export default {
   name: "createTemplate",
 
@@ -180,57 +324,28 @@ export default {
 
   data: () => {
     return {
-      totalWeights: 0,
-
-      tableHeaders: [
-        {
-          text: "Category",
-          align: "start",
-          sortable: false,
-          value: "name"
-        },
-        { text: "Weight (100%)", value: "weight" },
-        { text: "Actions", value: "actions", sortable: false }
-      ],
       nameTemplate: "",
-      mainPoints: [],
-      selectedDepartment: "",
-      singleSelect: false,
-      selectedCategory: [],
+      totalWeights: [100, 90],
       selectedCriterias: [],
+      categories: "",
+      criterias: data.data,
+      selected: [],
       dialog: false,
-      editedIndex: -1,
       addedCriteria: "",
-      editedItem: {
-        name: "",
-        weight: 0
-      },
-
-      defaultItem: {
-        name: "",
-        weight: 0
-      },
-
-      evaluationTemplate: {
-        name: "",
-        department: "",
-        totalWeight: "",
-        criterias: []
-      }
+      dialogEdit: false,
+      modifyCategory: ""
     };
   },
 
-  computed: {
-    formTitle() {
-      return this.editedIndex === -1 ? "New Item" : "Edit Item";
-    }
-  },
+  computed: {},
 
   created() {
-    this.axios.get("/evaluation-form/create").then(response => {
-      console.log(response.data.data);
-    });
-    this.initialize();
+    // this.axios
+    //   .get("/evaluation-form/create")
+    //   .then(response => {
+    //     this.criterias = response.data.data;
+    //   })
+    //   .catch(error => console.log(error));
   },
 
   watch: {
@@ -240,256 +355,44 @@ export default {
   },
 
   methods: {
-    initialize() {
-      this.mainPoints = [
-        {
-          id: 1,
-          name: "Main point 1",
-          categories: [
-            {
-              id: 1,
-              name: "Category 1",
-              weight: 15,
-              items: [
-                {
-                  id: 1,
-                  name: "Item 1",
-                  explanation: "Item explanation 1",
-                  weight: 5
-                },
-                {
-                  id: 2,
-                  name: "Item 2",
-                  explanation: "Item explanation 2",
-                  weight: 5
-                },
-                {
-                  id: 3,
-                  name: "Item 3",
-                  explanation: "Item explanation 3",
-                  weight: 5
-                }
-              ]
-            },
-            {
-              id: 2,
-              name: "Category 2",
-              weight: 10,
-              items: [
-                {
-                  id: 4,
-                  name: "Item 1",
-                  explanation: "Item explanation 1",
-                  weight: 5
-                },
-                {
-                  id: 5,
-                  name: "Item 2",
-                  explanation: "Item explanation 2",
-                  weight: 5
-                },
-                {
-                  id: 6,
-                  name: "Item 3",
-                  explanation: "Item explanation 3",
-                  weight: 5
-                }
-              ]
-            },
-            {
-              id: 3,
-              name: "Category 3",
-              weight: 0,
-              items: [
-                {
-                  id: 7,
-                  name: "Item 1",
-                  explanation: "Item explanation 1",
-                  weight: 5
-                },
-                {
-                  id: 8,
-                  name: "Item 2",
-                  explanation: "Item explanation 2",
-                  weight: 5
-                },
-                {
-                  id: 9,
-                  name: "Item 3",
-                  explanation: "Item explanation 3",
-                  weight: 5
-                }
-              ]
-            }
-          ]
-        },
-        {
-          id: 2,
-          name: "Main point 2",
-          categories: [
-            {
-              id: 4,
-              name: "Category 4",
-              weight: 13,
-              items: [
-                {
-                  id: 10,
-                  name: "Item 1",
-                  explanation: "Item explanation 1",
-                  weight: 5
-                },
-                {
-                  id: 11,
-                  name: "Item 2",
-                  explanation: "Item explanation 2",
-                  weight: 5
-                },
-                {
-                  id: 12,
-                  name: "Item 3",
-                  explanation: "Item explanation 3",
-                  weight: 5
-                }
-              ]
-            },
-            {
-              id: 5,
-              name: "Category 5",
-              weight: 3,
-              items: [
-                {
-                  id: 13,
-                  name: "Item 1",
-                  explanation: "Item explanation 1",
-                  weight: 5
-                },
-                {
-                  id: 14,
-                  name: "Item 2",
-                  explanation: "Item explanation 2",
-                  weight: 5
-                },
-                {
-                  id: 15,
-                  name: "Item 3",
-                  explanation: "Item explanation 3",
-                  weight: 5
-                }
-              ]
-            },
-            {
-              id: 6,
-              name: "Category 6",
-              weight: 7,
-              items: [
-                {
-                  id: 16,
-                  name: "Item 1",
-                  explanation: "Item explanation 1",
-                  weight: 5
-                },
-                {
-                  id: 17,
-                  name: "Item 2",
-                  explanation: "Item explanation 2",
-                  weight: 5
-                },
-                {
-                  id: 18,
-                  name: "Item 3",
-                  explanation: "Item explanation 3",
-                  weight: 5
-                }
-              ]
-            }
-          ]
-        },
-        {
-          id: 3,
-          name: "Main point 3",
-          categories: [
-            {
-              id: 7,
-              name: "Category 7",
-              weight: 9,
-              items: [
-                {
-                  id: 1,
-                  name: "Item 1",
-                  explanation: "Item explanation 1",
-                  weight: 5
-                },
-                {
-                  id: 2,
-                  name: "Item 2",
-                  explanation: "Item explanation 2",
-                  weight: 5
-                },
-                {
-                  id: 3,
-                  name: "Item 3",
-                  explanation: "Item explanation 3",
-                  weight: 5
-                }
-              ]
-            },
-            {
-              id: 8,
-              name: "Category 8",
-              weight: 5
-            },
-            {
-              id: 9,
-              name: "Category 9",
-              weight: 12,
-              items: [
-                {
-                  id: 1,
-                  name: "Item 1",
-                  explanation: "Item explanation 1",
-                  weight: 5
-                },
-                {
-                  id: 2,
-                  name: "Item 2",
-                  explanation: "Item explanation 2",
-                  weight: 5
-                },
-                {
-                  id: 3,
-                  name: "Item 3",
-                  explanation: "Item explanation 3",
-                  weight: 5
-                }
-              ]
-            }
-          ]
-        }
-      ];
-    },
+    // editItem(category) {
+    //   this.modifyCategory = category;
+    //   console.log(this.modifyCategory);
+    // },
 
-    editItem(item) {
-      this.editedIndex = this.mainPoints.categories.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.dialog = true;
-    },
+    // computeCategoryWeight() {
+    //   if (!this.modifyCategory) {
+    //     return "0";
+    //   } else {
+    //     let total = 0;
+    //     this.modifyCategory.items_evaluation.forEach(
+    //       item => (total += +item.weight)
+    //     );
+    //     return String(total);
+    //   }
+    // },
 
     close() {
+      this.modifyCategory = "";
       this.dialog = false;
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
+      this.dialogEdit = false;
     },
 
-    save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem);
-      } else {
-        this.desserts.push(this.editedItem);
-      }
-      this.close();
-    },
+    // save(category) {
+    //   console.log(category);
+    //   category.weight = this.modifyCategory.weight;
+    //   let weightItems = [];
+    //   this.modifyCategory.items_evaluation.forEach(item =>
+    //     weightItems.push(item.weight)
+    //   );
+    //   for (let item of category.items_evaluation) {
+    //     let count = 0;
+    //     item.weight = weightItems[count];
+    //     count++;
+    //   }
+    //   this.close();
+    //   this.modifyCategory = "";
+    // },
 
     deletePanel(id) {
       this.selectedCriterias = this.selectedCriterias.filter(
@@ -498,15 +401,21 @@ export default {
     },
 
     addCriteria() {
-      if (this.selectedCriterias.includes(this.addedCriteria)) return;
+      if (
+        this.selectedCriterias.includes(this.addedCriteria) ||
+        !this.addedCriteria
+      )
+        return;
+      this.addedCriteria.categories_evaluation.forEach(
+        category => (category.checked = false)
+      );
       this.selectedCriterias = [...this.selectedCriterias, this.addedCriteria];
       this.close();
       this.addedCriteria = "";
-      console.log(this.selectedCriterias);
     },
 
     create() {
-      console.log(this.nameTemplate);
+      console.log(this.selectedCriterias);
     },
 
     reset() {
